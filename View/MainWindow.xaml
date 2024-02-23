@@ -232,7 +232,9 @@
                         Margin="3" Padding="3"
                         HorizontalAlignment="Stretch">
 
-                        <Grid>
+                        <Grid
+                            DataContext="{Binding Path=ProductionBlockWorkspace}">
+                            
 
                         </Grid>
                     </Border>

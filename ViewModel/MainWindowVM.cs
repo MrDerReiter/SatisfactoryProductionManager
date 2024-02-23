@@ -5,6 +5,7 @@ using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.View;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
+using SatisfactoryProductionManager.ViewModel.ProductionModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,20 +14,8 @@ namespace SatisfactoryProductionManager.ViewModel
 {
     public class MainWindowVM : BindableBase
     {
-        private ProductionBlock _activeBlock;
-
-        public ProductionBlock ActiveBlock
-        {
-            get => _activeBlock;
-            private set
-            {
-                if (_activeBlock != value)
-                {
-                    _activeBlock = value;
-                    RaisePropertyChanged(nameof(ActiveBlock));
-                }
-            }
-        }
+        public ProductionBlock ActiveBlock { get; private set; }
+        public ProductionBlockVM ProductionBlockWorkspace {  get; private set; }
         public BindingList<ProductionLineButtonVM> ProductionLineButtons { get; }
         public BindingList<ProductionBlockButtonVM> ProductionBlockButtons { get; }
         
@@ -96,13 +85,13 @@ namespace SatisfactoryProductionManager.ViewModel
                 var activeLineButton = ProductionLineButtons.First((plb) => plb.InnerObject == ProductionManager.ActiveLine);
                 ProductionManager.RemoveActiveLine();
                 ProductionLineButtons.Remove(activeLineButton);
-                ActiveBlock = ProductionManager.ActiveLine?.MainProductionBlock ?? null;
+                SetActiveBlock(ActiveBlock = ProductionManager.ActiveLine?.MainProductionBlock ?? null);
             }
             else
             {
                 ProductionManager.ActiveLine.RemoveProductionBlock(ActiveBlock);
 
-                ActiveBlock = ProductionManager.ActiveLine.MainProductionBlock;
+                SetActiveBlock(ProductionManager.ActiveLine.MainProductionBlock);
                 SetProductionBlocks(ProductionManager.ActiveLine);
             }
         }
@@ -121,7 +110,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.AddProductionLine(recipe);
 
             var line = ProductionManager.ProductionLines.Last();
-            ActiveBlock = line.MainProductionBlock;
+            SetActiveBlock(line.MainProductionBlock);
 
             var button = new ProductionLineButtonVM(line);
             ProductionLineButtons.Add(button);
@@ -131,7 +120,7 @@ namespace SatisfactoryProductionManager.ViewModel
         private void CreateProductionBlock(Recipe recipe)
         {
             ProductionManager.ActiveLine.AddProductionBlock(recipe);
-            ActiveBlock = ProductionManager.ActiveLine.ProductionBlocks.Last();
+            SetActiveBlock(ProductionManager.ActiveLine.ProductionBlocks.Last());
             SetProductionBlocks(ProductionManager.ActiveLine);
         }
 
@@ -144,6 +133,8 @@ namespace SatisfactoryProductionManager.ViewModel
         private void SetActiveBlock(ProductionBlock block)
         {
             ActiveBlock = block;
+            ProductionBlockWorkspace = new ProductionBlockVM(block);
+            RaisePropertyChanged(nameof(ProductionBlockWorkspace));
         }
 
         private void SetProductionBlocks(ProductionLine prodLine)
