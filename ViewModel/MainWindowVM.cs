@@ -5,6 +5,7 @@ using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.View;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
@@ -31,6 +32,8 @@ namespace SatisfactoryProductionManager.ViewModel
         
         public DelegateCommand AddProductionLine { get; }
         public DelegateCommand AddProductionBlock { get; }
+        public DelegateCommand MoveActiveLineLeft { get; }
+        public DelegateCommand MoveActiveLineRight { get; }
         public DelegateCommand RemoveActiveBlock { get; }
 
 
@@ -41,7 +44,10 @@ namespace SatisfactoryProductionManager.ViewModel
             foreach (var line in ProductionLineButtons) line.ObjectSelected += SetActiveLine;
 
             ProductionBlockButtons = new BindingList<ProductionBlockButtonVM>();
+
             AddProductionLine = new DelegateCommand(AddProductionLine_CommandHandler);
+            MoveActiveLineLeft= new DelegateCommand(MoveActiveLineLeft_CommandHandler);
+            MoveActiveLineRight = new DelegateCommand(MoveActiveLineRight_CommandHandler);
             AddProductionBlock = new DelegateCommand(AddProductionBlock_CommandHandler);
             RemoveActiveBlock = new DelegateCommand(RemoveActiveBlock_CommandHandler);
 
@@ -68,6 +74,18 @@ namespace SatisfactoryProductionManager.ViewModel
             selector.ShowDialog();
         }
 
+        private void MoveActiveLineLeft_CommandHandler()
+        {
+            ProductionManager.MoveActiveLineLeft();
+            UpdateProductionLineButtons();
+        }
+
+        private void MoveActiveLineRight_CommandHandler()
+        {
+            ProductionManager.MoveActiveLineRight();
+            UpdateProductionLineButtons();
+        }
+
         private void RemoveActiveBlock_CommandHandler()
         {
             if (ActiveBlock == null) return;
@@ -86,6 +104,15 @@ namespace SatisfactoryProductionManager.ViewModel
                 ActiveBlock = ProductionManager.ActiveLine.MainProductionBlock;
                 SetProductionBlocks(ProductionManager.ActiveLine);
             }
+        }
+
+        private void UpdateProductionLineButtons()
+        {
+            ProductionLineButtons.Clear();
+
+            var lines = ProductionManager.ProductionLines.Select(pl => new ProductionLineButtonVM(pl)).ToList();
+            ProductionLineButtons.AddRange(lines);
+            foreach (var line in ProductionLineButtons) line.ObjectSelected += SetActiveLine;
         }
 
         private void CreateProductionLine(Recipe recipe)

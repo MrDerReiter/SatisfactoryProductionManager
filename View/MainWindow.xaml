@@ -194,7 +194,8 @@
                                     Width="30" 
                                     Height="30" 
                                     Background="Gray" 
-                                    ToolTip="Переместить текущую линию левее">
+                                    ToolTip="Переместить текущую линию левее"
+                                    Command="{Binding Path=MoveActiveLineLeft}">
 
                                     <Image 
                                         Source="../Assets/MoveLineLeft.png" 
@@ -206,7 +207,8 @@
                                     Height="30"
                                     Background="Gray" 
                                     Margin="3,0,0,0" 
-                                    ToolTip="Переместить текущую линию правее">
+                                    ToolTip="Переместить текущую линию правее"
+                                    Command="{Binding Path=MoveActiveLineRight}">
 
                                     <Image 
                                         Source="../Assets/MoveLineLeft.png" 
