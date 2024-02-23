@@ -52,7 +52,7 @@ namespace SatisfactoryProductionManager.Model
         {
             var index = ProductionLines.IndexOf(ActiveLine);
 
-            if (index == 0) return;
+            if (index <= 0) return;
 
             var temp = ProductionLines[index - 1];
             ProductionLines[index - 1] = ProductionLines[index];

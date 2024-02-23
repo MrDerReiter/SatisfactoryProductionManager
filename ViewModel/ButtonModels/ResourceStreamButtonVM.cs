@@ -4,15 +4,15 @@ using System.Windows.Media.Imaging;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {
-    public class RequestButtonVM : ObjectButtonVM<ResourceRequest>
+    public class ResourceStreamButtonVM : ObjectButtonVM<ResourceStream>
     {
         public string Count { get => InnerObject.CountPerMinute.ToString(); }
 
 
-        public RequestButtonVM(ResourceRequest request)
+        public ResourceStreamButtonVM(ResourceStream stream)
         {
-            InnerObject = request;
-            ImageSource = new BitmapImage(new Uri($"../Assets/Resources/{request.Resource}.png", UriKind.Relative));
+            InnerObject = stream;
+            ImageSource = new BitmapImage(new Uri($"../Assets/Resources/{stream.Resource}.png", UriKind.Relative));
         }
     }
 }

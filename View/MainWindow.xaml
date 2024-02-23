@@ -104,7 +104,7 @@
                 <ScrollViewer
                     VerticalScrollBarVisibility="Auto"
                     Background="Gray">
-                    
+
                     <ItemsControl 
                         ItemsSource="{Binding Path=ProductionBlockButtons}" 
                         Margin="5" 
@@ -234,8 +234,143 @@
 
                         <Grid
                             DataContext="{Binding Path=ProductionBlockWorkspace}">
-                            
 
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <ScrollViewer
+                                Grid.Row="1"
+                                Grid.ColumnSpan="3"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="Gray"
+                                VerticalScrollBarVisibility="Auto">
+
+                                <ItemsControl
+                                    ItemsSource="{Binding Path=UnitModels}">
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <StackPanel
+                                                Orientation="Horizontal"
+                                                Background="Gray"
+                                                HorizontalAlignment="Left"
+                                                Margin="3">
+
+                                                <StackPanel
+                                                    Background="LightGray"
+                                                    Width="65"
+                                                    Margin="3">
+
+                                                    <TextBlock
+                                                        Background="Gray"
+                                                        Foreground="GhostWhite"
+                                                        TextAlignment="Center"
+                                                        Text="Станки"/>
+
+                                                    <Image
+                                                        Margin="5"
+                                                        Source="{Binding Path=Machine}"
+                                                        RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                                    <TextBlock
+                                                        VerticalAlignment="Bottom"
+                                                        Background="Orange"
+                                                        TextAlignment="Center"
+                                                        Text="{Binding Path=MachineCount}"/>
+                                                </StackPanel>
+
+                                                <StackPanel
+                                                    Margin="3">
+
+                                                    <TextBlock 
+                                                        Foreground="GhostWhite"
+                                                        TextAlignment="Center"
+                                                        Text="Продукция"/>
+
+                                                    <ItemsControl
+                                                        ItemsSource="{Binding Path=Products}">
+
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+
+                                                                <StackPanel
+                                                                    Width="65"
+                                                                    Background="LightBlue">
+
+                                                                    <Image
+                                                                        Margin="5"
+                                                                        Source="{Binding Path=ImageSource}"
+                                                                        RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                                                    <TextBlock
+                                                                        Background="CadetBlue"
+                                                                        TextAlignment="Center"
+                                                                        Text="{Binding Path=Count}"/>
+                                                                </StackPanel>
+
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+
+                                                <StackPanel
+                                                    Margin="3">
+
+                                                    <TextBlock
+                                                        Foreground="GhostWhite"
+                                                        TextAlignment="Center"
+                                                        Text="Компоненты"/>
+
+                                                    <ItemsControl
+                                                        ItemsSource="{Binding Path=Requests}">
+
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+
+                                                                <StackPanel
+                                                                    Width="65"
+                                                                    Background="LightGreen">
+
+                                                                    <Image
+                                                                        Margin="5"
+                                                                        Source="{Binding Path=ImageSource}"
+                                                                        RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                                                    <TextBlock
+                                                                        Background="Green"
+                                                                        TextAlignment="Center"
+                                                                        Text="{Binding Path=Count}"/>
+                                                                </StackPanel>
+
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+                            </ScrollViewer>
                         </Grid>
                     </Border>
                 </DockPanel>

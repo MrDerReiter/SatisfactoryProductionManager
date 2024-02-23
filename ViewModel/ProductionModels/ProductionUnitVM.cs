@@ -7,39 +7,43 @@ using System.Windows.Media.Imaging;
 
 namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 {
-    public class ProductionUnitVM 
+    public class ProductionUnitVM
     {
-        public ProductionUnit SourceUnit { get; }
+        private ProductionUnit _sourceUnit { get; }
+
         public decimal Overclock
         {
-            get => (decimal)SourceUnit.Overclock * 100;
+            get => (decimal)_sourceUnit.Overclock * 100;
             set
             {
-                SourceUnit.Overclock = (double)value / 100;
+                _sourceUnit.Overclock = (double)value / 100;
             }
         }
         public ImageSource Machine { get; }
         public string MachineCount { get; }
-        public ImageSource Product { get; }
-        public string ProductCount { get; }
-        public ImageSource Buproduct { get; }
-        public string BuproductCount { get; }
-        public RequestButtonVM[] Requests {  get; }
+        public ResourceStreamButtonVM[] Products { get; }
+        public RequestButtonVM[] Requests { get; }
 
         public ProductionUnitVM(ProductionUnit sourceUnit)
         {
-            SourceUnit = sourceUnit;
+            _sourceUnit = sourceUnit;
 
-            Machine = new BitmapImage(new Uri($"../Assets/Machines/{SourceUnit.Machine}.png"));
-            MachineCount = SourceUnit.MachinesCount.ToString();
+            Machine = new BitmapImage(new Uri($"../Assets/Machines/{_sourceUnit.Machine}.png", UriKind.Relative));
+            MachineCount = _sourceUnit.MachinesCount.ToString();
 
-            Product = new BitmapImage(new Uri($"../Assets/Resources/{SourceUnit.ProductionRequest.Resource}.png"));
-            ProductCount = SourceUnit.ProductionRequest.CountPerMinute.ToString();
+            if (_sourceUnit.HasByproduct)
+            {
+                Products = new ResourceStreamButtonVM[]
+                {
+                    new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream()),
+                    new ResourceStreamButtonVM(_sourceUnit.Byproduct.ToStream())
+                };
+            }
+            else
+                Products = new ResourceStreamButtonVM[]
+                { new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream()) };
 
-            Buproduct = new BitmapImage(new Uri($"../Assets/Resources/{SourceUnit.Byproduct.Resource}.png"));
-            BuproductCount = SourceUnit.Byproduct.CountPerMinute.ToString();
-
-            Requests = SourceUnit.Inputs.Select((input) => new RequestButtonVM(input)).ToArray();
+            Requests = _sourceUnit.Inputs.Select((input) => new RequestButtonVM(input)).ToArray();
         }
     }
 }

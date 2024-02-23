@@ -10,18 +10,6 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
     {
         private ProductionBlock _sourceBlock;
 
-        public ProductionBlock SourceBlock
-        {
-            get => _sourceBlock;
-            set
-            {
-                if (value != _sourceBlock)
-                {
-                    _sourceBlock = value;
-                    RaisePropertyChanged(nameof(SourceBlock));
-                }
-            }
-        }
         public BindingList<ProductionUnitVM> UnitModels { get; }
         public BindingList<RequestButtonVM> RequestButtons { get; }
         public BindingList<ByproductButtonVM> ByproductButtons { get; }
@@ -31,17 +19,18 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         public ProductionBlockVM(ProductionBlock sourceBlock)
         {
             _sourceBlock = sourceBlock;
+            if (sourceBlock == null) return;
 
-            var unitModels = SourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit)).ToList();
+            var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit)).ToList();
             UnitModels = new BindingList<ProductionUnitVM>(unitModels);
 
-            var requestButtons = SourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
+            var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
             RequestButtons = new BindingList<RequestButtonVM>(requestButtons);
 
-            var byproductButtons = SourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
+            var byproductButtons = _sourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
             ByproductButtons = new BindingList<ByproductButtonVM>(byproductButtons);
 
-            ProductionRequestButton = new EditableRequestButtonVM(SourceBlock.ProductionRequest);
+            ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
         }
     }
 }
