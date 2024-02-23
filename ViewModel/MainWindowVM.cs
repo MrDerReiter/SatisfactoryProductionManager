@@ -30,6 +30,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public BindingList<ProductionLineButtonVM> ProductionLineButtons { get; }
         public BindingList<ProductionBlockButtonVM> ProductionBlockButtons { get; }
         
+        
         public DelegateCommand AddProductionLine { get; }
         public DelegateCommand AddProductionBlock { get; }
         public DelegateCommand MoveActiveLineLeft { get; }

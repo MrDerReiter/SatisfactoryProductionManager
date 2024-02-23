@@ -1,10 +1,11 @@
 ﻿using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Windows.Media;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {
-    public abstract class ObjectButtonVM<T>
+    public abstract class ObjectButtonVM<T> : BindableBase
     {
         public T InnerObject { get; protected set; }
         public ImageSource ImageSource { get; protected set; }
