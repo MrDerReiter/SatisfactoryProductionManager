@@ -1,8 +1,7 @@
-﻿using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.ViewModel.ButtonModels;
+﻿using Prism.Commands;
 using SatisfactoryProductionManager.ViewModel;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 
 
 namespace SatisfactoryProductionManager.View
@@ -15,11 +14,24 @@ namespace SatisfactoryProductionManager.View
         public MainWindow()
         {
             InitializeComponent();
+
+            CloseWindowButton.Command = new DelegateCommand(Close);
+
+            var context = DataContext as MainWindowVM;
+            context.PropertyChanged += Context_ProductionBlockChanged;
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs args)
+        private void Context_ProductionBlockChanged(object sender, PropertyChangedEventArgs args)
         {
-            Close();
+            var context = sender as MainWindowVM;
+            if(context.ActiveBlock == null)
+            {
+                ProductionRequestButton.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                ProductionRequestButton.Visibility = Visibility.Visible;
+            }
         }
     }
 }

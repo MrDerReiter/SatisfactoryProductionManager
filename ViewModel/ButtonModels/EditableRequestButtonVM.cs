@@ -1,5 +1,6 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
 using System;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
@@ -18,7 +19,6 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
                 }  
             }
         }
-
 
 
         public EditableRequestButtonVM(ResourceRequest request)

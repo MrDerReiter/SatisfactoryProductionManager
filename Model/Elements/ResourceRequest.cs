@@ -18,7 +18,7 @@ namespace SatisfactoryProductionManager.Model.Elements
             set
             {
                 _countPerMinute = value;
-                RequestChanged();
+                RequestChanged?.Invoke();
             }
         }
         public ProductionUnit Provider { get; set; }

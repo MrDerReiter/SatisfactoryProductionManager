@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
@@ -31,6 +32,14 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             ByproductButtons = new BindingList<ByproductButtonVM>(byproductButtons);
 
             ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
+            ProductionRequestButton.PropertyChanged += UpdateUnitsVM;
+        }
+
+        private void UpdateUnitsVM(object sender, PropertyChangedEventArgs args)
+        {
+            var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
+            UnitModels.Clear();
+            UnitModels.AddRange(unitModels);
         }
     }
 }

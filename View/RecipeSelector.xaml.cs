@@ -15,6 +15,7 @@ namespace SatisfactoryProductionManager.View
         public RecipeSelector()
         {
             InitializeComponent();
+
             var context = DataContext as RecipeSelectorVM;
             context.RecipeSelected += (recipe) => Close();
         }

@@ -83,11 +83,11 @@
                         Margin="10"
                         Grid.Column="2">
 
-                        <Button 
+                        <Button
+                            Name="CloseWindowButton"
                             Background="Gray" 
                             BorderThickness="0" 
-                            ToolTip="Закрыть окно" 
-                            Click="CloseButton_Click">
+                            ToolTip="Закрыть окно">
 
                             <Image Source="../Assets/Close.png"/>
                         </Button>
@@ -236,7 +236,7 @@
                             DataContext="{Binding Path=ProductionBlockWorkspace}">
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="80"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -244,6 +244,29 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
+
+                            <StackPanel
+                                Name="ProductionRequestButton"
+                                Visibility="Hidden"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="50"
+                                VerticalAlignment="Center"
+                                DataContext="{Binding Path=ProductionRequestButton}">
+
+                                <Button
+                                    Background="LightGreen"
+                                    BorderThickness="0">
+                                    
+                                    <Image
+                                    Source="{Binding Path=ImageSource}"
+                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+
+                                <TextBox
+                                    Background="Green"
+                                    Text="{Binding Path=RequestValue, Mode=TwoWay}"/>
+                            </StackPanel>
 
                             <ScrollViewer
                                 Grid.Row="1"
@@ -318,6 +341,7 @@
 
                                                                     <TextBlock
                                                                         Background="CadetBlue"
+                                                                        Foreground="GhostWhite"
                                                                         TextAlignment="Center"
                                                                         Text="{Binding Path=Count}"/>
                                                                 </StackPanel>
@@ -357,6 +381,7 @@
 
                                                                     <TextBlock
                                                                         Background="Green"
+                                                                        Foreground="GhostWhite"
                                                                         TextAlignment="Center"
                                                                         Text="{Binding Path=Count}"/>
                                                                 </StackPanel>
@@ -365,16 +390,19 @@
                                                         </ItemsControl.ItemTemplate>
                                                     </ItemsControl>
                                                 </StackPanel>
+                                                
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
 
                                 </ItemsControl>
                             </ScrollViewer>
+                            
                         </Grid>
                     </Border>
                 </DockPanel>
             </Border>
+            
         </DockPanel>
     </Border>
 </Window>

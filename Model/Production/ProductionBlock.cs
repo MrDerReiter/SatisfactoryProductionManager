@@ -30,6 +30,7 @@ namespace SatisfactoryProductionManager.Model.Production
             ProductionRequest = new ResourceRequest(resource, 0);
             AddProductionUnit(ProductionRequest, recipe);
 
+            ProductionRequest.Provider = MainProductionUnit;
             ProductionRequest.RequestChanged += UpdateIO;
         }
 
