@@ -1,12 +1,13 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
 using System;
+using System.Globalization;
 using System.Windows.Media.Imaging;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {
     public class RequestButtonVM : ObjectButtonVM<ResourceRequest>
     {
-        public string Count { get => InnerObject.CountPerMinute.ToString(); }
+        public string Count { get => InnerObject.CountPerMinute.ToString("0.###", CultureInfo.InvariantCulture); }
 
 
         public RequestButtonVM(ResourceRequest request)

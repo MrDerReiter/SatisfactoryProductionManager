@@ -10,7 +10,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
     {
         public string RequestValue
         {
-            get => InnerObject.CountPerMinute.ToString();
+            get => InnerObject.CountPerMinute.ToString("0.###", CultureInfo.InvariantCulture);
             set
             {
                 try

@@ -1,6 +1,7 @@
 ﻿using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -29,7 +30,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             _sourceUnit = sourceUnit;
 
             Machine = new BitmapImage(new Uri($"../Assets/Machines/{_sourceUnit.Machine}.png", UriKind.Relative));
-            MachineCount = _sourceUnit.MachinesCount.ToString();
+            MachineCount = _sourceUnit.MachinesCount.ToString("0.###", CultureInfo.InvariantCulture);
 
             if (_sourceUnit.HasByproduct)
             {
