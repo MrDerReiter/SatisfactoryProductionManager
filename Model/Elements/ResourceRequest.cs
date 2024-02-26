@@ -9,10 +9,10 @@ namespace SatisfactoryProductionManager.Model.Elements
     /// </summary>
     public class ResourceRequest
     {
-        private decimal _countPerMinute;
+        private double _countPerMinute;
 
         public string Resource {  get; set; }
-        public decimal CountPerMinute
+        public double CountPerMinute
         {
             get => _countPerMinute;
             set
@@ -27,7 +27,7 @@ namespace SatisfactoryProductionManager.Model.Elements
         public event Action RequestChanged;
 
 
-        public ResourceRequest(string resource, decimal count)
+        public ResourceRequest(string resource, double count)
         {
             Resource = resource;
             _countPerMinute = count;

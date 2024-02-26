@@ -14,10 +14,10 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         public decimal Overclock
         {
-            get => _sourceUnit.Overclock * 100;
+            get => (decimal)_sourceUnit.Overclock * 100;
             set
             {
-                _sourceUnit.Overclock = value / 100;
+                _sourceUnit.Overclock = (double)value / 100;
             }
         }
         public ImageSource Machine { get; }
