@@ -240,33 +240,70 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel
-                                Name="ProductionRequestButton"
-                                Visibility="Hidden"
+                            <WrapPanel
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Width="50"
-                                VerticalAlignment="Center"
-                                DataContext="{Binding Path=ProductionRequestButton}">
+                                VerticalAlignment="Center">
 
-                                <Button
-                                    Background="LightGreen"
-                                    BorderThickness="0">
+                                <StackPanel
+                                    Name="ProductionRequestButton"
+                                    Visibility="Hidden"
+                                    Width="50"
+                                    DataContext="{Binding Path=ProductionRequestButton}">
+
+                                    <Button
+                                        Background="LightGreen"
+                                        BorderThickness="0">
+
+                                        <Image
+                                            Source="{Binding Path=ImageSource}"
+                                            RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <TextBox
+                                        Background="Green"
+                                        Foreground="GhostWhite"
+                                        Text="{Binding Path=RequestValue, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                                <ItemsControl
+                                    ItemsSource="{Binding Path=ByproductButtons}"
+                                    Margin="10,0,0,0"
+                                    Visibility="Visible">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <StackPanel
+                                                Width="50"
+                                                Background="IndianRed">
+
+                                                <Image
+                                                    Source="{Binding Path=ImageSource}"
+                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                                <TextBlock
+                                                    Background="Crimson"
+                                                    Foreground="GhostWhite"
+                                                    Text="{Binding Path=Count}"/>
+                                                
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
                                     
-                                    <Image
-                                    Source="{Binding Path=ImageSource}"
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                                </Button>
-
-                                <TextBox
-                                    Background="Green"
-                                    Text="{Binding Path=RequestValue, Mode=TwoWay}"/>
-                            </StackPanel>
+                                </ItemsControl>
+                                
+                            </WrapPanel>
 
                             <ScrollViewer
                                 Grid.Row="1"
@@ -390,19 +427,19 @@
                                                         </ItemsControl.ItemTemplate>
                                                     </ItemsControl>
                                                 </StackPanel>
-                                                
+
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
 
                                 </ItemsControl>
                             </ScrollViewer>
-                            
+
                         </Grid>
                     </Border>
                 </DockPanel>
             </Border>
-            
+
         </DockPanel>
     </Border>
 </Window>

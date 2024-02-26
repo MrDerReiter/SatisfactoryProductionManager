@@ -6,6 +6,8 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {
     public class ByproductButtonVM : ObjectButtonVM<ResourceOverflow>
     {
+        public string Count { get => InnerObject.CountPerMinute.ToString(); }
+
         public ByproductButtonVM(ResourceOverflow byproduct)
         {
             InnerObject = byproduct;

@@ -40,6 +40,14 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
             UnitModels.Clear();
             UnitModels.AddRange(unitModels);
+
+            var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
+            RequestButtons.Clear();
+            RequestButtons.AddRange(requestButtons);
+
+            var byproductButtons = _sourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
+            ByproductButtons.Clear();
+            ByproductButtons.AddRange(byproductButtons);
         }
     }
 }

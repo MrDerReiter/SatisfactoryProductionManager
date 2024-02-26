@@ -1,5 +1,6 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -12,11 +13,15 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
             get => InnerObject.CountPerMinute.ToString();
             set
             {
-                if (double.TryParse(value, out double result))
+                try
                 {
-                    InnerObject.CountPerMinute = result;
+                    InnerObject.CountPerMinute = double.Parse(value, CultureInfo.InvariantCulture);
                     RaisePropertyChanged(nameof(RequestValue));
-                }  
+                }
+                catch
+                {
+                    MessageBox.Show("Некорректное значение запроса");
+                }
             }
         }
 
