@@ -45,6 +45,16 @@ namespace SatisfactoryProductionManager.Model.Production
             Inputs.RemoveAt(secondIndex);
         }
 
+        private void MergeByproducts(int firstIndex, int secondIndex)
+        {
+            var mergedByproduct = new ResourceOverflow
+                (Byproducts[firstIndex].Resource,
+                 Byproducts[firstIndex].CountPerMinute + Byproducts[secondIndex].CountPerMinute);
+
+            Byproducts[firstIndex] = mergedByproduct;
+            Byproducts.RemoveAt(secondIndex);
+        }
+
         private void MergeExcessInputs()
         {
             for (int i = 0; i < Inputs.Count - 1; i++)
@@ -52,6 +62,17 @@ namespace SatisfactoryProductionManager.Model.Production
                     if (Inputs[i].Resource == Inputs[j].Resource)
                     {
                         MergeInputs(i, j);
+                        j--;
+                    }
+        }
+
+        private void MergeExcessByproducts()
+        {
+            for (int i = 0; i < Byproducts.Count - 1; i++)
+                for (int j = i + 1; j < Byproducts.Count; j++)
+                    if (Byproducts[i].Resource == Byproducts[j].Resource)
+                    {
+                        MergeByproducts(i, j);
                         j--;
                     }
         }
@@ -94,12 +115,23 @@ namespace SatisfactoryProductionManager.Model.Production
             }
         }
 
+        private void AssignTopLevelProvider(IEnumerable<ResourceRequest> checkList, ProductionUnit unit)
+        {
+            foreach(var input in checkList)
+            {
+                if(input.Resource == unit.ProductionRequest.Resource 
+                    && input.Provider != unit)
+                    input.Provider = unit;
+            }
+        }
+
         private void UpdateIO()
         {
             Inputs.Clear();
             var inputs = ProductionUnits
                 .SelectMany(pu => pu.Inputs)
-                .Where(i => !i.HasProvider && i.CountPerMinute > 0);
+                .Where(i => !i.HasProvider && i.CountPerMinute > 0)
+                .ToList();
             Inputs.AddRange(inputs);
             MergeExcessInputs();
 
@@ -108,6 +140,7 @@ namespace SatisfactoryProductionManager.Model.Production
                 .Where(pu => pu.HasByproduct && pu.Byproduct.CountPerMinute > 0)
                 .Select(pu => pu.Byproduct);
             Byproducts.AddRange(byproducts);
+            MergeExcessByproducts();
 
             BalanceOverflowsToRequests();
         }
@@ -120,6 +153,12 @@ namespace SatisfactoryProductionManager.Model.Production
             var unit = new ProductionUnit(request, recipe);
             request.Provider = unit;
             ProductionUnits.Add(unit);
+
+            var inputs = ProductionUnits
+                .SelectMany(pu => pu.Inputs)
+                .Where(i => !i.HasProvider && i.CountPerMinute > 0);
+            AssignTopLevelProvider(inputs, unit);
+
             UpdateIO();
         }
 

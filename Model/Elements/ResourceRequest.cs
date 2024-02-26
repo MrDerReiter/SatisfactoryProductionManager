@@ -21,7 +21,7 @@ namespace SatisfactoryProductionManager.Model.Elements
                 RequestChanged?.Invoke();
             }
         }
-        public ProductionUnit Provider { get; set; }
+        public ProductionUnit Provider {  get; set; }
         public bool HasProvider { get => Provider != null; }
 
         public event Action RequestChanged;

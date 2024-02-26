@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Менеджер производства" Height="450" Width="800"
         AllowsTransparency="True" Background="Transparent"
-        MinHeight="450" MinWidth="800" WindowStyle="None">
+        MinHeight="450" MinWidth="800" WindowStyle="None" WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="20"/>
@@ -224,6 +224,7 @@
                                 </Button>
                             </WrapPanel>
                         </Border>
+                        
                     </WrapPanel>
 
                     <Border 
@@ -478,6 +479,7 @@
 
                         </Grid>
                     </Border>
+                    
                 </DockPanel>
             </Border>
 

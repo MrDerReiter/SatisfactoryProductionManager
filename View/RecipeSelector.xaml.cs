@@ -1,9 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.ViewModel;
-using SatisfactoryProductionManager.ViewModel.ButtonModels;
-using System;
+﻿using SatisfactoryProductionManager.ViewModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace SatisfactoryProductionManager.View
 {

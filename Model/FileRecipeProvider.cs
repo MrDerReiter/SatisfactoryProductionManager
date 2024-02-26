@@ -85,7 +85,9 @@ namespace SatisfactoryProductionManager.Model
 
         public IEnumerable<Recipe> GetAllRecipiesOfProduct(string product)
         {
-            throw new NotImplementedException();
+            var list = _recipies.FindAll
+                (x => x.Product.Resource == product || x.Byproduct?.Resource == product);
+            return list.Count > 0 ? list : throw new InvalidOperationException("Cannot find recipe with this product/byproduct");
         }
 
         public Recipe GetRecipeByName(string name)

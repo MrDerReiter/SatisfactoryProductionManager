@@ -1,5 +1,4 @@
-﻿using Prism.Mvvm;
-using SatisfactoryProductionManager.Model;
+﻿using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 
 namespace SatisfactoryProductionManager.ViewModel
 {
-    public class RecipeSelectorVM : BindableBase
+    public class RecipeSelectorVM
     {
         public List<RecipeSelectButtonVM> IngotsButtons { get; }
         public List<RecipeSelectButtonVM> MineralsButtons { get; }
