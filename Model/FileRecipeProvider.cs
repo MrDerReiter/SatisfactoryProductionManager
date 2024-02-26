@@ -35,7 +35,7 @@ namespace SatisfactoryProductionManager.Model
 
                     string[] outputs = content[i + 4].Split("||");
                     string prodRes = outputs[0].Split(' ')[0];
-                    double prodCount = double.Parse(outputs[0].Split(' ')[1], CultureInfo.InvariantCulture);
+                    decimal prodCount = decimal.Parse(outputs[0].Split(' ')[1], CultureInfo.InvariantCulture);
                     var product = new ResourceStream(prodRes, prodCount);
 
                     ResourceStream? byproduct;
@@ -43,7 +43,7 @@ namespace SatisfactoryProductionManager.Model
                     else
                     {
                         string byprRes = outputs[1].Split(' ')[0];
-                        double byprCount = double.Parse(outputs[1].Split(' ')[1], CultureInfo.InvariantCulture);
+                        decimal byprCount = decimal.Parse(outputs[1].Split(' ')[1], CultureInfo.InvariantCulture);
 
                         byproduct = new ResourceStream(byprRes, byprCount);
                     }
@@ -53,7 +53,7 @@ namespace SatisfactoryProductionManager.Model
                     for (int j = 0; j < strInputs.Length; j++)
                     {
                         string inpRes = strInputs[j].Split(' ')[0];
-                        double inpCount = double.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
+                        decimal inpCount = decimal.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
                         inputs[j] = new ResourceStream(inpRes, inpCount);
                     }
 

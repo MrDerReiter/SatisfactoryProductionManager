@@ -15,7 +15,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
             {
                 try
                 {
-                    InnerObject.CountPerMinute = double.Parse(value, CultureInfo.InvariantCulture);
+                    InnerObject.CountPerMinute = decimal.Parse(value, CultureInfo.InvariantCulture);
                     RaisePropertyChanged(nameof(RequestValue));
                 }
                 catch

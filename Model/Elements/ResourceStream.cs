@@ -5,10 +5,10 @@ namespace SatisfactoryProductionManager.Model.Elements
     public struct ResourceStream
     {
         public readonly string Resource;
-        public readonly double CountPerMinute;
+        public readonly decimal CountPerMinute;
 
 
-        public ResourceStream(string resource, double count)
+        public ResourceStream(string resource, decimal count)
         {
             Resource = resource;
             CountPerMinute = count;
@@ -29,7 +29,7 @@ namespace SatisfactoryProductionManager.Model.Elements
             else throw new InvalidOperationException("Cannot add streams with different resources.");
         }
 
-        public static ResourceStream operator *(ResourceStream left, double right)
+        public static ResourceStream operator *(ResourceStream left, decimal right)
         {
             return new ResourceStream(left.Resource, left.CountPerMinute * right);
         }

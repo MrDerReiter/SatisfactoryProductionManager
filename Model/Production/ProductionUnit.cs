@@ -1,21 +1,22 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
+using System;
 
 namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionUnit
     {
-        private double _overclock = 1;
+        private decimal _overclock = 1m;
 
         public Recipe Recipe { get; }
         public string Machine { get => Recipe.Machine; }
-        public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute / Overclock; }
-        public double Overclock
+        public decimal MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute / Overclock; }
+        public decimal Overclock
         {
             get => _overclock;
             set
             {
-                if (value > 2.5) _overclock = 2.5;
-                else if (value <= 0) _overclock = 0.01;
+                if (value > 2.5m) _overclock = 2.5m;
+                else if (value <= 0) _overclock = 0.01m;
                 else _overclock = value;
             }
         }
@@ -44,10 +45,19 @@ namespace SatisfactoryProductionManager.Model.Production
         private void UpdateIO()
         {
             for (int i = 0; i < Inputs.Length; i++)
+            {
                 Inputs[i].CountPerMinute = Recipe.Inputs[i].CountPerMinute * MachinesCount;
+                if (Math.Round(Inputs[i].CountPerMinute - Inputs[i].CountPerMinute) < 0.01m )
+                    Inputs[i].CountPerMinute = Math.Round(Inputs[i].CountPerMinute);
+            }
+                
 
             if (HasByproduct)
+            {
                 Byproduct.CountPerMinute = Recipe.Byproduct.Value.CountPerMinute * MachinesCount;
+                if (Math.Round(Byproduct.CountPerMinute - Byproduct.CountPerMinute) < 0.01m)
+                    Byproduct.CountPerMinute = Math.Round(Byproduct.CountPerMinute);
+            }
         }
     }
 }
