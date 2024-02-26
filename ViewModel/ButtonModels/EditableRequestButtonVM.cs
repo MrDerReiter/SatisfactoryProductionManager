@@ -20,7 +20,10 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
                 }
                 catch
                 {
-                    MessageBox.Show("Некорректное значение запроса");
+                    MessageBox.Show
+                        ("Введите корректное целое число или дробное число с точкой",
+                        "Некорректное значение запроса",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
