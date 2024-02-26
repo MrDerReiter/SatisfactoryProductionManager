@@ -25,13 +25,9 @@ namespace SatisfactoryProductionManager.View
         {
             var context = sender as MainWindowVM;
             if(context.ActiveBlock == null)
-            {
                 ProductionRequestButton.Visibility = Visibility.Hidden;
-            }
             else
-            {
                 ProductionRequestButton.Visibility = Visibility.Visible;
-            }
         }
     }
 }
