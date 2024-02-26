@@ -25,11 +25,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit)).ToList();
             UnitModels = new BindingList<ProductionUnitVM>(unitModels);
 
-            var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
-            RequestButtons = new BindingList<RequestButtonVM>(requestButtons);
-
-            var byproductButtons = _sourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
-            ByproductButtons = new BindingList<ByproductButtonVM>(byproductButtons);
+            RequestButtons = new BindingList<RequestButtonVM>();
+            ByproductButtons = new BindingList<ByproductButtonVM>();
 
             ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
             ProductionRequestButton.PropertyChanged += UpdateUnitsVM;
