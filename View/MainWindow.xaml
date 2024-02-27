@@ -237,7 +237,7 @@
                             DataContext="{Binding Path=ProductionBlockWorkspace}">
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -249,7 +249,7 @@
                             <StackPanel
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Top">
 
                                 <TextBlock
                                     Name="OutputLabel"
@@ -321,9 +321,9 @@
                             <StackPanel
                                 Grid.Row="0"
                                 Grid.Column="2"
-                                Margin="10,0"
+                                Margin="20,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Top">
 
                                 <TextBlock
                                     Name="InputLabel"
@@ -375,6 +375,7 @@
                             <ScrollViewer
                                 Grid.Row="1"
                                 Grid.ColumnSpan="3"
+                                Margin="0,20,0,10"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 Background="Gray"
