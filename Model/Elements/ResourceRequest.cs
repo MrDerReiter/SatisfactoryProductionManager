@@ -1,5 +1,6 @@
 ﻿using SatisfactoryProductionManager.Model.Production;
 using System;
+using System.Collections.Generic;
 
 namespace SatisfactoryProductionManager.Model.Elements
 {
@@ -9,6 +10,7 @@ namespace SatisfactoryProductionManager.Model.Elements
     /// </summary>
     public class ResourceRequest
     {
+        private ProductionUnit _provider;
         private double _countPerMinute;
 
         public string Resource {  get; set; }
@@ -21,7 +23,17 @@ namespace SatisfactoryProductionManager.Model.Elements
                 RequestChanged?.Invoke();
             }
         }
-        public ProductionUnit Provider {  get; set; }
+        public ProductionUnit Provider
+        {
+            get => _provider;
+            set
+            {
+                _provider = value;
+                foreach (var request in LinkedRequests)
+                    request.Provider = value;
+            }
+        }
+        public List<ResourceRequest> LinkedRequests { get; }
         public bool HasProvider { get => Provider != null; }
 
         public event Action RequestChanged;
@@ -31,12 +43,36 @@ namespace SatisfactoryProductionManager.Model.Elements
         {
             Resource = resource;
             _countPerMinute = count;
+            LinkedRequests = new List<ResourceRequest>();
+        }
+
+
+        private void Update()
+        {
+            double totalCountPerMinute = 0;
+
+            for (int i = 0; i < LinkedRequests.Count; i++)
+            {
+                if (LinkedRequests[i].CountPerMinute == 0)
+                    LinkedRequests.RemoveAt(i--);
+                else totalCountPerMinute += LinkedRequests[i].CountPerMinute;
+            }
+
+            CountPerMinute = totalCountPerMinute;
         }
 
 
         public ResourceStream ToStream()
         {
             return new ResourceStream(Resource, CountPerMinute);
+        }
+
+        public void Link(ResourceRequest request)
+        {
+            if (request.Resource != Resource) throw new InvalidOperationException("Cannot link recipies with different resources");
+
+            LinkedRequests.Add(request);
+            request.RequestChanged += Update;
         }
     }
 }

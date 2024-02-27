@@ -52,6 +52,8 @@ namespace SatisfactoryProductionManager.Model.Production
             var mergedInput = new ResourceRequest
                 (Inputs[firstIndex].Resource,
                  Inputs[firstIndex].CountPerMinute + Inputs[secondIndex].CountPerMinute);
+            mergedInput.Link(Inputs[firstIndex]);
+            mergedInput.Link(Inputs[secondIndex]);
 
             Inputs[firstIndex] = mergedInput;
             Inputs.RemoveAt(secondIndex);
@@ -110,7 +112,7 @@ namespace SatisfactoryProductionManager.Model.Production
         {
             for (int i = 0; i < Inputs.Count; i++)
             {
-                if (Inputs[i].CountPerMinute <= 0) 
+                if (Inputs[i].CountPerMinute <= 0)
                 {
                     Inputs.RemoveAt(i);
                     i--;
@@ -125,26 +127,6 @@ namespace SatisfactoryProductionManager.Model.Production
                     i--;
                 }
             }
-        }
-
-        private void AssignTopLevelProvider(IEnumerable<ResourceRequest> checkList, ProductionUnit unit)
-        {
-            foreach(var input in checkList)
-            {
-                if(input.Resource == unit.ProductionRequest.Resource 
-                    && input.Provider != unit)
-                    input.Provider = unit;
-            }
-        }
-
-        private void DisconnectRequests(ProductionUnit unit)
-        {
-            var inputs = ProductionUnits
-                .SelectMany(pu => pu.Inputs)
-                .Where(i => i.HasProvider);
-
-            foreach (var input in inputs)
-                if (input.Provider == unit) input.Provider = null;
         }
 
         private void UpdateIO()
@@ -175,22 +157,19 @@ namespace SatisfactoryProductionManager.Model.Production
             var unit = new ProductionUnit(request, recipe);
             request.Provider = unit;
             ProductionUnits.Add(unit);
-
-            var inputs = ProductionUnits
-                .SelectMany(pu => pu.Inputs)
-                .Where(i => !i.HasProvider && i.CountPerMinute > 0);
-            AssignTopLevelProvider(inputs, unit);
-
             UpdateIO();
         }
 
         public void RemoveProductionUnit(ProductionUnit unit)
         {
-            if(unit == MainProductionUnit) 
+            if (unit == MainProductionUnit)
                 throw new InvalidOperationException("Невозможно удалить или преобразовать главный цех производственного блока.");
 
             unit.ProductionRequest.Provider = null;
-            DisconnectRequests(unit);
+            foreach (var request in unit.Inputs)
+                request.CountPerMinute = 0;
+            Inputs.Clear();
+
             ProductionUnits.Remove(unit);
             UpdateIO();
         }
