@@ -70,7 +70,8 @@ namespace SatisfactoryProductionManager.Model
         public IEnumerable<Recipe> GetAllRecipiesOfCategory(string category)
         {
             var list = _recipies.FindAll(x => x.Category == category);
-            return list.Count > 0 ? list : throw new InvalidOperationException("Cannot find recipe in this catergory");
+            return list.Count > 0 ? list 
+                : throw new InvalidOperationException("Не удалось найти рецепты в данной категории");
         }
 
         public IEnumerable<Recipe> GetAllRecipiesOfInput(string input)
@@ -87,12 +88,13 @@ namespace SatisfactoryProductionManager.Model
         {
             var list = _recipies.FindAll
                 (x => x.Product.Resource == product || x.Byproduct?.Resource == product);
-            return list.Count > 0 ? list : throw new InvalidOperationException("Cannot find recipe with this product/byproduct");
+            return list.Count > 0 ? list : throw new InvalidOperationException("Не удалось найти ни одного подходящего рецепта для данного продукта");
         }
 
         public Recipe GetRecipeByName(string name)
         {
-            return _recipies.Find(x => x.Name == name) ?? throw new ArgumentException("Cannot find that recipe name");
+            return _recipies.Find(x => x.Name == name)
+                ?? throw new ArgumentException($"Не удалось найти рецепт с названием {name}");
         }
     }
 }
