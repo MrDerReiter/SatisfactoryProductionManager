@@ -246,52 +246,20 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
-                            <ItemsControl
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Margin="10,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                ItemsSource="{Binding Path=RequestButtons}">
-
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        
-                                        <StackPanel
-                                            Width="50"
-                                            Margin="1,0,0,0">
-
-                                            <Button
-                                                Background="LightGreen"
-                                                BorderThickness="0"
-                                                Command="{Binding Path=ReturnObject}">
-
-                                                <Image
-                                                    Source="{Binding Path=ImageSource}"
-                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                
-                                            </Button>
-
-                                            <TextBlock
-                                                Background="Green"
-                                                Foreground="GhostWhite"
-                                                TextAlignment="Center"
-                                                Text="{Binding Path=Count}"/>
-                                            
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <WrapPanel
+                            <StackPanel
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 VerticalAlignment="Center">
+
+                                <TextBlock
+                                    Name="OutputLabel"
+                                    Visibility="Hidden"
+                                    Background="Gray"
+                                    Foreground="GhostWhite"
+                                    TextAlignment="Left"
+                                    Text="Выход"/>
+
+                                <WrapPanel>
 
                                 <StackPanel
                                     Name="ProductionRequestButton"
@@ -347,6 +315,62 @@
                                 </ItemsControl>
                                 
                             </WrapPanel>
+                                
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Margin="10,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+
+                                <TextBlock
+                                    Name="InputLabel"
+                                    Visibility="Hidden"
+                                    Background="Gray"
+                                    Foreground="GhostWhite"
+                                    TextAlignment="Left"
+                                    Text="Вход"/>
+
+                                <ItemsControl
+                                ItemsSource="{Binding Path=RequestButtons}">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <StackPanel
+                                            Width="50"
+                                            Margin="1,0,0,0">
+
+                                                <Button
+                                                Background="LightGreen"
+                                                BorderThickness="0"
+                                                Command="{Binding Path=ReturnObject}">
+
+                                                    <Image
+                                                    Source="{Binding Path=ImageSource}"
+                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                                </Button>
+
+                                                <TextBlock
+                                                Background="Green"
+                                                Foreground="GhostWhite"
+                                                TextAlignment="Center"
+                                                Text="{Binding Path=Count}"/>
+
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </StackPanel>
 
                             <ScrollViewer
                                 Grid.Row="1"

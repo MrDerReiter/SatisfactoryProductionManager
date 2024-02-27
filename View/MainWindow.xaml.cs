@@ -24,10 +24,19 @@ namespace SatisfactoryProductionManager.View
         private void Context_ProductionBlockChanged(object sender, PropertyChangedEventArgs args)
         {
             var context = sender as MainWindowVM;
-            if(context.ActiveBlock == null)
+
+            if (context.ActiveBlock == null)
+            {
                 ProductionRequestButton.Visibility = Visibility.Hidden;
+                OutputLabel.Visibility = Visibility.Hidden;
+                InputLabel.Visibility = Visibility.Hidden;
+            }
             else
+            {
                 ProductionRequestButton.Visibility = Visibility.Visible;
+                OutputLabel.Visibility = Visibility.Visible;
+                InputLabel.Visibility = Visibility.Visible;
+            }
         }
     }
 }
