@@ -1,4 +1,6 @@
-﻿using SatisfactoryProductionManager.Model.Production;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Globalization;
@@ -8,22 +10,20 @@ using System.Windows.Media.Imaging;
 
 namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 {
-    public class ProductionUnitVM
+    public class ProductionUnitVM : BindableBase
     {
         private ProductionUnit _sourceUnit { get; }
 
-        public decimal Overclock
-        {
-            get => (decimal)_sourceUnit.Overclock * 100;
-            set
-            {
-                _sourceUnit.Overclock = (double)value / 100;
-            }
-        }
         public ImageSource Machine { get; }
         public string MachineCount { get; }
         public ResourceStreamButtonVM[] Products { get; }
         public RequestButtonVM[] Requests { get; }
+
+        public DelegateCommand RemoveProdUnit { get; }
+        public DelegateCommand ConvertUnitToBlock { get; }
+
+        public event Action<ProductionUnit> RequestingRemoveProdUnit;
+        public event Action<ProductionUnit> RequestingConvertUnitToBlock;
 
         public ProductionUnitVM(ProductionUnit sourceUnit)
         {
@@ -45,6 +45,20 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 { new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream()) };
 
             Requests = _sourceUnit.Inputs.Select((input) => new RequestButtonVM(input)).ToArray();
+
+            RemoveProdUnit = new DelegateCommand(RemoveProdUnit_CommandHandler);
+            ConvertUnitToBlock = new DelegateCommand(ConvertUnitToBlock_CommandHandler);
+        }
+
+
+        private void RemoveProdUnit_CommandHandler()
+        {
+            RequestingRemoveProdUnit?.Invoke(_sourceUnit);
+        }
+
+        private void ConvertUnitToBlock_CommandHandler()
+        {
+            RequestingConvertUnitToBlock?.Invoke(_sourceUnit);
         }
     }
 }

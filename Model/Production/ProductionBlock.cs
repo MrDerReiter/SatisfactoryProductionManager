@@ -34,6 +34,18 @@ namespace SatisfactoryProductionManager.Model.Production
             ProductionRequest.RequestChanged += UpdateIO;
         }
 
+        public ProductionBlock(ProductionUnit unit)
+        {
+            var request = new ResourceRequest(unit.ProductionRequest.Resource, unit.ProductionRequest.CountPerMinute);
+            var recipe = unit.Recipe;
+
+            ProductionRequest = request;
+            AddProductionUnit(ProductionRequest, recipe);
+
+            ProductionRequest.Provider = MainProductionUnit;
+            ProductionRequest.RequestChanged += UpdateIO;
+        }
+
 
         private void MergeInputs(int firstIndex, int secondIndex)
         {
@@ -125,6 +137,16 @@ namespace SatisfactoryProductionManager.Model.Production
             }
         }
 
+        private void DisconnectRequests(ProductionUnit unit)
+        {
+            var inputs = ProductionUnits
+                .SelectMany(pu => pu.Inputs)
+                .Where(i => i.HasProvider);
+
+            foreach (var input in inputs)
+                if (input.Provider == unit) input.Provider = null;
+        }
+
         private void UpdateIO()
         {
             Inputs.Clear();
@@ -164,7 +186,11 @@ namespace SatisfactoryProductionManager.Model.Production
 
         public void RemoveProductionUnit(ProductionUnit unit)
         {
+            if(unit == MainProductionUnit) 
+                throw new InvalidOperationException("Невозможно удалить главный цех производственного блока.");
+
             unit.ProductionRequest.Provider = null;
+            DisconnectRequests(unit);
             ProductionUnits.Remove(unit);
             UpdateIO();
         }

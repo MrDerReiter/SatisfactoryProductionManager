@@ -369,6 +369,32 @@
                                                 Margin="3">
 
                                                 <StackPanel
+                                                    Background="Gray"
+                                                    VerticalAlignment="Center"
+                                                    Width="30">
+
+                                                    <Button
+                                                        Background="LightGray"
+                                                        ToolTip="Удалить цех"
+                                                        Command="{Binding Path=RemoveProdUnit}">
+
+                                                        <Image
+                                                            Source="../Assets/DeleteItem.png"
+                                                            RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    </Button>
+
+                                                    <Button
+                                                        Background="LightGray"
+                                                        ToolTip="Преобразовать цех в производственный блок"
+                                                        Command="{Binding Path=ConvertUnitToBlock}">
+
+                                                        <Image
+                                                            Source="../Assets/AddItem.png"
+                                                            RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    </Button>
+                                                </StackPanel>
+
+                                                <StackPanel
                                                     Background="LightGray"
                                                     Width="65"
                                                     Margin="3">

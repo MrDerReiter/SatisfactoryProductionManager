@@ -28,7 +28,11 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit)).ToList();
             UnitModels = new BindingList<ProductionUnitVM>(unitModels);
-
+            foreach ( var unitModel in UnitModels )
+            {
+                unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
+                unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
+            }
             
             var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
             RequestButtons = new BindingList<RequestButtonVM>(requestButtons);
@@ -41,11 +45,35 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             ProductionRequestButton.PropertyChanged += UpdateUnitsVM;
         }
 
+
+        private void RemoveProdUnit(ProductionUnit unit)
+        {
+            try
+            {
+                _sourceBlock.RemoveProductionUnit(unit);
+                UpdateUnitsVM(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,"Не удалось удалить цех", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        private void ConvertUnitToBlock(ProductionUnit unit)
+        {
+            throw new NotImplementedException();
+        }
+
         private void UpdateUnitsVM(object sender, PropertyChangedEventArgs args)
         {
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
             UnitModels.Clear();
             UnitModels.AddRange(unitModels);
+            foreach (var unitModel in UnitModels)
+            {
+                unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
+                unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
+            }
 
             var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
             RequestButtons.Clear();

@@ -95,6 +95,13 @@ namespace SatisfactoryProductionManager.Model.Production
             prodBlock.ProductionRequest.RequestChanged += UpdateIO;
         }
 
+        public void AddProductionBlock(ProductionUnit productionUnit)
+        {
+            var prodBlock = new ProductionBlock(productionUnit);
+            ProductionBlocks.Add(prodBlock);
+            prodBlock.ProductionRequest.RequestChanged += UpdateIO;
+        }
+
         public void RemoveProductionBlock(ProductionBlock prodBlock)
         {
             ProductionBlocks.Remove(prodBlock);

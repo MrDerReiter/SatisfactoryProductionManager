@@ -4,21 +4,9 @@ namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionUnit
     {
-        private double _overclock = 1;
-
         public Recipe Recipe { get; }
         public string Machine { get => Recipe.Machine; }
-        public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute / Overclock; }
-        public double Overclock
-        {
-            get => _overclock;
-            set
-            {
-                if (value > 2.5) _overclock = 2.5;
-                else if (value <= 0) _overclock = 0.01;
-                else _overclock = value;
-            }
-        }
+        public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute; }
         public bool HasByproduct { get => Recipe.HasByproduct; }
         public ResourceRequest ProductionRequest { get; }
         public ResourceOverflow Byproduct { get; }
