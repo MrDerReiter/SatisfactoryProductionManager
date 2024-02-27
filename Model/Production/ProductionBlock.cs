@@ -187,7 +187,7 @@ namespace SatisfactoryProductionManager.Model.Production
         public void RemoveProductionUnit(ProductionUnit unit)
         {
             if(unit == MainProductionUnit) 
-                throw new InvalidOperationException("Невозможно удалить главный цех производственного блока.");
+                throw new InvalidOperationException("Невозможно удалить или преобразовать главный цех производственного блока.");
 
             unit.ProductionRequest.Provider = null;
             DisconnectRequests(unit);

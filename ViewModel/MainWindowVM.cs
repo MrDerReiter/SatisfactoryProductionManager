@@ -124,6 +124,12 @@ namespace SatisfactoryProductionManager.ViewModel
             SetProductionBlocks(ProductionManager.ActiveLine);
         }
 
+        private void CreateProductionBlock(ProductionUnit unit)
+        {
+            ProductionManager.ActiveLine.AddProductionBlock(unit);
+            SetProductionBlocks(ProductionManager.ActiveLine);
+        }
+
         private void SetActiveLine(ProductionLine prodLine)
         {
             ProductionManager.ActiveLine = prodLine;
@@ -134,6 +140,7 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             ActiveBlock = block;
             ProductionBlockWorkspace = new ProductionBlockVM(block);
+            ProductionBlockWorkspace.RequestingAddBlock += CreateProductionBlock;
             RaisePropertyChanged(nameof(ProductionBlockWorkspace));
         }
 

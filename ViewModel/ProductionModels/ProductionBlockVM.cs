@@ -20,6 +20,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         public BindingList<ByproductButtonVM> ByproductButtons { get; }
         public EditableRequestButtonVM ProductionRequestButton { get; }
 
+        public event Action<ProductionUnit> RequestingAddBlock;
+
 
         public ProductionBlockVM(ProductionBlock sourceBlock)
         {
@@ -61,7 +63,16 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         private void ConvertUnitToBlock(ProductionUnit unit)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _sourceBlock.RemoveProductionUnit(unit);
+                RequestingAddBlock?.Invoke(unit);
+                UpdateUnitsVM(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Не удалось преобразовать цех", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
 
         private void UpdateUnitsVM(object sender, PropertyChangedEventArgs args)
