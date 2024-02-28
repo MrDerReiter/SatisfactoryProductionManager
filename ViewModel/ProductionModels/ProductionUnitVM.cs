@@ -12,7 +12,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 {
     public class ProductionUnitVM : BindableBase
     {
-        private ProductionUnit _sourceUnit { get; }
+        private ProductionUnit _sourceUnit;
 
         public ImageSource Machine { get; }
         public string MachineCount { get; }

@@ -91,44 +91,6 @@ namespace SatisfactoryProductionManager.Model.Production
                     }
         }
 
-        private void BalanceOverflowsToRequests()
-        {
-            foreach (var byproduct in Byproducts)
-            {
-                foreach (var input in Inputs)
-                {
-                    if (byproduct.Resource == input.Resource)
-                    {
-                        byproduct.BalanceToRequest(input);
-                        if (byproduct.CountPerMinute == 0) break;
-                    }
-                }
-            }
-
-            ReduceEmptyIO();
-        }
-
-        private void ReduceEmptyIO()
-        {
-            for (int i = 0; i < Inputs.Count; i++)
-            {
-                if (Inputs[i].CountPerMinute <= 0)
-                {
-                    Inputs.RemoveAt(i);
-                    i--;
-                }
-            }
-
-            for (int i = 0; i < Byproducts.Count; i++)
-            {
-                if (Byproducts[i].CountPerMinute <= 0)
-                {
-                    Byproducts.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-
         private void UpdateIO()
         {
             Inputs.Clear();
@@ -145,8 +107,6 @@ namespace SatisfactoryProductionManager.Model.Production
                 .Select(pu => pu.Byproduct);
             Byproducts.AddRange(byproducts);
             MergeExcessByproducts();
-
-            BalanceOverflowsToRequests();
         }
 
 

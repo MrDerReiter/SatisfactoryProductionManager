@@ -19,12 +19,5 @@ namespace SatisfactoryProductionManager.Model.Elements
         {
             return new ResourceStream(Resource, CountPerMinute);
         }
-
-        public void BalanceToRequest(ResourceRequest request)
-        {
-            var offcut = Math.Min(CountPerMinute, request.CountPerMinute);
-            CountPerMinute -= offcut;
-            request.CountPerMinute -= offcut;
-        }
     }
 }

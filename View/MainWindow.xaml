@@ -279,6 +279,7 @@
                                     <TextBox
                                         Background="Green"
                                         Foreground="GhostWhite"
+                                        TextAlignment="Center"
                                         Text="{Binding Path=RequestValue, Mode=TwoWay}"/>
                                 </StackPanel>
 
@@ -306,6 +307,7 @@
                                                 <TextBlock
                                                     Background="Crimson"
                                                     Foreground="GhostWhite"
+                                                    TextAlignment="Center"
                                                     Text="{Binding Path=Count}"/>
                                                 
                                             </StackPanel>
