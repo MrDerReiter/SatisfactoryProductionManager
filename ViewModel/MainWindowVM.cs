@@ -6,20 +6,25 @@ using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.View;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using SatisfactoryProductionManager.ViewModel.ProductionModels;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Windows.Media;
 
 namespace SatisfactoryProductionManager.ViewModel
 {
     public class MainWindowVM : BindableBase
     {
+        private MediaPlayer Player { get; }
+
         public ProductionBlock ActiveBlock { get; private set; }
         public ProductionBlockVM ProductionBlockWorkspace {  get; private set; }
         public BindingList<ProductionLineButtonVM> ProductionLineButtons { get; }
         public BindingList<ProductionBlockButtonVM> ProductionBlockButtons { get; }
-        
-        
+
+
         public DelegateCommand AddProductionLine { get; }
         public DelegateCommand AddProductionBlock { get; }
         public DelegateCommand MoveActiveLineLeft { get; }
@@ -29,6 +34,9 @@ namespace SatisfactoryProductionManager.ViewModel
 
         public MainWindowVM()
         {
+            Player = new MediaPlayer();
+            Player.Open(new Uri("Click.mp3", UriKind.Relative));
+
             var lines = ProductionManager.ProductionLines.Select(pl => new ProductionLineButtonVM(pl)).ToList();
             ProductionLineButtons = new BindingList<ProductionLineButtonVM>(lines);
             foreach (var line in ProductionLineButtons) line.ObjectSelected += SetActiveLine;
@@ -44,40 +52,49 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.ActiveLineChanged += SetProductionBlocks;
         }
 
-        
 
         private void AddProductionLine_CommandHandler()
         {
+            PlayPushButtonSound(null);
+
             var selector = new RecipeSelector();
             var context = selector.DataContext as RecipeSelectorVM;
+            context.RecipeSelected += PlayPushButtonSound;
             context.RecipeSelected += CreateProductionLine;
             selector.ShowDialog();
         }
 
         private void AddProductionBlock_CommandHandler()
         {
+            PlayPushButtonSound(null);
             if (ProductionManager.ActiveLine == null) return;
 
             var selector = new RecipeSelector();
             var context = selector.DataContext as RecipeSelectorVM;
+            context.RecipeSelected += PlayPushButtonSound;
             context.RecipeSelected += CreateProductionBlock;
             selector.ShowDialog();
         }
 
         private void MoveActiveLineLeft_CommandHandler()
         {
+            PlayPushButtonSound(null);
+
             ProductionManager.MoveActiveLineLeft();
             UpdateProductionLineButtons();
         }
 
         private void MoveActiveLineRight_CommandHandler()
         {
+            PlayPushButtonSound(null);
+
             ProductionManager.MoveActiveLineRight();
             UpdateProductionLineButtons();
         }
 
         private void RemoveActiveBlock_CommandHandler()
         {
+            PlayPushButtonSound(null);
             if (ActiveBlock == null) return;
 
             if (ActiveBlock == ProductionManager.ActiveLine.MainProductionBlock)
@@ -94,6 +111,12 @@ namespace SatisfactoryProductionManager.ViewModel
                 SetActiveBlock(ProductionManager.ActiveLine.MainProductionBlock);
                 SetProductionBlocks(ProductionManager.ActiveLine);
             }
+        }
+
+        private void PlayPushButtonSound(object obj)
+        {
+            Player.Stop();
+            Player.Play();
         }
 
         private void UpdateProductionLineButtons()
@@ -114,6 +137,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
             var button = new ProductionLineButtonVM(line);
             ProductionLineButtons.Add(button);
+            button.ObjectSelected += PlayPushButtonSound;
             button.ObjectSelected += SetActiveLine;
         }
 
@@ -140,6 +164,7 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             ActiveBlock = block;
             ProductionBlockWorkspace = new ProductionBlockVM(block);
+            ProductionBlockWorkspace.ButtonPressed += PlayPushButtonSound;
             ProductionBlockWorkspace.RequestingAddBlock += CreateProductionBlock;
             RaisePropertyChanged(nameof(ProductionBlockWorkspace));
         }
@@ -158,6 +183,7 @@ namespace SatisfactoryProductionManager.ViewModel
             {
                 var button = new ProductionBlockButtonVM(block);
                 ProductionBlockButtons.Add(button);
+                button.ObjectSelected += PlayPushButtonSound;
                 button.ObjectSelected += SetActiveBlock;
             }
                 

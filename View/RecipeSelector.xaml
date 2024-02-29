@@ -20,7 +20,7 @@
     <Border BorderBrush="Chocolate" BorderThickness="2"
             Background="Gray" CornerRadius="10">
 
-        <TabControl 
+        <TabControl
             Background="Gray" 
             Margin="10, 20, 10, 10" 
             SelectedIndex="0">

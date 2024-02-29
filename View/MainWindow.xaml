@@ -39,7 +39,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button 
+                    <Button
                         Background="DarkGray"
                         BorderThickness="0" 
                         Margin="10" 
@@ -224,7 +224,7 @@
                                 </Button>
                             </WrapPanel>
                         </Border>
-                        
+
                     </WrapPanel>
 
                     <Border 
@@ -261,63 +261,64 @@
 
                                 <WrapPanel>
 
-                                <StackPanel
-                                    Name="ProductionRequestButton"
-                                    Visibility="Hidden"
-                                    Width="50"
-                                    DataContext="{Binding Path=ProductionRequestButton}">
+                                    <StackPanel
+                                        Name="ProductionRequestButton"
+                                        Visibility="Hidden"
+                                        Width="50"
+                                        DataContext="{Binding Path=ProductionRequestButton}">
 
-                                    <Button
-                                        Background="LightGreen"
-                                        BorderThickness="0">
+                                        <Button
+                                            Background="LightGreen"
+                                            BorderThickness="0"
+                                            Command="{Binding Path=ReturnObject}">
 
-                                        <Image
-                                            Source="{Binding Path=ImageSource}"
-                                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </Button>
+                                            <Image
+                                                Source="{Binding Path=ImageSource}"
+                                                RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </Button>
 
-                                    <TextBox
-                                        Background="Green"
-                                        Foreground="GhostWhite"
-                                        TextAlignment="Center"
-                                        Text="{Binding Path=RequestValue, Mode=TwoWay}"/>
-                                </StackPanel>
+                                        <TextBox
+                                            Background="Green"
+                                            Foreground="GhostWhite"
+                                            TextAlignment="Center"
+                                            Text="{Binding Path=RequestValue, Mode=TwoWay}"/>
+                                    </StackPanel>
 
-                                <ItemsControl
+                                    <ItemsControl
                                     ItemsSource="{Binding Path=ByproductButtons}"
                                     Margin="10,0,0,0"
                                     Visibility="Visible">
 
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
 
-                                            <StackPanel
+                                                <StackPanel
                                                 Width="50"
                                                 Background="IndianRed">
 
-                                                <Image
+                                                    <Image
                                                     Source="{Binding Path=ImageSource}"
                                                     RenderOptions.BitmapScalingMode="HighQuality"/>
 
-                                                <TextBlock
+                                                    <TextBlock
                                                     Background="Crimson"
                                                     Foreground="GhostWhite"
                                                     TextAlignment="Center"
                                                     Text="{Binding Path=Count}"/>
-                                                
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                    
-                                </ItemsControl>
-                                
-                            </WrapPanel>
-                                
+
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+
+                                    </ItemsControl>
+
+                                </WrapPanel>
+
                             </StackPanel>
 
                             <StackPanel
@@ -336,7 +337,7 @@
                                     Text="Вход"/>
 
                                 <ItemsControl
-                                ItemsSource="{Binding Path=RequestButtons}">
+                                    ItemsSource="{Binding Path=RequestButtons}">
 
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -532,7 +533,7 @@
 
                         </Grid>
                     </Border>
-                    
+
                 </DockPanel>
             </Border>
 

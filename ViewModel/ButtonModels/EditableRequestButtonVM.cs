@@ -1,4 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
+﻿using Prism.Commands;
+using SatisfactoryProductionManager.Model.Elements;
 using System;
 using System.Globalization;
 using System.Windows;

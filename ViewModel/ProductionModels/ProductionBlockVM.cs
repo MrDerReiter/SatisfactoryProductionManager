@@ -20,6 +20,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         public BindingList<ByproductButtonVM> ByproductButtons { get; }
         public EditableRequestButtonVM ProductionRequestButton { get; }
 
+        public event Action<object> ButtonPressed;
         public event Action<ProductionUnit> RequestingAddBlock;
 
 
@@ -32,7 +33,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             UnitModels = new BindingList<ProductionUnitVM>(unitModels);
             foreach ( var unitModel in UnitModels )
             {
+                unitModel.RequestingRemoveProdUnit += ButtonPressed_EventStarter;
                 unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
+                unitModel.RequestingConvertUnitToBlock += ButtonPressed_EventStarter;
                 unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
             }
             
@@ -44,9 +47,15 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             ByproductButtons = new BindingList<ByproductButtonVM>(byproductButtons);
 
             ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
+            ProductionRequestButton.ObjectSelected += ButtonPressed_EventStarter;
             ProductionRequestButton.PropertyChanged += UpdateUnitsVM;
         }
 
+
+        private void ButtonPressed_EventStarter(object obj)
+        {
+            ButtonPressed?.Invoke(null);
+        }
 
         private void RemoveProdUnit(ProductionUnit unit)
         {
@@ -82,7 +91,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             UnitModels.AddRange(unitModels);
             foreach (var unitModel in UnitModels)
             {
+                unitModel.RequestingRemoveProdUnit += ButtonPressed_EventStarter;
                 unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
+                unitModel.RequestingConvertUnitToBlock += ButtonPressed_EventStarter;
                 unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
             }
 
@@ -98,6 +109,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         private void RunSelector(ResourceRequest request)
         {
+            ButtonPressed_EventStarter(null);
+
             try
             {
                 var selector = new RequestRecipeSelector(request);
@@ -114,6 +127,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         private void ExpandRequestToProductionUnit(ResourceRequest request, Recipe recipe)
         {
+            ButtonPressed_EventStarter(null);
+
             _sourceBlock.AddProductionUnit(request, recipe);
             UpdateUnitsVM(null, null);
         }

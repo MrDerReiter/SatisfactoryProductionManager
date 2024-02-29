@@ -222,6 +222,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Click.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ProductionLines.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
