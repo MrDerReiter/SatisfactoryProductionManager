@@ -24,7 +24,7 @@ namespace SatisfactoryProductionManager.Model.Production
             AddProductionBlock(recipe);
         }
 
-        
+
         private void MergeExcessIO()
         {
             for (int i = 0; i < Inputs.Count - 1; i++)
@@ -51,16 +51,16 @@ namespace SatisfactoryProductionManager.Model.Production
             MergeExcessIO();
 
             for (int i = 0; i < Outputs.Count; i++)
-                for(int j = 0; j < Inputs.Count; j++)
+                for (int j = 0; j < Inputs.Count; j++)
                     if (Outputs[i].Resource == Inputs[j].Resource)
                     {
-                        if(Outputs[i].CountPerMinute < Inputs[j].CountPerMinute)
+                        if (Outputs[i].CountPerMinute < Inputs[j].CountPerMinute)
                         {
                             Inputs[j] = Inputs[j] - Outputs[i];
                             Outputs.RemoveAt(i);
-                            i--;
+                            if (i > 0) i--;
                         }
-                        else if(Outputs[i].CountPerMinute > Inputs[j].CountPerMinute)
+                        else if (Outputs[i].CountPerMinute > Inputs[j].CountPerMinute)
                         {
                             Outputs[i] = Outputs[i] - Inputs[j];
                             Inputs.RemoveAt(j);
@@ -70,7 +70,7 @@ namespace SatisfactoryProductionManager.Model.Production
                         {
                             Outputs.RemoveAt(i);
                             Inputs.RemoveAt(j);
-                            i--;
+                            if (i > 0) i--;
                             j--;
                         }
                     }
@@ -80,7 +80,7 @@ namespace SatisfactoryProductionManager.Model.Production
         {
             Inputs.Clear();
             Inputs.AddRange(ProductionBlocks.SelectMany(pb => pb.TotalInput));
-            
+
             Outputs.Clear();
             Outputs.AddRange(ProductionBlocks.SelectMany(pb => pb.TotalOutput));
 
@@ -92,19 +92,23 @@ namespace SatisfactoryProductionManager.Model.Production
         {
             var prodBlock = new ProductionBlock(recipe);
             ProductionBlocks.Add(prodBlock);
-            prodBlock.ProductionRequest.RequestChanged += UpdateIO;
+            prodBlock.IOChanged += UpdateIO;
         }
 
         public void AddProductionBlock(ProductionUnit productionUnit)
         {
             var prodBlock = new ProductionBlock(productionUnit);
             ProductionBlocks.Add(prodBlock);
-            prodBlock.ProductionRequest.RequestChanged += UpdateIO;
+            prodBlock.IOChanged += UpdateIO;
+
+            UpdateIO();
         }
 
         public void RemoveProductionBlock(ProductionBlock prodBlock)
         {
+            prodBlock.IOChanged -= UpdateIO;
             ProductionBlocks.Remove(prodBlock);
+            UpdateIO();
         }
     }
 }

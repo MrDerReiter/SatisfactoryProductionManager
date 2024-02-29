@@ -105,6 +105,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             var byproductButtons = _sourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
             ByproductButtons.Clear();
             ByproductButtons.AddRange(byproductButtons);
+
+            RaisePropertyChanged();
         }
 
         private void RunSelector(ResourceRequest request)

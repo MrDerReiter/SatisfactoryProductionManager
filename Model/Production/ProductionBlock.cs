@@ -23,6 +23,8 @@ namespace SatisfactoryProductionManager.Model.Production
             }
         }
 
+        public event Action IOChanged;
+
 
         public ProductionBlock(Recipe recipe)
         {
@@ -107,6 +109,8 @@ namespace SatisfactoryProductionManager.Model.Production
                 .Select(pu => pu.Byproduct);
             Byproducts.AddRange(byproducts);
             MergeExcessByproducts();
+
+            IOChanged?.Invoke();
         }
 
 
