@@ -10,10 +10,10 @@ namespace SatisfactoryProductionManager.Model
 {
     public static class ProductionManager
     {
-        private static IFactorySaveLoadManager _SaveLoadManager = new FileSaveLoadManager();
+        private static IFactorySaveLoadManager _SaveLoadManager;
         private static ProductionLine _activeLine;
 
-        public static IRecipeProvider RecipeProvider { get; } = new FileRecipeProvider();
+        public static IRecipeProvider RecipeProvider { get; }
         public static BindingList<ProductionLine> ProductionLines { get; }
         public static ProductionLine ActiveLine
         {
@@ -29,10 +29,8 @@ namespace SatisfactoryProductionManager.Model
 
         static ProductionManager()
         {
-            var list = _SaveLoadManager.LoadFactory() ?? new List<ProductionLine>();
-            ProductionLines = new BindingList<ProductionLine>(list);
-            if (ProductionLines.Count > 0)
-                ActiveLine = ProductionLines.First();
+            ProductionLines = new BindingList<ProductionLine>();
+            RecipeProvider = new FileRecipeProvider();
         }
 
         public static void AddProductionLine(Recipe recipe)
@@ -68,6 +66,11 @@ namespace SatisfactoryProductionManager.Model
             var temp = ProductionLines[index + 1];
             ProductionLines[index + 1] = ProductionLines[index];
             ProductionLines[index] = temp;
+        }
+
+        public static void SaveFactory()
+        {
+            throw new NotImplementedException();
         }
     }
 }

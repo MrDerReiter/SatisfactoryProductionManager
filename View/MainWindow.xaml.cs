@@ -1,4 +1,5 @@
 ﻿using Prism.Commands;
+using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel;
 using System.ComponentModel;
 using System.Windows;
@@ -6,9 +7,6 @@ using System.Windows;
 
 namespace SatisfactoryProductionManager.View
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -20,6 +18,7 @@ namespace SatisfactoryProductionManager.View
             var context = DataContext as MainWindowVM;
             context.PropertyChanged += Context_ProductionBlockChanged;
         }
+
 
         private void Context_ProductionBlockChanged(object sender, PropertyChangedEventArgs args)
         {

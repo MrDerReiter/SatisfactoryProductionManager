@@ -95,7 +95,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
 
@@ -224,9 +223,6 @@
   <ItemGroup>
     <None Update="Click.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ProductionLines.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Recipies.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
