@@ -359,6 +359,7 @@
                                         <Button
                                             Background="LightGreen"
                                             BorderThickness="0"
+                                            ToolTip="Обновить запрос"
                                             Command="{Binding Path=ReturnObject}">
 
                                             <Image
@@ -441,21 +442,22 @@
                                             Margin="1,0,0,0">
 
                                                 <Button
-                                                Background="LightGreen"
-                                                BorderThickness="0"
-                                                Command="{Binding Path=ReturnObject}">
+                                                    Background="LightGreen"
+                                                    BorderThickness="0"
+                                                    ToolTip="Развернуть производственный цех"
+                                                    Command="{Binding Path=ReturnObject}">
 
                                                     <Image
-                                                    Source="{Binding Path=ImageSource}"
-                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                        Source="{Binding Path=ImageSource}"
+                                                        RenderOptions.BitmapScalingMode="HighQuality"/>
 
                                                 </Button>
 
                                                 <TextBlock
-                                                Background="Green"
-                                                Foreground="GhostWhite"
-                                                TextAlignment="Center"
-                                                Text="{Binding Path=Count}"/>
+                                                    Background="Green"
+                                                    Foreground="GhostWhite"
+                                                    TextAlignment="Center"
+                                                    Text="{Binding Path=Count}"/>
 
                                             </StackPanel>
                                         </DataTemplate>
