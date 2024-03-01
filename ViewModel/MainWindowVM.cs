@@ -10,6 +10,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace SatisfactoryProductionManager.ViewModel
@@ -83,11 +84,18 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             PlayPushButtonSound(null);
 
-            var selector = new RequestRecipeSelector(stream.ToRequest());
-            var context = selector.DataContext as RequestRecipeSelectorVM;
-            context.RecipeSelected += PlayPushButtonSound;
-            context.RecipeSelected += CreateProductionBlock;
-            selector.ShowDialog();
+            try
+            {
+                var selector = new RequestRecipeSelector(stream.ToRequest());
+                var context = selector.DataContext as RequestRecipeSelectorVM;
+                context.RecipeSelected += PlayPushButtonSound;
+                context.RecipeSelected += CreateProductionBlock;
+                selector.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка при инициализации выбора рецепта", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void MoveActiveLineLeft_CommandHandler()
