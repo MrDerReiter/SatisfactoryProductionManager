@@ -79,6 +79,17 @@ namespace SatisfactoryProductionManager.ViewModel
             selector.ShowDialog();
         }
 
+        private void AddProductionBlock_CommandHandler(ResourceStream stream)
+        {
+            PlayPushButtonSound(null);
+
+            var selector = new RequestRecipeSelector(stream.ToRequest());
+            var context = selector.DataContext as RequestRecipeSelectorVM;
+            context.RecipeSelected += PlayPushButtonSound;
+            context.RecipeSelected += CreateProductionBlock;
+            selector.ShowDialog();
+        }
+
         private void MoveActiveLineLeft_CommandHandler()
         {
             PlayPushButtonSound(null);
@@ -126,6 +137,12 @@ namespace SatisfactoryProductionManager.ViewModel
             Player.Play();
         }
 
+        private void PlayPushButtonSound(object obj1, object obj2)
+        {
+            Player.Stop();
+            Player.Play();
+        }
+
         private void UpdateProductionLineButtons()
         {
             ProductionLineButtons.Clear();
@@ -141,7 +158,11 @@ namespace SatisfactoryProductionManager.ViewModel
 
             ActiveLineInputButtons.Clear();
             foreach (var input in ProductionManager.ActiveLine.Inputs)
-                ActiveLineInputButtons.Add(new ResourceStreamButtonVM(input));
+            {
+                var button = new ResourceStreamButtonVM(input);
+                ActiveLineInputButtons.Add(button);
+                button.ObjectSelected += AddProductionBlock_CommandHandler;
+            }
 
             ActiveLineOutputButtons.Clear();
             foreach (var output in ProductionManager.ActiveLine.Outputs)
@@ -169,6 +190,15 @@ namespace SatisfactoryProductionManager.ViewModel
             SetProductionBlocks(ProductionManager.ActiveLine);
         }
 
+        private void CreateProductionBlock(ResourceRequest request, Recipe recipe)
+        {
+            ProductionManager.ActiveLine.AddProductionBlock(request, recipe);
+            SetActiveBlock(ProductionManager.ActiveLine.ProductionBlocks.Last());
+            SetProductionBlocks(ProductionManager.ActiveLine);
+
+            UpdateLineIO(null, null);
+        }
+
         private void CreateProductionBlock(ProductionUnit unit)
         {
             ProductionManager.ActiveLine.AddProductionBlock(unit);
@@ -182,13 +212,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.ActiveLine = prodLine;
             SetActiveBlock(prodLine.MainProductionBlock);
 
-            ActiveLineInputButtons.Clear();
-            foreach (var input in ProductionManager.ActiveLine.Inputs)
-                ActiveLineInputButtons.Add(new ResourceStreamButtonVM(input));
-
-            ActiveLineOutputButtons.Clear();
-            foreach (var output in ProductionManager.ActiveLine.Outputs)
-                ActiveLineOutputButtons.Add(new ResourceStreamButtonVM(output));
+            UpdateLineIO(null , null);
         }
 
         private void SetActiveBlock(ProductionBlock block)

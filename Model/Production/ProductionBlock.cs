@@ -48,6 +48,15 @@ namespace SatisfactoryProductionManager.Model.Production
             ProductionRequest.RequestChanged += UpdateIO;
         }
 
+        public ProductionBlock(ResourceRequest request, Recipe recipe)
+        {
+            ProductionRequest = request;
+            AddProductionUnit(ProductionRequest, recipe);
+
+            ProductionRequest.Provider = MainProductionUnit;
+            ProductionRequest.RequestChanged += UpdateIO;
+        }
+
 
         private void MergeInputs(int firstIndex, int secondIndex)
         {

@@ -104,6 +104,15 @@ namespace SatisfactoryProductionManager.Model.Production
             UpdateIO();
         }
 
+        public void AddProductionBlock(ResourceRequest request, Recipe recipe)
+        {
+            var prodBlock = new ProductionBlock(request, recipe);
+            ProductionBlocks.Add(prodBlock);
+            prodBlock.IOChanged += UpdateIO;
+
+            UpdateIO();
+        }
+
         public void RemoveProductionBlock(ProductionBlock prodBlock)
         {
             prodBlock.IOChanged -= UpdateIO;
