@@ -1,13 +1,13 @@
 ﻿<Window x:Class="SatisfactoryProductionManager.View.RecipeSelector"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModel="clr-namespace:SatisfactoryProductionManager.ViewModel"
-        mc:Ignorable="d"
-        AllowsTransparency="True" Background="Transparent" WindowStyle="None"
-        Title="RecipeSelector" MinWidth="400" MinHeight="300" Width="400" Height="300"
-        WindowStartupLocation="CenterScreen">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:ViewModel="clr-namespace:SatisfactoryProductionManager.ViewModel"
+		mc:Ignorable="d"
+		AllowsTransparency="True" Background="Transparent" WindowStyle="None"
+		Title="RecipeSelector" MinWidth="400" MinHeight="300" Width="400" Height="300"
+		WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="20"/>
@@ -17,347 +17,460 @@
         <ViewModel:RecipeSelectorVM/>
     </Window.DataContext>
 
-    <Border BorderBrush="Chocolate" BorderThickness="2"
-            Background="Gray" CornerRadius="10">
+    <Window.Resources>
+        <ToolTip
+            x:Key="RecipeTooltip"
+            Background="LightGray">
 
-        <TabControl
-            Background="Gray" 
-            Margin="10, 20, 10, 10" 
-            SelectedIndex="0">
+            <StackPanel>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate"
-                        BorderThickness="1" 
-                        Background="DarkGray"
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5" 
-                        Width="40" 
-                        Height="40">
+                <TextBlock
+					HorizontalAlignment="Center"
+					TextAlignment="Center"
+					FontStyle="Italic"
+					FontWeight="Bold"
+					FontSize="15"
+					Text="{Binding Path=Tooltip.Title}"/>
 
-                        <Image 
-                            Source="../Assets/Resources/IronIngot.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=IngotsButtons}" 
-                    Margin="10">
+                <TextBlock
+					Margin="0,5"
+					HorizontalAlignment="Left"
+					Text="Продукция:"/>
 
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                <ItemsControl
+                    ItemsSource="{Binding Path=Tooltip.Outputs}">
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
-
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate" 
-                        BorderThickness="1" 
-                        Background="DarkGray"
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5" 
-                        Width="40" 
-                        Height="40">
-
-                        <Image 
-                            Source="../Assets/Resources/Concrete.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=MineralsButtons}" 
-                    Margin="10">
-
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button 
-                                Width="50"  
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Margin="5,0"
+                                Height="30">
 
                                 <Image
-                                    Source="{Binding Path=ImageSource}" 
+                                    Source="{Binding Path=Image}"
                                     RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
+
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Margin="30,0,0,0"
+                                    Text="{Binding Path=Count}"/>
+
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate" 
-                        BorderThickness="1" 
-                        Background="DarkGray" 
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5"
-                        Width="40" 
-                        Height="40">
+                <TextBlock
+                    Margin="0,5"
+                    HorizontalAlignment="Left"
+                    Text="Ингредиенты:"/>
 
-                        <Image 
-                            Source="../Assets/Resources/ModularFrame.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=StandartPartsButtons}" 
-                    Margin="10">
+                <ItemsControl
+                    ItemsSource="{Binding Path=Tooltip.Inputs}">
 
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
+                            <StackPanel
+                            Orientation="Horizontal"
+                            Margin="5,0"
+                            Height="30">
+
+                                <Image
+                                Source="{Binding Path=Image}"
+                                RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                <TextBlock
+                                VerticalAlignment="Center"
+                                Margin="30,0,0,0"
+                                Text="{Binding Path=Count}"/>
+
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+
                 </ItemsControl>
-            </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate" 
-                        BorderThickness="1" 
-                        Background="DarkGray" 
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5" 
-                        Width="40" 
-                        Height="40">
+            </StackPanel>
+        </ToolTip>
+    </Window.Resources>
 
-                        <Image 
-                            Source="../Assets/Resources/Motor.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=IndustrialPartsButtons}" 
-                    Margin="10">
+    <Border BorderBrush="Chocolate" BorderThickness="2"
+			Background="Gray" CornerRadius="10">
 
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
+        <StackPanel>
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Margin="0,5,0,10"
+                FontWeight="Bold"
+                FontSize="18"
+                Text="Выберите рецепт"/>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border
-                        BorderBrush="Chocolate"
-                        BorderThickness="1" 
-                        Background="DarkGray" 
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5" 
-                        Width="40" Height="40">
+            <TabControl
+                BorderThickness="0"
+                Background="Gray" 
+                Margin="10, 20, 10, 10" 
+                SelectedIndex="0">
 
-                        <Image 
-                            Source="../Assets/Resources/Cable.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=ElectronicsButtons}" 
-                    Margin="10">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate"
+						    BorderThickness="1" 
+						    Background="DarkGray"
+                            ToolTip="Слитки"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5" 
+						    Width="40" 
+						    Height="40">
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
+                            <Image 
+							Source="../Assets/Resources/IronIngot.png" 
+							RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=IngotsButtons}"
+                        Margin="-3,10">
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate" 
-                        BorderThickness="1" 
-                        Background="DarkGray"  
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5" 
-                        Width="40" 
-                        Height="40">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
 
-                        <Image 
-                            Source="../Assets/Resources/Computer.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=CommunicationsButtons}" 
-                    Margin="10">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate" 
-                        BorderThickness="1" 
-                        Background="DarkGray" 
-                        Padding="3" 
-                        Margin="-8,-3,-8,-5" 
-                        Width="40" 
-                        Height="40">
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate" 
+						    BorderThickness="1" 
+						    Background="DarkGray"
+                            ToolTip="Минералы"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5" 
+						    Width="40" 
+						    Height="40">
 
-                        <Image 
-                            Source="../Assets/Resources/AssemblyDirectorSystem.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=SpaceElevatorPartsButtons}" 
-                    Margin="10">
+                            <Image 
+							    Source="../Assets/Resources/Concrete.png" 
+							    RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=MineralsButtons}"
+                        Margin="-3,10">
 
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50"  
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
+                                    <Image
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Border 
-                        BorderBrush="Chocolate" 
-                        BorderThickness="1" 
-                        Background="DarkGray" 
-                        Padding="3"
-                        Margin="-8,-3,-8,-5"
-                        Width="40" 
-                        Height="40">
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate" 
+						    BorderThickness="1" 
+						    Background="DarkGray" 
+                            ToolTip="Стандартные детали"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5"
+						    Width="40" 
+						    Height="40">
 
-                        <Image 
-                            Source="../Assets/Resources/Fuel.png" 
-                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                </TabItem.Header>
-                <ItemsControl 
-                    ItemsSource="{Binding Path=LiquidsButtons}" 
-                    Margin="10">
+                            <Image 
+							    Source="../Assets/Resources/ModularFrame.png" 
+							    RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=StandartPartsButtons}" 
+					    Margin="-3,10">
 
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button 
-                                Width="50" 
-                                Height="50" 
-                                Background="DarkGray"
-                                Command="{Binding Path=ReturnObject}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
 
-                                <Image 
-                                    Source="{Binding Path=ImageSource}" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
-        </TabControl>
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate" 
+						    BorderThickness="1" 
+						    Background="DarkGray"
+                            ToolTip="Промышленные детали"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5" 
+						    Width="40" 
+						    Height="40">
+
+                            <Image 
+							Source="../Assets/Resources/Motor.png" 
+							RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=IndustrialPartsButtons}" 
+					    Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border
+						    BorderBrush="Chocolate"
+						    BorderThickness="1" 
+						    Background="DarkGray"
+                            ToolTip="Электроника"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5" 
+						    Width="40" Height="40">
+
+                            <Image 
+							    Source="../Assets/Resources/Cable.png" 
+							    RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=ElectronicsButtons}" 
+					    Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate" 
+						    BorderThickness="1" 
+						    Background="DarkGray"
+                            ToolTip="Коммуникации"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5" 
+						    Width="40" 
+						    Height="40">
+
+                            <Image 
+							    Source="../Assets/Resources/Computer.png" 
+							    RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=CommunicationsButtons}" 
+					    Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate" 
+						    BorderThickness="1" 
+						    Background="DarkGray"
+                            ToolTip="Детали космолифта"
+						    Padding="3" 
+						    Margin="-8,-3,-8,-5" 
+						    Width="40" 
+						    Height="40">
+
+                            <Image 
+							    Source="../Assets/Resources/AssemblyDirectorSystem.png" 
+							    RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=SpaceElevatorPartsButtons}" 
+					    Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+						    BorderBrush="Chocolate" 
+						    BorderThickness="1" 
+						    Background="DarkGray" 
+                            ToolTip="Жидкости"
+						    Padding="3"
+						    Margin="-8,-3,-8,-5"
+						    Width="40" 
+						    Height="40">
+
+                            <Image 
+							    Source="../Assets/Resources/Fuel.png" 
+							    RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+					    ItemsSource="{Binding Path=LiquidsButtons}" 
+					    Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button 
+								    Width="50" 
+								    Height="50" 
+								    Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+								    Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+									    Source="{Binding Path=ImageSource}" 
+									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+            </TabControl>
+
+        </StackPanel>
+
     </Border>
 
 </Window>
