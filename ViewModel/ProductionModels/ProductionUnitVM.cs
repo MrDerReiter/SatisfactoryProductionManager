@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
@@ -15,6 +16,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         private ProductionUnit _sourceUnit;
 
         public ImageSource Machine { get; }
+        public string MachineName { get; }
         public string MachineCount { get; }
         public ResourceStreamButtonVM[] Products { get; }
         public RequestButtonVM[] Requests { get; }
@@ -30,6 +32,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             _sourceUnit = sourceUnit;
 
             Machine = new BitmapImage(new Uri($"../Assets/Machines/{_sourceUnit.Machine}.png", UriKind.Relative));
+            MachineName = _sourceUnit.Machine.TranslateRU();
             MachineCount = _sourceUnit.MachinesCount.ToString("0.###", CultureInfo.InvariantCulture);
 
             if (_sourceUnit.HasByproduct)

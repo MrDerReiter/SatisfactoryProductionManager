@@ -116,108 +116,312 @@
     <Resource Include="Assets\Machines\Smelter.png" />
     <Resource Include="Assets\MoveLineLeft.png" />
     <Resource Include="Assets\MoveLineRight.png" />
-    <Resource Include="Assets\Resources\AdaptiveControlUnit.png" />
-    <Resource Include="Assets\Resources\AILimiter.png" />
-    <Resource Include="Assets\Resources\AluminaSolution.png" />
-    <Resource Include="Assets\Resources\AluminumIngot.png" />
-    <Resource Include="Assets\Resources\AssemblyDirectorSystem.png" />
-    <Resource Include="Assets\Resources\AutomatedWiring.png" />
-    <Resource Include="Assets\Resources\Battery.png" />
-    <Resource Include="Assets\Resources\Biomass.png" />
-    <Resource Include="Assets\Resources\Cable.png" />
-    <Resource Include="Assets\Resources\CateriumIngot.png" />
-    <Resource Include="Assets\Resources\CircuitBoard.png" />
-    <Resource Include="Assets\Resources\CompactedCoal.png" />
-    <Resource Include="Assets\Resources\Computer.png" />
-    <Resource Include="Assets\Resources\CoolingSystem.png" />
-    <Resource Include="Assets\Resources\CopperIngot.png" />
-    <Resource Include="Assets\Resources\CrudeOil.png" />
-    <Resource Include="Assets\Resources\CrystalOscillator.png" />
-    <Resource Include="Assets\Resources\ElectromagneticControlRod.png" />
-    <Resource Include="Assets\Resources\EmptyCannister.png" />
-    <Resource Include="Assets\Resources\EmptyGasTank.png" />
-    <Resource Include="Assets\Resources\EncasedPlutoniumCell.png" />
-    <Resource Include="Assets\Resources\EncasedUraniumCell.png" />
-    <Resource Include="Assets\Resources\FlowerPetals.png" />
-    <Resource Include="Assets\Resources\Fuel.png" />
-    <Resource Include="Assets\Resources\HeatSink.png" />
-    <Resource Include="Assets\Resources\HeavyOil.png" />
-    <Resource Include="Assets\Resources\HighSpeedConnector.png" />
-    <Resource Include="Assets\Resources\IronIngot.png" />
-    <Resource Include="Assets\Resources\Leaves.png" />
-    <Resource Include="Assets\Resources\LiquidBiofuel.png" />
-    <Resource Include="Assets\Resources\MagneticFieldGenerator.png" />
-    <Resource Include="Assets\Resources\ModularEngine.png" />
-    <Resource Include="Assets\Resources\Motor.png" />
-    <Resource Include="Assets\Resources\Mycelia.png" />
-    <Resource Include="Assets\Resources\NitricAcid.png" />
-    <Resource Include="Assets\Resources\Nitrogen.png" />
-    <Resource Include="Assets\Resources\NonFissileUranium.png" />
-    <Resource Include="Assets\Resources\NuclearPasta.png" />
-    <Resource Include="Assets\Resources\PackagedAluminaSolution.png" />
-    <Resource Include="Assets\Resources\PackagedCrudeOil.png" />
-    <Resource Include="Assets\Resources\PackagedFuel.png" />
-    <Resource Include="Assets\Resources\PackagedHeavyOil.png" />
-    <Resource Include="Assets\Resources\PackagedLiquidBiofuel.png" />
-    <Resource Include="Assets\Resources\PackagedNitricAcid.png" />
-    <Resource Include="Assets\Resources\PackagedNitrogen.png" />
-    <Resource Include="Assets\Resources\PackagedSulfuricAcid.png" />
-    <Resource Include="Assets\Resources\PackagedTurboFuel.png" />
-    <Resource Include="Assets\Resources\PackagedWater.png" />
-    <Resource Include="Assets\Resources\PlutoniumFuelRod.png" />
-    <Resource Include="Assets\Resources\PlutoniumPellet.png" />
-    <Resource Include="Assets\Resources\PlutoniumWaste.png" />
-    <Resource Include="Assets\Resources\PressureConversionCube.png" />
-    <Resource Include="Assets\Resources\Quickwire.png" />
-    <Resource Include="Assets\Resources\RadioControlUnit.png" />
-    <Resource Include="Assets\Resources\Rotor.png" />
-    <Resource Include="Assets\Resources\SmartPlating.png" />
-    <Resource Include="Assets\Resources\SolidBiofuel.png" />
-    <Resource Include="Assets\Resources\Stator.png" />
-    <Resource Include="Assets\Resources\SteelIngot.png" />
-    <Resource Include="Assets\Resources\AluminumScrap.png" />
-    <Resource Include="Assets\Resources\Concrete.png" />
-    <Resource Include="Assets\Resources\CopperPowder.png" />
-    <Resource Include="Assets\Resources\PetroleumCoke.png" />
-    <Resource Include="Assets\Resources\PolymerResin.png" />
-    <Resource Include="Assets\Resources\QuartzCrystal.png" />
-    <Resource Include="Assets\Resources\Silica.png" />
-    <Resource Include="Assets\Resources\Bauxite.png" />
-    <Resource Include="Assets\Resources\CateriumOre.png" />
-    <Resource Include="Assets\Resources\Coal.png" />
-    <Resource Include="Assets\Resources\CopperOre.png" />
-    <Resource Include="Assets\Resources\IronOre.png" />
-    <Resource Include="Assets\Resources\Limestone.png" />
-    <Resource Include="Assets\Resources\Quartz.png" />
-    <Resource Include="Assets\Resources\Sulfur.png" />
-    <Resource Include="Assets\Resources\SulfuricAcid.png" />
-    <Resource Include="Assets\Resources\SuperComputer.png" />
-    <Resource Include="Assets\Resources\ThermalPropulsionRocket.png" />
-    <Resource Include="Assets\Resources\TurboFuel.png" />
-    <Resource Include="Assets\Resources\TurboMotor.png" />
-    <Resource Include="Assets\Resources\UraniumFuelRod.png" />
-    <Resource Include="Assets\Resources\UraniumOre.png" />
-    <Resource Include="Assets\Resources\AlcladAluminumSheet.png" />
-    <Resource Include="Assets\Resources\AluminumCasing.png" />
-    <Resource Include="Assets\Resources\CopperSheet.png" />
-    <Resource Include="Assets\Resources\EncasedIndustrialBeam.png" />
-    <Resource Include="Assets\Resources\Fabric.png" />
-    <Resource Include="Assets\Resources\FusedModularFrame.png" />
-    <Resource Include="Assets\Resources\HeavyModularFrame.png" />
-    <Resource Include="Assets\Resources\IronPlate.png" />
-    <Resource Include="Assets\Resources\IronRod.png" />
-    <Resource Include="Assets\Resources\ModularFrame.png" />
-    <Resource Include="Assets\Resources\Plastic.png" />
-    <Resource Include="Assets\Resources\ReinforcedIronPlate.png" />
-    <Resource Include="Assets\Resources\Rubber.png" />
-    <Resource Include="Assets\Resources\Screw.png" />
-    <Resource Include="Assets\Resources\SteelBeam.png" />
-    <Resource Include="Assets\Resources\SteelPipe.png" />
-    <Resource Include="Assets\Resources\UraniumWaste.png" />
-    <Resource Include="Assets\Resources\VersatileFramework.png" />
-    <Resource Include="Assets\Resources\Water.png" />
-    <Resource Include="Assets\Resources\Wire.png" />
-    <Resource Include="Assets\Resources\Wood.png" />
+    <Resource Include="Assets\Resources\AdaptiveControlUnit.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AILimiter.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AluminaSolution.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AluminumIngot.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AssemblyDirectorSystem.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AutomatedWiring.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Battery.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Biomass.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Cable.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CateriumIngot.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CircuitBoard.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CompactedCoal.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Computer.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CoolingSystem.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CopperIngot.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CrudeOil.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CrystalOscillator.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\ElectromagneticControlRod.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\EmptyCannister.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\EmptyGasTank.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\EncasedPlutoniumCell.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\EncasedUraniumCell.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\FlowerPetals.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Fuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\HeatSink.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\HeavyOil.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\HighSpeedConnector.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\IronIngot.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Leaves.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\LiquidBiofuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\MagneticFieldGenerator.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\ModularEngine.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Motor.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Mycelia.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\NitricAcid.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Nitrogen.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\NonFissileUranium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\NuclearPasta.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedAluminaSolution.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedCrudeOil.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedFuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedHeavyOil.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedLiquidBiofuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedNitricAcid.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedNitrogen.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedSulfuricAcid.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedTurboFuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PackagedWater.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PlutoniumFuelRod.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PlutoniumPellet.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PlutoniumWaste.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PressureConversionCube.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Quickwire.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\RadioControlUnit.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Rotor.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SmartPlating.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SolidBiofuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Stator.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SteelIngot.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AluminumScrap.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Concrete.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CopperPowder.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PetroleumCoke.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\PolymerResin.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\QuartzCrystal.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Silica.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Bauxite.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CateriumOre.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Coal.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CopperOre.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\IronOre.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Limestone.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Quartz.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Sulfur.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SulfuricAcid.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SuperComputer.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\ThermalPropulsionRocket.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\TurboFuel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\TurboMotor.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\UraniumFuelRod.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Uranium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AlcladAluminumSheet.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\AluminumCasing.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\CopperSheet.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\EncasedIndustrialBeam.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Fabric.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\FusedModularFrame.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\HeavyModularFrame.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\IronPlate.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\IronRod.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\ModularFrame.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Plastic.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\ReinforcedIronPlate.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Rubber.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Screw.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SteelBeam.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\SteelPipe.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\UraniumWaste.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\VersatileFramework.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Water.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Wire.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Resources\Wood.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -228,7 +432,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Recipies.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

@@ -17,6 +17,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> CommunicationsButtons { get; }
         public List<RecipeSelectButtonVM> SpaceElevatorPartsButtons { get; }
         public List<RecipeSelectButtonVM> LiquidsButtons { get; }
+        public List<RecipeSelectButtonVM> NuclearButtons { get; }
 
         public event Action<Recipe> RecipeSelected;
 
@@ -70,6 +71,12 @@ namespace SatisfactoryProductionManager.ViewModel
                 .GetAllRecipiesOfCategory("Liquids")
                 .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
             foreach (var button in LiquidsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
+
+            NuclearButtons =
+                ProductionManager.RecipeProvider
+                .GetAllRecipiesOfCategory("Nuclear")
+                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
+            foreach (var button in NuclearButtons) button.ObjectSelected += RecipeSelected_EventStarter;
         }
 
 

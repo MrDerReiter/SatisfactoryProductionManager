@@ -532,6 +532,7 @@
 
                                                     <Image
                                                         Margin="5"
+                                                        ToolTip="{Binding Path=MachineName}"
                                                         Source="{Binding Path=Machine}"
                                                         RenderOptions.BitmapScalingMode="HighQuality"/>
 
@@ -567,6 +568,7 @@
 
                                                                     <Image
                                                                         Margin="5"
+                                                                        ToolTip="{Binding Path=Tooltip}"
                                                                         Source="{Binding Path=ImageSource}"
                                                                         RenderOptions.BitmapScalingMode="HighQuality"/>
 
@@ -607,6 +609,7 @@
 
                                                                     <Image
                                                                         Margin="5"
+                                                                        ToolTip="{Binding Path=Tooltip}"
                                                                         Source="{Binding Path=ImageSource}"
                                                                         RenderOptions.BitmapScalingMode="HighQuality"/>
 
