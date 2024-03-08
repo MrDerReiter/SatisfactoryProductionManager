@@ -1,4 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
+﻿using SatisfactoryProductionManager.Model;
+using SatisfactoryProductionManager.Model.Elements;
 using System;
 using System.Globalization;
 using System.IO;
@@ -17,7 +18,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 
         public RecipeTooltipVM(Recipe recipe)
         {
-            Title = recipe.Name;
+            Title = recipe.Name.TranslateRU();
 
             if (recipe.HasByproduct)
             {

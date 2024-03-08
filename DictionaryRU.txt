@@ -1,0 +1,92 @@
+#Ingots:
+
+IronIngot => Железный слиток
+CopperIngot => Медный слиток
+SteelIngot => Стальной слиток
+CateriumIngot => Катерийный слиток
+AluminumIngot => Aлюминиевый слиток
+
+
+#Minerals:
+
+Concrete => Бетон
+QuartzCrystal => Кварцевый кристалл
+Silica => Кремнезём
+CopperPowder => Медный порошок
+AluminumScrap => Алюминиевый лом
+PetroleumCoke => Нефтяной кокс
+PolymerResin => Полимерная смола
+
+
+#StandartParts:
+
+IronPlate => Железная пластина
+IronRod => Жедезный стержень
+Screw => Винты
+CopperSheet => Медный лист
+SteelBeam => Стальная балка
+SteelPipe => Стальная труба
+AluminumCasing => Алюминиевый корпус
+ReinforcedIronPlate => Усиленная железная пластина
+ModularFrame => Модульный каркас
+EncasedIndustrialBeam => Железобетонная балка
+AlcladAluminumSheet => Дюралюминиевый лист
+Fabric => Ткань
+HeavyModularFrame => Тяжёлый модульный каркас
+FusedModularFrame => Сплавленный модульный каркас
+PressureConversionCube => Куб преобразования давления
+Plastic => Пластик
+Rubber => Резина
+
+
+#IndustrialParts:
+
+Rotor => Ротор
+Stator => Статор
+Motor => Мотор
+HeatSink => Радиатор
+TurboMotor => Турбомотор
+CoolingSystem => Система охлаждения
+Battery => Аккумулятор
+
+
+#Electronics:
+
+Wire => Проволока
+Quickwire => Сверхапроволока
+Cable => Кабель
+CircuitBoard => Печатная плата
+AILimiter => Ограничитель ИИ
+HighSpeedConnector => Скоростной разъём
+
+
+#Communications:
+
+Computer => Компьютер
+SuperComputer => Суперкомпьютер
+RadioControlUnit => Блок радиоуправления
+CrystalOscillator => Кварцевый резонатор
+
+
+#SpaceElevatorParts:
+
+SmartPlating => Умная обшивка
+VerstileFramework => Универсальный каркас
+AutomatedWiring => Автопроводка
+ModularEngine => Модульный двигатель
+AdaptiveControlUnit => Адаптивный блок управления
+AssemblyDirectorSystem => Система управления сборкой
+MagneticFieldGenerator => Генератор магнитного поля
+ThermalPropulsionRocket => Ракета на тепловой тяге
+NuclearPasta => Ядерная паста
+
+
+#Liquids:
+
+Fuel => Топливо
+TurboFuel => Турботопливо
+LiqudBiofuel => Жидкое биотопливо
+AluminaSolution => Раствор глинозёма
+HeavyOil => Мазут
+SulfuricAcid => Серная кислота
+NitricAcid => Азотная кислота

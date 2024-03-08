@@ -224,6 +224,9 @@
     <None Update="Click.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DictionaryRU.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Recipies.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
