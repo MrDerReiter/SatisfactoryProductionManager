@@ -34,8 +34,11 @@
     <None Remove="Assets\Resources\AutomatedWiring.png" />
     <None Remove="Assets\Resources\Battery.png" />
     <None Remove="Assets\Resources\Biomass.png" />
+    <None Remove="Assets\Resources\BlackPowder.png" />
     <None Remove="Assets\Resources\Cable.png" />
     <None Remove="Assets\Resources\CircuitBoard.png" />
+    <None Remove="Assets\Resources\ClusterNobelisk.png" />
+    <None Remove="Assets\Resources\ColorCartrige.png" />
     <None Remove="Assets\Resources\CompactedCoal.png" />
     <None Remove="Assets\Resources\Computer.png" />
     <None Remove="Assets\Resources\CoolingSystem.png" />
@@ -46,11 +49,17 @@
     <None Remove="Assets\Resources\EmptyGasTank.png" />
     <None Remove="Assets\Resources\EncasedPlutoniumCell.png" />
     <None Remove="Assets\Resources\EncasedUraniumCell.png" />
+    <None Remove="Assets\Resources\ExplosiveRebar.png" />
     <None Remove="Assets\Resources\FlowerPetals.png" />
     <None Remove="Assets\Resources\Fuel.png" />
+    <None Remove="Assets\Resources\GasFilter.png" />
+    <None Remove="Assets\Resources\GasNobelisk.png" />
     <None Remove="Assets\Resources\HeatSink.png" />
     <None Remove="Assets\Resources\HeavyOil.png" />
     <None Remove="Assets\Resources\HighSpeedConnector.png" />
+    <None Remove="Assets\Resources\HomingRifleAmmo.png" />
+    <None Remove="Assets\Resources\IodineInfusedFilter.png" />
+    <None Remove="Assets\Resources\IronRebar.png" />
     <None Remove="Assets\Resources\Leaves.png" />
     <None Remove="Assets\Resources\LiquidBiofuel.png" />
     <None Remove="Assets\Resources\MagneticFieldGenerator.png" />
@@ -59,8 +68,10 @@
     <None Remove="Assets\Resources\Mycelia.png" />
     <None Remove="Assets\Resources\NitricAcid.png" />
     <None Remove="Assets\Resources\Nitrogen.png" />
+    <None Remove="Assets\Resources\Nobelisk.png" />
     <None Remove="Assets\Resources\NonFissileUranium.png" />
     <None Remove="Assets\Resources\NuclearPasta.png" />
+    <None Remove="Assets\Resources\NukeNobelisk.png" />
     <None Remove="Assets\Resources\PackagedAluminaSolution.png" />
     <None Remove="Assets\Resources\PackagedCrudeOil.png" />
     <None Remove="Assets\Resources\PackagedFuel.png" />
@@ -75,17 +86,23 @@
     <None Remove="Assets\Resources\PlutoniumPellet.png" />
     <None Remove="Assets\Resources\PlutoniumWaste.png" />
     <None Remove="Assets\Resources\PressureConversionCube.png" />
+    <None Remove="Assets\Resources\PulseNobelisk.png" />
     <None Remove="Assets\Resources\Quickwire.png" />
     <None Remove="Assets\Resources\RadioControlUnit.png" />
+    <None Remove="Assets\Resources\RifleAmmo.png" />
     <None Remove="Assets\Resources\Rotor.png" />
+    <None Remove="Assets\Resources\ShatterRebar.png" />
     <None Remove="Assets\Resources\SmartPlating.png" />
+    <None Remove="Assets\Resources\SmokelessPowder.png" />
     <None Remove="Assets\Resources\SolidBiofuel.png" />
     <None Remove="Assets\Resources\Stator.png" />
+    <None Remove="Assets\Resources\StunRebar.png" />
     <None Remove="Assets\Resources\SulfuricAcid.png" />
     <None Remove="Assets\Resources\SuperComputer.png" />
     <None Remove="Assets\Resources\ThermalPropulsionRocket.png" />
     <None Remove="Assets\Resources\TurboFuel.png" />
     <None Remove="Assets\Resources\TurboMotor.png" />
+    <None Remove="Assets\Resources\TurboRifleAmmo.png" />
     <None Remove="Assets\Resources\UraniumFuelRod.png" />
     <None Remove="Assets\Resources\UraniumWaste.png" />
     <None Remove="Assets\Resources\VersatileFramework.png" />
@@ -140,6 +157,7 @@
     <Resource Include="Assets\Resources\Biomass.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\BlackPowder.png" />
     <Resource Include="Assets\Resources\Cable.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -149,6 +167,8 @@
     <Resource Include="Assets\Resources\CircuitBoard.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\ClusterNobelisk.png" />
+    <Resource Include="Assets\Resources\ColorCartrige.png" />
     <Resource Include="Assets\Resources\CompactedCoal.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -182,12 +202,15 @@
     <Resource Include="Assets\Resources\EncasedUraniumCell.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\ExplosiveRebar.png" />
     <Resource Include="Assets\Resources\FlowerPetals.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Resources\Fuel.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\GasFilter.png" />
+    <Resource Include="Assets\Resources\GasNobelisk.png" />
     <Resource Include="Assets\Resources\HeatSink.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -197,9 +220,12 @@
     <Resource Include="Assets\Resources\HighSpeedConnector.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\HomingRifleAmmo.png" />
+    <Resource Include="Assets\Resources\IodineInfusedFilter.png" />
     <Resource Include="Assets\Resources\IronIngot.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\IronRebar.png" />
     <Resource Include="Assets\Resources\Leaves.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -224,12 +250,14 @@
     <Resource Include="Assets\Resources\Nitrogen.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\Nobelisk.png" />
     <Resource Include="Assets\Resources\NonFissileUranium.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Resources\NuclearPasta.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\NukeNobelisk.png" />
     <Resource Include="Assets\Resources\PackagedAluminaSolution.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -272,18 +300,22 @@
     <Resource Include="Assets\Resources\PressureConversionCube.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\PulseNobelisk.png" />
     <Resource Include="Assets\Resources\Quickwire.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Resources\RadioControlUnit.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\RifleAmmo.png" />
     <Resource Include="Assets\Resources\Rotor.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\ShatterRebar.png" />
     <Resource Include="Assets\Resources\SmartPlating.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\SmokelessPowder.png" />
     <Resource Include="Assets\Resources\SolidBiofuel.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -335,6 +367,7 @@
     <Resource Include="Assets\Resources\Quartz.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\StunRebar.png" />
     <Resource Include="Assets\Resources\Sulfur.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -353,6 +386,7 @@
     <Resource Include="Assets\Resources\TurboMotor.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Resources\TurboRifleAmmo.png" />
     <Resource Include="Assets\Resources\UraniumFuelRod.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

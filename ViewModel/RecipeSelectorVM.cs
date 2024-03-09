@@ -2,6 +2,7 @@
 using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> CommunicationsButtons { get; }
         public List<RecipeSelectButtonVM> SpaceElevatorPartsButtons { get; }
         public List<RecipeSelectButtonVM> LiquidsButtons { get; }
+        public List<RecipeSelectButtonVM> BurnableButtons { get; }
         public List<RecipeSelectButtonVM> NuclearButtons { get; }
 
         public event Action<Recipe> RecipeSelected;
@@ -24,61 +26,28 @@ namespace SatisfactoryProductionManager.ViewModel
 
         public RecipeSelectorVM()
         {
-            IngotsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("Ingots")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in IngotsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            MineralsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("Minerals")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in MineralsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            StandartPartsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("StandartParts")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in StandartPartsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            IndustrialPartsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("IndustrialParts")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in IndustrialPartsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            ElectronicsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("Electronics")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in ElectronicsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            CommunicationsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("Communications")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in CommunicationsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            SpaceElevatorPartsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("SpaceElevatorParts")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in SpaceElevatorPartsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            LiquidsButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("Liquids")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in LiquidsButtons) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            NuclearButtons =
-                ProductionManager.RecipeProvider
-                .GetAllRecipiesOfCategory("Nuclear")
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in NuclearButtons) button.ObjectSelected += RecipeSelected_EventStarter;
+            IngotsButtons = CreateButtonsCollection("Ingots");
+            MineralsButtons = CreateButtonsCollection("Minerals");
+            StandartPartsButtons = CreateButtonsCollection("StandartParts");
+            IndustrialPartsButtons = CreateButtonsCollection("IndustrialParts");
+            ElectronicsButtons = CreateButtonsCollection("Electronics");
+            CommunicationsButtons = CreateButtonsCollection("Communications");
+            SpaceElevatorPartsButtons = CreateButtonsCollection("SpaceElevatorParts");
+            LiquidsButtons = CreateButtonsCollection("Liquids");
+            BurnableButtons = CreateButtonsCollection("Burnable");
+            NuclearButtons = CreateButtonsCollection("Nuclear");
         }
 
+
+        private List<RecipeSelectButtonVM> CreateButtonsCollection(string cathegory)
+        {
+            var list = ProductionManager.RecipeProvider
+                .GetAllRecipiesOfCategory(cathegory)
+                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
+            foreach (var button in list) button.ObjectSelected += RecipeSelected_EventStarter;
+
+            return list;
+        }
 
         private void RecipeSelected_EventStarter(Recipe recipe)
         {
