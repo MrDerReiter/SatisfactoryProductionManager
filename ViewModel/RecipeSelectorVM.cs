@@ -17,7 +17,9 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> ElectronicsButtons { get; }
         public List<RecipeSelectButtonVM> CommunicationsButtons { get; }
         public List<RecipeSelectButtonVM> SpaceElevatorPartsButtons { get; }
+        public List<RecipeSelectButtonVM> SuppliesButtons { get; }
         public List<RecipeSelectButtonVM> LiquidsButtons { get; }
+        public List<RecipeSelectButtonVM> PackagesButtons { get; }
         public List<RecipeSelectButtonVM> BurnableButtons { get; }
         public List<RecipeSelectButtonVM> NuclearButtons { get; }
 
@@ -33,7 +35,9 @@ namespace SatisfactoryProductionManager.ViewModel
             ElectronicsButtons = CreateButtonsCollection("Electronics");
             CommunicationsButtons = CreateButtonsCollection("Communications");
             SpaceElevatorPartsButtons = CreateButtonsCollection("SpaceElevatorParts");
+            SuppliesButtons = CreateButtonsCollection("Supplies");
             LiquidsButtons = CreateButtonsCollection("Liquids");
+            PackagesButtons = CreateButtonsCollection("Packages");
             BurnableButtons = CreateButtonsCollection("Burnable");
             NuclearButtons = CreateButtonsCollection("Nuclear");
         }

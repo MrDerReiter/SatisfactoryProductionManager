@@ -6,7 +6,7 @@
 		xmlns:ViewModel="clr-namespace:SatisfactoryProductionManager.ViewModel"
 		mc:Ignorable="d"
 		AllowsTransparency="True" Background="Transparent" WindowStyle="None"
-		Title="RecipeSelector" MinWidth="450" MinHeight="350" Width="450" Height="350"
+		Title="RecipeSelector" MinWidth="480" MinHeight="350" Width="480" Height="350"
 		WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
@@ -45,7 +45,7 @@
 
                             <StackPanel
                                 Orientation="Horizontal"
-                                Margin="5,0"
+                                Margin="5,0,5,3"
                                 Height="30">
 
                                 <Image
@@ -74,18 +74,18 @@
                         <DataTemplate>
 
                             <StackPanel
-                            Orientation="Horizontal"
-                            Margin="5,0"
-                            Height="30">
+                                Orientation="Horizontal"
+                                Margin="5,0,5,3"
+                                Height="30">
 
                                 <Image
-                                Source="{Binding Path=Image}"
-                                RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    Source="{Binding Path=Image}"
+                                    RenderOptions.BitmapScalingMode="HighQuality"/>
 
                                 <TextBlock
-                                VerticalAlignment="Center"
-                                Margin="30,0,0,0"
-                                Text="{Binding Path=Count}"/>
+                                    VerticalAlignment="Center"
+                                    Margin="30,0,0,0"
+                                    Text="{Binding Path=Count}"/>
 
                             </StackPanel>
                         </DataTemplate>
@@ -97,8 +97,11 @@
         </ToolTip>
     </Window.Resources>
 
-    <Border BorderBrush="Chocolate" BorderThickness="2"
-			Background="Gray" CornerRadius="10">
+    <Border
+        BorderBrush="Chocolate"
+        BorderThickness="2"
+        Background="Gray"
+        CornerRadius="10">
 
         <StackPanel>
 
@@ -427,6 +430,51 @@
                 <TabItem>
                     <TabItem.Header>
                         <Border 
+					        BorderBrush="Chocolate"
+					        BorderThickness="1" 
+					        Background="DarkGray"
+                            ToolTip="Расходники"
+					        Padding="3" 
+					        Margin="-8,-3,-8,-5" 
+					        Width="40" 
+					        Height="40">
+
+                            <Image 
+						        Source="../Assets/Resources/RifleAmmo.png" 
+						        RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+				        ItemsSource="{Binding Path=SuppliesButtons}"
+                        Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+							        Width="50" 
+							        Height="50" 
+							        Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+							        Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+								        Source="{Binding Path=ImageSource}" 
+								        RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
 						    BorderBrush="Chocolate" 
 						    BorderThickness="1" 
 						    Background="DarkGray" 
@@ -462,6 +510,51 @@
                                     <Image 
 									    Source="{Binding Path=ImageSource}" 
 									    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Border 
+					        BorderBrush="Chocolate"
+					        BorderThickness="1" 
+					        Background="DarkGray"
+                            ToolTip="Упаковка/распаковка"
+					        Padding="3" 
+					        Margin="-8,-3,-8,-5" 
+					        Width="40" 
+					        Height="40">
+
+                            <Image 
+						        Source="../Assets/Resources/EmptyCanister.png" 
+						        RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                    </TabItem.Header>
+                    <ItemsControl 
+				        ItemsSource="{Binding Path=PackagesButtons}"
+                        Margin="-3,10">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+							        Width="50" 
+							        Height="50" 
+							        Background="DarkGray"
+                                    ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+							        Command="{Binding Path=ReturnObject}">
+
+                                    <Image 
+								        Source="{Binding Path=ImageSource}" 
+								        RenderOptions.BitmapScalingMode="HighQuality"/>
+
                                 </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

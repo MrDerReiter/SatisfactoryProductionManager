@@ -38,14 +38,14 @@
     <None Remove="Assets\Resources\Cable.png" />
     <None Remove="Assets\Resources\CircuitBoard.png" />
     <None Remove="Assets\Resources\ClusterNobelisk.png" />
-    <None Remove="Assets\Resources\ColorCartrige.png" />
+    <None Remove="Assets\Resources\ColorCartridge.png" />
     <None Remove="Assets\Resources\CompactedCoal.png" />
     <None Remove="Assets\Resources\Computer.png" />
     <None Remove="Assets\Resources\CoolingSystem.png" />
     <None Remove="Assets\Resources\CrudeOil.png" />
     <None Remove="Assets\Resources\CrystalOscillator.png" />
     <None Remove="Assets\Resources\ElectromagneticControlRod.png" />
-    <None Remove="Assets\Resources\EmptyCannister.png" />
+    <None Remove="Assets\Resources\EmptyCanister.png" />
     <None Remove="Assets\Resources\EmptyGasTank.png" />
     <None Remove="Assets\Resources\EncasedPlutoniumCell.png" />
     <None Remove="Assets\Resources\EncasedUraniumCell.png" />
@@ -168,7 +168,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Resources\ClusterNobelisk.png" />
-    <Resource Include="Assets\Resources\ColorCartrige.png" />
+    <Resource Include="Assets\Resources\ColorCartridge.png" />
     <Resource Include="Assets\Resources\CompactedCoal.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -190,7 +190,7 @@
     <Resource Include="Assets\Resources\ElectromagneticControlRod.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\Resources\EmptyCannister.png">
+    <Resource Include="Assets\Resources\EmptyCanister.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Resources\EmptyGasTank.png">
