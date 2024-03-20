@@ -40,7 +40,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 Products = new ResourceStreamButtonVM[]
                 {
                     new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream()),
-                    new ResourceStreamButtonVM(_sourceUnit.Byproduct.ToStream())
+                    new ResourceStreamButtonVM(_sourceUnit.Byproduct)
                 };
             }
             else

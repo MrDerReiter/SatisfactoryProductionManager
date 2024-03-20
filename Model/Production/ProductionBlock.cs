@@ -11,7 +11,7 @@ namespace SatisfactoryProductionManager.Model.Production
         public ProductionUnit MainProductionUnit { get => ProductionUnits[0]; }
         public ResourceRequest ProductionRequest { get; }
         public List<ResourceRequest> Inputs { get; } = new List<ResourceRequest>();
-        public List<ResourceOverflow> Byproducts { get; } = new List<ResourceOverflow>();
+        public List<ResourceStream> Byproducts { get; } = new List<ResourceStream>();
         public IEnumerable<ResourceStream> TotalInput { get => Inputs.Select(i => i.ToStream()); }
         public IEnumerable<ResourceStream> TotalOutput
         {
@@ -19,7 +19,7 @@ namespace SatisfactoryProductionManager.Model.Production
             {
                 yield return ProductionRequest.ToStream();
                 foreach (var byproduct in Byproducts)
-                    yield return byproduct.ToStream();
+                    yield return byproduct;
             }
         }
 
@@ -72,7 +72,7 @@ namespace SatisfactoryProductionManager.Model.Production
 
         private void MergeByproducts(int firstIndex, int secondIndex)
         {
-            var mergedByproduct = new ResourceOverflow
+            var mergedByproduct = new ResourceStream
                 (Byproducts[firstIndex].Resource,
                  Byproducts[firstIndex].CountPerMinute + Byproducts[secondIndex].CountPerMinute);
 

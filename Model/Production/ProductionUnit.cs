@@ -9,7 +9,7 @@ namespace SatisfactoryProductionManager.Model.Production
         public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute; }
         public bool HasByproduct { get => Recipe.HasByproduct; }
         public ResourceRequest ProductionRequest { get; }
-        public ResourceOverflow Byproduct { get; }
+        public ResourceStream Byproduct { get; private set; }
         public ResourceRequest[] Inputs { get; }
 
 
@@ -23,7 +23,7 @@ namespace SatisfactoryProductionManager.Model.Production
                 Inputs[i] = (Recipe.Inputs[i] * MachinesCount).ToRequest();
 
             if (HasByproduct)
-                Byproduct = (Recipe.Byproduct.Value * MachinesCount).ToOverflow();
+                Byproduct = Recipe.Byproduct.Value * MachinesCount;
 
             ProductionRequest.RequestChanged += UpdateIO;
         }
@@ -35,7 +35,7 @@ namespace SatisfactoryProductionManager.Model.Production
                 Inputs[i].CountPerMinute = Recipe.Inputs[i].CountPerMinute * MachinesCount;
 
             if (HasByproduct)
-                Byproduct.CountPerMinute = Recipe.Byproduct.Value.CountPerMinute * MachinesCount;
+                Byproduct = Recipe.Byproduct.Value * MachinesCount;
         }
     }
 }

@@ -38,10 +38,5 @@ namespace SatisfactoryProductionManager.Model.Elements
         {
             return new ResourceRequest(Resource, CountPerMinute);
         }
-
-        public ResourceOverflow ToOverflow()
-        {
-            return new ResourceOverflow(Resource, CountPerMinute);
-        }
     }
 }
