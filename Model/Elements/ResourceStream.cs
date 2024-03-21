@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace SatisfactoryProductionManager.Model.Elements
 {
@@ -32,6 +33,11 @@ namespace SatisfactoryProductionManager.Model.Elements
         public static ResourceStream operator *(ResourceStream left, double right)
         {
             return new ResourceStream(left.Resource, left.CountPerMinute * right);
+        }
+
+        public override string ToString()
+        {
+            return Resource + ": " + CountPerMinute.ToString(CultureInfo.InvariantCulture);
         }
 
         public ResourceRequest ToRequest()

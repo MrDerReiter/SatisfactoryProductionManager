@@ -2,7 +2,6 @@
 using SatisfactoryProductionManager.Model.Interfaces;
 using SatisfactoryProductionManager.Model.Production;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -29,6 +28,8 @@ namespace SatisfactoryProductionManager.Model
 
         static ProductionManager()
         {
+            _SaveLoadManager = new FileSaveLoadManager();
+
             ProductionLines = new BindingList<ProductionLine>();
             RecipeProvider = new FileRecipeProvider();
         }
@@ -70,7 +71,7 @@ namespace SatisfactoryProductionManager.Model
 
         public static void SaveFactory()
         {
-            throw new NotImplementedException();
+            _SaveLoadManager.SaveFactory();
         }
     }
 }

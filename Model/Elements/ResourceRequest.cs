@@ -1,6 +1,8 @@
 ﻿using SatisfactoryProductionManager.Model.Production;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SatisfactoryProductionManager.Model.Elements
 {
@@ -61,6 +63,21 @@ namespace SatisfactoryProductionManager.Model.Elements
             CountPerMinute = totalCountPerMinute;
         }
 
+
+        public static bool operator ==(ResourceRequest left, ResourceRequest right)
+        {
+            return left.ToString() == right.ToString();
+        }
+
+        public static bool operator !=(ResourceRequest left, ResourceRequest right)
+        {
+            return !(left == right);
+        }
+
+        public override string ToString()
+        {
+            return Resource + " " + CountPerMinute.ToString(CultureInfo.InvariantCulture);
+        }
 
         public ResourceStream ToStream()
         {

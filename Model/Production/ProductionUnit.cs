@@ -4,6 +4,7 @@ namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionUnit
     {
+        public int Id { get => GetHashCode(); }
         public Recipe Recipe { get; }
         public string Machine { get => Recipe.Machine; }
         public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute; }

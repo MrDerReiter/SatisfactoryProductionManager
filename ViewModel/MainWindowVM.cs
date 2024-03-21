@@ -54,6 +54,9 @@ namespace SatisfactoryProductionManager.ViewModel
             RemoveActiveBlock = new DelegateCommand(RemoveActiveBlock_CommandHandler);
 
             ProductionManager.ActiveLineChanged += SetProductionBlocks;
+
+            if (ProductionManager.ProductionLines.Count > 0)
+                SetActiveLine(ProductionManager.ProductionLines[0]);
         }
 
 
@@ -220,7 +223,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.ActiveLine = prodLine;
             SetActiveBlock(prodLine.MainProductionBlock);
 
-            UpdateLineIO(null , null);
+            UpdateLineIO(null, null);
         }
 
         private void SetActiveBlock(ProductionBlock block)

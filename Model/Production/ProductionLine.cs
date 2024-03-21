@@ -13,11 +13,7 @@ namespace SatisfactoryProductionManager.Model.Production
         public List<ResourceStream> Outputs { get; } = new List<ResourceStream>();
 
 
-        [JsonConstructor]
-        public ProductionLine()
-        {
-
-        }
+        public ProductionLine() { }
 
         public ProductionLine(Recipe recipe)
         {
@@ -95,9 +91,9 @@ namespace SatisfactoryProductionManager.Model.Production
             prodBlock.IOChanged += UpdateIO;
         }
 
-        public void AddProductionBlock(ProductionUnit productionUnit)
+        public void AddProductionBlock(ProductionUnit prodUnit)
         {
-            var prodBlock = new ProductionBlock(productionUnit);
+            var prodBlock = new ProductionBlock(prodUnit);
             ProductionBlocks.Add(prodBlock);
             prodBlock.IOChanged += UpdateIO;
 

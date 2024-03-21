@@ -14,6 +14,7 @@ namespace SatisfactoryProductionManager.View
             InitializeComponent();
 
             CloseWindowButton.Command = new DelegateCommand(Close);
+            Closing += SaveBeforeClosing;
 
             var context = DataContext as MainWindowVM;
             context.PropertyChanged += Context_ProductionBlockChanged;
@@ -36,6 +37,11 @@ namespace SatisfactoryProductionManager.View
                 OutputLabel.Visibility = Visibility.Visible;
                 InputLabel.Visibility = Visibility.Visible;
             }
+        }
+
+        private void SaveBeforeClosing(object sender, CancelEventArgs e)
+        {
+            ProductionManager.SaveFactory();
         }
     }
 }
