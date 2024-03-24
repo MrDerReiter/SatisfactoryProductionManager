@@ -50,7 +50,6 @@
     <None Remove="Assets\Resources\EncasedPlutoniumCell.png" />
     <None Remove="Assets\Resources\EncasedUraniumCell.png" />
     <None Remove="Assets\Resources\ExplosiveRebar.png" />
-    <None Remove="Assets\Resources\FlowerPetals.png" />
     <None Remove="Assets\Resources\Fuel.png" />
     <None Remove="Assets\Resources\GasFilter.png" />
     <None Remove="Assets\Resources\GasNobelisk.png" />
@@ -203,9 +202,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Resources\ExplosiveRebar.png" />
-    <Resource Include="Assets\Resources\FlowerPetals.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Assets\Resources\Fuel.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

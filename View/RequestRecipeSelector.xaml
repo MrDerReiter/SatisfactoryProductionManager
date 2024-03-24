@@ -16,7 +16,9 @@
     <Window.Resources>
         <ToolTip
             x:Key="RecipeTooltip"
-            Background="LightGray">
+            Background="LightGray"
+            MaxWidth="250"
+            Padding="10">
 
             <StackPanel>
 
