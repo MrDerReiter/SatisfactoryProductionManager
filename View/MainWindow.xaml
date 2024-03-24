@@ -133,7 +133,6 @@
                     </ItemsControl>
                 </ScrollViewer>
 
-
             </Border>
 
             <Border 
@@ -226,6 +225,7 @@
                                     </Image>
                                 </Button>
                             </WrapPanel>
+                            
                         </Border>
 
                         <Border

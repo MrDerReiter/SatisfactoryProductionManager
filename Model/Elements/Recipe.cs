@@ -1,4 +1,9 @@
-﻿namespace SatisfactoryProductionManager.Model.Elements;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
+using System.Xml.Linq;
+
+namespace SatisfactoryProductionManager.Model.Elements;
 
 /// <summary>
 /// Инкапсулирует рецепт, используемый на производственной линии.

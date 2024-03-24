@@ -14,6 +14,7 @@ namespace SatisfactoryProductionManager.Model
 
         public static IRecipeProvider RecipeProvider { get; }
         public static BindingList<ProductionLine> ProductionLines { get; }
+        public static ProductionLine LastLine { get => ProductionLines.Last(); }
         public static ProductionLine ActiveLine
         {
             get => _activeLine;
@@ -29,9 +30,15 @@ namespace SatisfactoryProductionManager.Model
         static ProductionManager()
         {
             _SaveLoadManager = new FileSaveLoadManager();
-
-            ProductionLines = new BindingList<ProductionLine>();
             RecipeProvider = new FileRecipeProvider();
+
+            var savedData = _SaveLoadManager.LoadFactory();
+            ProductionLines = new BindingList<ProductionLine>(savedData);
+        }
+
+        public static void AddProductionLine(ProductionLine prodLine)
+        {
+            ProductionLines.Add(prodLine);
         }
 
         public static void AddProductionLine(Recipe recipe)

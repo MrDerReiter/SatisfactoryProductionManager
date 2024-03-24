@@ -41,7 +41,11 @@ namespace SatisfactoryProductionManager.ViewModel
 
             var lines = ProductionManager.ProductionLines.Select(pl => new ProductionLineButtonVM(pl)).ToList();
             ProductionLineButtons = new BindingList<ProductionLineButtonVM>(lines);
-            foreach (var line in ProductionLineButtons) line.ObjectSelected += SetActiveLine;
+            foreach (var line in ProductionLineButtons)
+            {
+                line.ObjectSelected += PlayPushButtonSound;
+                line.ObjectSelected += SetActiveLine;
+            } 
 
             ProductionBlockButtons = new BindingList<ProductionBlockButtonVM>();
             ActiveLineInputButtons = new BindingList<ResourceStreamButtonVM>();
@@ -62,7 +66,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void AddProductionLine_CommandHandler()
         {
-            PlayPushButtonSound(null);
+            PlayPushButtonSound();
 
             var selector = new RecipeSelector();
             var context = selector.DataContext as RecipeSelectorVM;
@@ -73,7 +77,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void AddProductionBlock_CommandHandler()
         {
-            PlayPushButtonSound(null);
+            PlayPushButtonSound();
             if (ProductionManager.ActiveLine == null) return;
 
             var selector = new RecipeSelector();
@@ -85,7 +89,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void AddProductionBlock_CommandHandler(ResourceStream stream)
         {
-            PlayPushButtonSound(null);
+            PlayPushButtonSound();
 
             try
             {
@@ -103,7 +107,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void MoveActiveLineLeft_CommandHandler()
         {
-            PlayPushButtonSound(null);
+            PlayPushButtonSound();
 
             ProductionManager.MoveActiveLineLeft();
             UpdateProductionLineButtons();
@@ -111,7 +115,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void MoveActiveLineRight_CommandHandler()
         {
-            PlayPushButtonSound(null);
+            PlayPushButtonSound();
 
             ProductionManager.MoveActiveLineRight();
             UpdateProductionLineButtons();
@@ -119,7 +123,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void RemoveActiveBlock_CommandHandler()
         {
-            PlayPushButtonSound(null);
+            PlayPushButtonSound();
             if (ActiveBlock == null) return;
 
             if (ActiveBlock == ProductionManager.ActiveLine.MainProductionBlock)
@@ -129,7 +133,7 @@ namespace SatisfactoryProductionManager.ViewModel
                 ProductionLineButtons.Remove(activeLineButton);
                 SetActiveBlock(ActiveBlock = ProductionManager.ActiveLine?.MainProductionBlock ?? null);
 
-                UpdateLineIO(null, null);
+                UpdateLineIO();
             }
             else
             {
@@ -142,16 +146,20 @@ namespace SatisfactoryProductionManager.ViewModel
             }
         }
 
-        private void PlayPushButtonSound(object obj)
+        private void PlayPushButtonSound()
         {
             Player.Stop();
             Player.Play();
         }
 
+        private void PlayPushButtonSound(object obj)
+        {
+            PlayPushButtonSound();
+        }
+
         private void PlayPushButtonSound(object obj1, object obj2)
         {
-            Player.Stop();
-            Player.Play();
+            PlayPushButtonSound();
         }
 
         private void UpdateProductionLineButtons()
@@ -163,7 +171,7 @@ namespace SatisfactoryProductionManager.ViewModel
             foreach (var line in ProductionLineButtons) line.ObjectSelected += SetActiveLine;
         }
 
-        private void UpdateLineIO(object sender, PropertyChangedEventArgs args)
+        private void UpdateLineIO()
         {
             if (ProductionManager.ActiveLine == null) return;
 
@@ -178,6 +186,11 @@ namespace SatisfactoryProductionManager.ViewModel
             ActiveLineOutputButtons.Clear();
             foreach (var output in ProductionManager.ActiveLine.Outputs)
                 ActiveLineOutputButtons.Add(new ResourceStreamButtonVM(output));
+        }
+
+        private void UpdateLineIO(object sender, PropertyChangedEventArgs args)
+        {
+            UpdateLineIO();
         }
 
         private void CreateProductionLine(Recipe recipe)
@@ -207,7 +220,7 @@ namespace SatisfactoryProductionManager.ViewModel
             SetActiveBlock(ProductionManager.ActiveLine.ProductionBlocks.Last());
             SetProductionBlocks(ProductionManager.ActiveLine);
 
-            UpdateLineIO(null, null);
+            UpdateLineIO();
         }
 
         private void CreateProductionBlock(ProductionUnit unit)
@@ -215,7 +228,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.ActiveLine.AddProductionBlock(unit);
             SetProductionBlocks(ProductionManager.ActiveLine);
 
-            UpdateLineIO(null, null);
+            UpdateLineIO();
         }
 
         private void SetActiveLine(ProductionLine prodLine)
@@ -223,7 +236,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.ActiveLine = prodLine;
             SetActiveBlock(prodLine.MainProductionBlock);
 
-            UpdateLineIO(null, null);
+            UpdateLineIO();
         }
 
         private void SetActiveBlock(ProductionBlock block)

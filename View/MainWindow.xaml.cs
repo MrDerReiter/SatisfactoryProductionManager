@@ -15,16 +15,14 @@ namespace SatisfactoryProductionManager.View
 
             CloseWindowButton.Command = new DelegateCommand(Close);
             Closing += SaveBeforeClosing;
+            Loaded += MainWindow_Loaded;
 
             var context = DataContext as MainWindowVM;
             context.PropertyChanged += Context_ProductionBlockChanged;
         }
 
-
-        private void Context_ProductionBlockChanged(object sender, PropertyChangedEventArgs args)
+        private void RequestButtonShowHideTrigger(MainWindowVM context)
         {
-            var context = sender as MainWindowVM;
-
             if (context.ActiveBlock == null)
             {
                 ProductionRequestButton.Visibility = Visibility.Hidden;
@@ -37,6 +35,18 @@ namespace SatisfactoryProductionManager.View
                 OutputLabel.Visibility = Visibility.Visible;
                 InputLabel.Visibility = Visibility.Visible;
             }
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var context = DataContext as MainWindowVM;
+            RequestButtonShowHideTrigger(context);
+        }
+
+        private void Context_ProductionBlockChanged(object sender, PropertyChangedEventArgs args)
+        {
+            var context = sender as MainWindowVM;
+            RequestButtonShowHideTrigger(context);
         }
 
         private void SaveBeforeClosing(object sender, CancelEventArgs e)

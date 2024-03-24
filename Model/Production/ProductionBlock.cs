@@ -57,7 +57,7 @@ namespace SatisfactoryProductionManager.Model.Production
             ProductionRequest.RequestChanged += UpdateIO;
         }
 
-
+        
         private void MergeInputs(int firstIndex, int secondIndex)
         {
             var mergedInput = new ResourceRequest
@@ -125,10 +125,15 @@ namespace SatisfactoryProductionManager.Model.Production
 
         public void AddProductionUnit(ResourceRequest request, Recipe recipe)
         {
-            if (request.Resource != recipe.Product.Resource) throw new InvalidOperationException("The production unit's recipe doesn't match the request");
-
             var unit = new ProductionUnit(request, recipe);
             request.Provider = unit;
+            ProductionUnits.Add(unit);
+            UpdateIO();
+        }
+
+        public void AddProductionUnit(ProductionUnit unit)
+        {
+            unit.ProductionRequest.Provider = unit;
             ProductionUnits.Add(unit);
             UpdateIO();
         }

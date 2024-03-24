@@ -1,4 +1,7 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
+using System;
+using System.CodeDom;
+using System.Configuration;
 
 namespace SatisfactoryProductionManager.Model.Production
 {
@@ -16,6 +19,8 @@ namespace SatisfactoryProductionManager.Model.Production
 
         public ProductionUnit(ResourceRequest request, Recipe recipe)
         {
+            if (request.Resource != recipe.Product.Resource) throw new InvalidOperationException("Несовпадение выходного ресурса в рецепте и запросе на ресурс");
+
             Recipe = recipe;
             ProductionRequest = request;
             Inputs = new ResourceRequest[Recipe.Inputs.Length];
