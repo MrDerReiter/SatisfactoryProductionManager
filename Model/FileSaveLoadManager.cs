@@ -28,8 +28,8 @@ namespace SatisfactoryProductionManager.Model
         {
             List<string> serializedBlock = ["\tProductionBlock:", string.Empty];
 
-            serializedBlock.Add($"\tProductionRequest: {prodBlock.ProductionRequest}");
-            serializedBlock.Add($"\tRecipe: {prodBlock.MainProductionUnit.Recipe.Name}");
+            serializedBlock.Add($"\t\tProductionRequest: {prodBlock.ProductionRequest}");
+            serializedBlock.Add($"\t\tRecipe: {prodBlock.MainProductionUnit.Recipe.Name}");
             serializedBlock.Add(string.Empty);
 
             foreach (var unit in prodBlock.ProductionUnits)
@@ -40,13 +40,10 @@ namespace SatisfactoryProductionManager.Model
 
         private static List<string> SerializeProductionUnit(ProductionUnit prodUnit)
         {
-            List<string> serializedUnit = ["\t\tProductionUnit:", string.Empty];
+            List<string> serializedUnit = ["\t\t\tProductionUnit:", string.Empty];
 
-            serializedUnit.Add($"\t\tID: {prodUnit.Id}");
-            serializedUnit.Add($"\t\tRecipe: {prodUnit.Recipe.Name}");
-            serializedUnit.Add($"\t\tMachine: {prodUnit.Machine}");
-            serializedUnit.Add($"\t\tMachinesCount: {prodUnit.MachinesCount.ToString(CultureInfo.InvariantCulture)}");
-            serializedUnit.Add($"\t\tProductionRequest: {prodUnit.ProductionRequest}");
+            serializedUnit.Add($"\t\t\t\tProductionRequest: {prodUnit.ProductionRequest}");
+            serializedUnit.Add($"\t\t\t\tRecipe: {prodUnit.Recipe.Name}");
             serializedUnit.Add(string.Empty);
 
             return serializedUnit;
@@ -86,7 +83,7 @@ namespace SatisfactoryProductionManager.Model
 
             for (int i = index + 3; i < savedContent.Length; i++)
             {
-                if (savedContent[i] == "\t\tProductionUnit:")
+                if (savedContent[i] == "\t\t\tProductionUnit:")
                 {
                     var unit = DeserializeProductionUnit(savedContent, i + 2);
                     savedUnits.Add(unit);
@@ -95,15 +92,15 @@ namespace SatisfactoryProductionManager.Model
                 else continue;
             }
 
-            RebuildProductionBlock(block, savedUnits);
+            ReconstructProductionBlock(block, savedUnits);
 
             return block;
         }
 
         private static ProductionUnit DeserializeProductionUnit(string[] savedContent, int index)
         {
-            var resource = savedContent[index + 4].Split(' ')[1];
-            var countPerMinute = double.Parse(savedContent[index + 4].Split(' ')[2], CultureInfo.InvariantCulture);
+            var resource = savedContent[index].Split(' ')[1];
+            var countPerMinute = double.Parse(savedContent[index].Split(' ')[2], CultureInfo.InvariantCulture);
             var request = new ResourceRequest(resource, countPerMinute);
 
             var recipeName = savedContent[index + 1].Split(' ')[1];
@@ -112,7 +109,7 @@ namespace SatisfactoryProductionManager.Model
             return new ProductionUnit(request, recipe);
         }
 
-        private static void RebuildProductionBlock(ProductionBlock block, List<ProductionUnit> controlUnitList)
+        private static void ReconstructProductionBlock(ProductionBlock block, List<ProductionUnit> controlUnitList)
         {
             if (controlUnitList[0].ProductionRequest == block.ProductionRequest)
                 controlUnitList.RemoveAt(0);

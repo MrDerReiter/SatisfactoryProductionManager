@@ -2,7 +2,6 @@
 using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
