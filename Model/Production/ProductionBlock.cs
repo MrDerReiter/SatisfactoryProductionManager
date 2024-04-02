@@ -7,18 +7,22 @@ namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionBlock
     {
-        public List<ProductionUnit> ProductionUnits { get; } = new List<ProductionUnit>();
-        public ProductionUnit MainProductionUnit { get => ProductionUnits[0]; }
+        private readonly List<ResourceRequest> _inputs = new List<ResourceRequest>();
+        private readonly List<ResourceStream> _byproducts = new List<ResourceStream>();
+        private readonly List<ProductionUnit> _productionUnits = new List<ProductionUnit>();
+
+        public IReadOnlyList<ProductionUnit> ProductionUnits { get => _productionUnits; }
+        public ProductionUnit MainProductionUnit { get => _productionUnits[0]; }
         public ResourceRequest ProductionRequest { get; }
-        public List<ResourceRequest> Inputs { get; } = new List<ResourceRequest>();
-        public List<ResourceStream> Byproducts { get; } = new List<ResourceStream>();
-        public IEnumerable<ResourceStream> TotalInput { get => Inputs.Select(i => i.ToStream()); }
+        public IReadOnlyList<ResourceRequest> Inputs { get => _inputs; }
+        public IReadOnlyList<ResourceStream> Byproducts { get => _byproducts; }
+        public IEnumerable<ResourceStream> TotalInput { get => _inputs.Select(i => i.ToStream()); }
         public IEnumerable<ResourceStream> TotalOutput
         {
             get
             {
                 yield return ProductionRequest.ToStream();
-                foreach (var byproduct in Byproducts)
+                foreach (var byproduct in _byproducts)
                     yield return byproduct;
             }
         }
@@ -61,30 +65,30 @@ namespace SatisfactoryProductionManager.Model.Production
         private void MergeInputs(int firstIndex, int secondIndex)
         {
             var mergedInput = new ResourceRequest
-                (Inputs[firstIndex].Resource,
-                 Inputs[firstIndex].CountPerMinute + Inputs[secondIndex].CountPerMinute);
-            mergedInput.Link(Inputs[firstIndex]);
-            mergedInput.Link(Inputs[secondIndex]);
+                (_inputs[firstIndex].Resource,
+                 _inputs[firstIndex].CountPerMinute + _inputs[secondIndex].CountPerMinute);
+            mergedInput.Link(_inputs[firstIndex]);
+            mergedInput.Link(_inputs[secondIndex]);
 
-            Inputs[firstIndex] = mergedInput;
-            Inputs.RemoveAt(secondIndex);
+            _inputs[firstIndex] = mergedInput;
+            _inputs.RemoveAt(secondIndex);
         }
 
         private void MergeByproducts(int firstIndex, int secondIndex)
         {
             var mergedByproduct = new ResourceStream
-                (Byproducts[firstIndex].Resource,
-                 Byproducts[firstIndex].CountPerMinute + Byproducts[secondIndex].CountPerMinute);
+                (_byproducts[firstIndex].Resource,
+                 _byproducts[firstIndex].CountPerMinute + _byproducts[secondIndex].CountPerMinute);
 
-            Byproducts[firstIndex] = mergedByproduct;
-            Byproducts.RemoveAt(secondIndex);
+            _byproducts[firstIndex] = mergedByproduct;
+            _byproducts.RemoveAt(secondIndex);
         }
 
         private void MergeExcessInputs()
         {
-            for (int i = 0; i < Inputs.Count - 1; i++)
-                for (int j = i + 1; j < Inputs.Count; j++)
-                    if (Inputs[i].Resource == Inputs[j].Resource)
+            for (int i = 0; i < _inputs.Count - 1; i++)
+                for (int j = i + 1; j < _inputs.Count; j++)
+                    if (_inputs[i].Resource == _inputs[j].Resource)
                     {
                         MergeInputs(i, j);
                         j--;
@@ -93,9 +97,9 @@ namespace SatisfactoryProductionManager.Model.Production
 
         private void MergeExcessByproducts()
         {
-            for (int i = 0; i < Byproducts.Count - 1; i++)
-                for (int j = i + 1; j < Byproducts.Count; j++)
-                    if (Byproducts[i].Resource == Byproducts[j].Resource)
+            for (int i = 0; i < _byproducts.Count - 1; i++)
+                for (int j = i + 1; j < _byproducts.Count; j++)
+                    if (_byproducts[i].Resource == _byproducts[j].Resource)
                     {
                         MergeByproducts(i, j);
                         j--;
@@ -104,19 +108,19 @@ namespace SatisfactoryProductionManager.Model.Production
 
         private void UpdateIO()
         {
-            Inputs.Clear();
-            var inputs = ProductionUnits
+            _inputs.Clear();
+            var inputs = _productionUnits
                 .SelectMany(pu => pu.Inputs)
                 .Where(i => !i.HasProvider && i.CountPerMinute > 0)
                 .ToList();
-            Inputs.AddRange(inputs);
+            _inputs.AddRange(inputs);
             MergeExcessInputs();
 
-            Byproducts.Clear();
-            var byproducts = ProductionUnits
+            _byproducts.Clear();
+            var byproducts = _productionUnits
                 .Where(pu => pu.HasByproduct && pu.Byproduct.CountPerMinute > 0)
                 .Select(pu => pu.Byproduct);
-            Byproducts.AddRange(byproducts);
+            _byproducts.AddRange(byproducts);
             MergeExcessByproducts();
 
             IOChanged?.Invoke();
@@ -127,14 +131,14 @@ namespace SatisfactoryProductionManager.Model.Production
         {
             var unit = new ProductionUnit(request, recipe);
             request.Provider = unit;
-            ProductionUnits.Add(unit);
+            _productionUnits.Add(unit);
             UpdateIO();
         }
 
         public void AddProductionUnit(ProductionUnit unit)
         {
             unit.ProductionRequest.Provider = unit;
-            ProductionUnits.Add(unit);
+            _productionUnits.Add(unit);
             UpdateIO();
         }
 
@@ -146,9 +150,9 @@ namespace SatisfactoryProductionManager.Model.Production
             unit.ProductionRequest.Provider = null;
             foreach (var request in unit.Inputs)
                 request.CountPerMinute = 0;
-            Inputs.Clear();
+            _inputs.Clear();
 
-            ProductionUnits.Remove(unit);
+            _productionUnits.Remove(unit);
             UpdateIO();
         }
     }

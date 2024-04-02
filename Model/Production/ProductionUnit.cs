@@ -1,19 +1,20 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
 using System;
-using System.CodeDom;
-using System.Configuration;
+using System.Collections.Generic;
 
 namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionUnit
     {
+        private readonly ResourceRequest[] _inputs;
+
         public Recipe Recipe { get; }
         public string Machine { get => Recipe.Machine; }
         public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute; }
         public bool HasByproduct { get => Recipe.HasByproduct; }
         public ResourceRequest ProductionRequest { get; }
         public ResourceStream Byproduct { get; private set; }
-        public ResourceRequest[] Inputs { get; }
+        public IReadOnlyList<ResourceRequest> Inputs { get => _inputs; }
 
 
         public ProductionUnit(ResourceRequest request, Recipe recipe)
@@ -22,10 +23,10 @@ namespace SatisfactoryProductionManager.Model.Production
 
             Recipe = recipe;
             ProductionRequest = request;
-            Inputs = new ResourceRequest[Recipe.Inputs.Length];
+            _inputs = new ResourceRequest[Recipe.Inputs.Length];
 
             for (int i = 0; i < Recipe.Inputs.Length; i++)
-                Inputs[i] = (Recipe.Inputs[i] * MachinesCount).ToRequest();
+                _inputs[i] = (Recipe.Inputs[i] * MachinesCount).ToRequest();
 
             if (HasByproduct)
                 Byproduct = Recipe.Byproduct.Value * MachinesCount;
@@ -36,8 +37,8 @@ namespace SatisfactoryProductionManager.Model.Production
 
         private void UpdateIO()
         {
-            for (int i = 0; i < Inputs.Length; i++)
-                Inputs[i].CountPerMinute = Recipe.Inputs[i].CountPerMinute * MachinesCount;
+            for (int i = 0; i < _inputs.Length; i++)
+                _inputs[i].CountPerMinute = Recipe.Inputs[i].CountPerMinute * MachinesCount;
 
             if (HasByproduct)
                 Byproduct = Recipe.Byproduct.Value * MachinesCount;

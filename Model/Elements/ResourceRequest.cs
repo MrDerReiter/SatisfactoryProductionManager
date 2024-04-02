@@ -20,6 +20,7 @@ namespace SatisfactoryProductionManager.Model.Elements
             get => _countPerMinute;
             set
             {
+                if (value < 0) throw new InvalidOperationException("Значение запроса ресурса не может быть отрицательным");
                 _countPerMinute = value;
                 RequestChanged?.Invoke();
             }
@@ -89,6 +90,18 @@ namespace SatisfactoryProductionManager.Model.Elements
 
             LinkedRequests.Add(request);
             request.RequestChanged += Update;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ResourceRequest otherRequest)) return false;
+
+            return this == otherRequest;
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }

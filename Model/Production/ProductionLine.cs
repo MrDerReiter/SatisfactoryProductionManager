@@ -7,8 +7,10 @@ namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionLine
     {
-        public List<ProductionBlock> ProductionBlocks { get; } = new List<ProductionBlock>();
-        public ProductionBlock MainProductionBlock { get => ProductionBlocks[0]; }
+        private readonly List<ProductionBlock> _productionBlocks = new List<ProductionBlock>();
+
+        public IReadOnlyList<ProductionBlock> ProductionBlocks { get => _productionBlocks; }
+        public ProductionBlock MainProductionBlock { get => _productionBlocks[0]; }
         public List<ResourceStream> Inputs { get; } = new List<ResourceStream>();
         public List<ResourceStream> Outputs { get; } = new List<ResourceStream>();
 
@@ -75,10 +77,10 @@ namespace SatisfactoryProductionManager.Model.Production
         private void UpdateIO()
         {
             Inputs.Clear();
-            Inputs.AddRange(ProductionBlocks.SelectMany(pb => pb.TotalInput));
+            Inputs.AddRange(_productionBlocks.SelectMany(pb => pb.TotalInput));
 
             Outputs.Clear();
-            Outputs.AddRange(ProductionBlocks.SelectMany(pb => pb.TotalOutput));
+            Outputs.AddRange(_productionBlocks.SelectMany(pb => pb.TotalOutput));
 
             OptimizeIO();
         }
@@ -87,14 +89,14 @@ namespace SatisfactoryProductionManager.Model.Production
         public void AddProductionBlock(Recipe recipe)
         {
             var prodBlock = new ProductionBlock(recipe);
-            ProductionBlocks.Add(prodBlock);
+            _productionBlocks.Add(prodBlock);
             prodBlock.IOChanged += UpdateIO;
         }
 
         public void AddProductionBlock(ProductionUnit prodUnit)
         {
             var prodBlock = new ProductionBlock(prodUnit);
-            ProductionBlocks.Add(prodBlock);
+            _productionBlocks.Add(prodBlock);
             prodBlock.IOChanged += UpdateIO;
 
             UpdateIO();
@@ -102,7 +104,7 @@ namespace SatisfactoryProductionManager.Model.Production
 
         public void AddProductionBlock(ProductionBlock prodBlock)
         {
-            ProductionBlocks.Add(prodBlock);
+            _productionBlocks.Add(prodBlock);
             prodBlock.IOChanged += UpdateIO;
 
             UpdateIO();
@@ -111,7 +113,7 @@ namespace SatisfactoryProductionManager.Model.Production
         public void AddProductionBlock(ResourceRequest request, Recipe recipe)
         {
             var prodBlock = new ProductionBlock(request, recipe);
-            ProductionBlocks.Add(prodBlock);
+            _productionBlocks.Add(prodBlock);
             prodBlock.IOChanged += UpdateIO;
 
             UpdateIO();
@@ -120,7 +122,7 @@ namespace SatisfactoryProductionManager.Model.Production
         public void RemoveProductionBlock(ProductionBlock prodBlock)
         {
             prodBlock.IOChanged -= UpdateIO;
-            ProductionBlocks.Remove(prodBlock);
+            _productionBlocks.Remove(prodBlock);
             UpdateIO();
         }
     }

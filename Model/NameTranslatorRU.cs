@@ -39,6 +39,7 @@ namespace SatisfactoryProductionManager.Model
             }
         }
 
+
         public static string Translate(string name)
         {
             try { return _dictionary[name]; }
