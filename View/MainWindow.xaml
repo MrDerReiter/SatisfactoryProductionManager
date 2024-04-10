@@ -142,10 +142,11 @@
 
                 <DockPanel>
 
-                    <WrapPanel
+                    <DockPanel
                         DockPanel.Dock="Top">
 
-                        <Border 
+                        <Border
+                            DockPanel.Dock="Left"
                             BorderBrush="Black"
                             BorderThickness="1" 
                             Margin="3" 
@@ -184,6 +185,7 @@
                         </Border>
 
                         <Border
+                            DockPanel.Dock="Left"
                             BorderBrush="Black" 
                             BorderThickness="1" 
                             Margin="20,3,0,3"
@@ -231,17 +233,19 @@
                         <Border
                             BorderBrush="Black"
                             BorderThickness="1"
-                            HorizontalAlignment="Right"
-                            Margin="20,3,0,3" 
+                            HorizontalAlignment="Stretch"
+                            Margin="20,3,3,3" 
                             Padding="3">
 
-                            <WrapPanel>
+                            <DockPanel>
 
                                 <TextBlock
+                                    DockPanel.Dock="Left"
                                     Foreground="GhostWhite"
                                     Text="Выход"/>
 
                                 <ItemsControl
+                                    DockPanel.Dock="Left"
                                     Margin="10,0,0,0"
                                     ItemsSource="{Binding Path=ActiveLineOutputButtons}">
 
@@ -274,6 +278,7 @@
                                 </ItemsControl>
 
                                 <TextBlock
+                                    DockPanel.Dock="Left"
                                     Margin="20,0,0,0"
                                     Foreground="GhostWhite"
                                     Text="Вход"/>
@@ -316,11 +321,11 @@
 
                                 </ItemsControl>
 
-                            </WrapPanel>
+                            </DockPanel>
 
                         </Border>
 
-                    </WrapPanel>
+                    </DockPanel>
 
                     <Border 
                         BorderBrush="Black" 
