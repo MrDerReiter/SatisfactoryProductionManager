@@ -15,6 +15,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
     {
         private ProductionBlock _sourceBlock;
 
+        public ProductionBlock SourceBlock { get => _sourceBlock; }
         public BindingList<ProductionUnitVM> UnitModels { get; }
         public BindingList<RequestButtonVM> RequestButtons { get; }
         public BindingList<ByproductButtonVM> ByproductButtons { get; }

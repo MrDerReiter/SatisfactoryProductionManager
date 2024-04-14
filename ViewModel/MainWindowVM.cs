@@ -20,7 +20,9 @@ namespace SatisfactoryProductionManager.ViewModel
     {
         private readonly MediaPlayer _player;
         private readonly List<ProductionLineIOVM> _productionLinesIOs;
+        private readonly List<ProductionBlockVM> _productionBlockWorkspaces;
 
+        public ProductionLine ActiveLine { get => ProductionManager.ActiveLine; }
         public ProductionBlock ActiveBlock { get; private set; }
         public ProductionLineIOVM ActiveLineIO { get; private set; }
         public ProductionBlockVM ProductionBlockWorkspace { get; private set; }
@@ -55,6 +57,13 @@ namespace SatisfactoryProductionManager.ViewModel
                 _productionLinesIOs.Add(lineIO);
                 lineIO.NeedToCreateProductionBlock += AddProductionBlock_CommandHandler;
             }
+
+            _productionBlockWorkspaces = new List<ProductionBlockVM>();
+            ProductionManager.ProductionLines
+                .SelectMany(line => line.ProductionBlocks)
+                .ToList()
+                .ForEach(AddProductionBlockVM);
+
 
             ProductionBlockButtons = new BindingList<ProductionBlockButtonVM>();
 
@@ -134,14 +143,15 @@ namespace SatisfactoryProductionManager.ViewModel
             PlayPushButtonSound();
             if (ActiveBlock == null) return;
 
-            if (ActiveBlock == ProductionManager.ActiveLine.MainProductionBlock)
+            if (ActiveBlock == ActiveLine.MainProductionBlock)
                 RemoveActiveLine();
             else
             {
-                ProductionManager.ActiveLine.RemoveProductionBlock(ActiveBlock);
+                ActiveLine.RemoveProductionBlock(ActiveBlock);
+                RemoveProductionBlockVM(ActiveBlock);
 
-                SetActiveBlock(ProductionManager.ActiveLine.MainProductionBlock);
-                SetProductionBlocks(ProductionManager.ActiveLine);
+                SetActiveBlock(ActiveLine.MainProductionBlock);
+                SetProductionBlocks(ActiveLine);
 
                 UpdateLineIO();
             }
@@ -187,13 +197,15 @@ namespace SatisfactoryProductionManager.ViewModel
         private void CreateProductionLine(Recipe recipe)
         {
             var line = ProductionManager.AddProductionLine(recipe);
+            AddProductionBlockVM(line.MainProductionBlock);
+
             var lineIO = new ProductionLineIOVM(line);
             var lineButton = new ProductionLineButtonVM(line);
 
             _productionLinesIOs.Add(lineIO);
             lineIO.NeedToCreateProductionBlock += AddProductionBlock_CommandHandler;
             SetActiveLine(line);
-            
+
             ProductionLineButtons.Add(lineButton);
             lineButton.ObjectSelected += PlayPushButtonSound;
             lineButton.ObjectSelected += SetActiveLine;
@@ -202,14 +214,22 @@ namespace SatisfactoryProductionManager.ViewModel
         private void CreateProductionBlock(Recipe recipe)
         {
             ProductionManager.ActiveLine.AddProductionBlock(recipe);
-            SetActiveBlock(ProductionManager.ActiveLine.ProductionBlocks.Last());
+
+            var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
+            AddProductionBlockVM(block);
+
+            SetActiveBlock(block);
             SetProductionBlocks(ProductionManager.ActiveLine);
         }
 
         private void CreateProductionBlock(ResourceRequest request, Recipe recipe)
         {
             ProductionManager.ActiveLine.AddProductionBlock(request, recipe);
-            SetActiveBlock(ProductionManager.ActiveLine.ProductionBlocks.Last());
+
+            var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
+            AddProductionBlockVM(block);
+
+            SetActiveBlock(block);
             SetProductionBlocks(ProductionManager.ActiveLine);
 
             UpdateLineIO();
@@ -217,7 +237,11 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void CreateProductionBlock(ProductionUnit unit)
         {
-            ProductionManager.ActiveLine.AddProductionBlock(unit);
+            ActiveLine.AddProductionBlock(unit);
+
+            var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
+            AddProductionBlockVM(block);
+
             SetProductionBlocks(ProductionManager.ActiveLine);
 
             UpdateLineIO();
@@ -246,8 +270,12 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             _productionLinesIOs.Remove(ActiveLineIO);
 
-            var activeLineButton = ProductionLineButtons.First((plb) => plb.InnerObject == ProductionManager.ActiveLine);
+            var activeLineButton = ProductionLineButtons.First((plb) => plb.InnerObject == ActiveLine);
             ProductionLineButtons.Remove(activeLineButton);
+
+            foreach (var block in ActiveLine.ProductionBlocks)
+                RemoveProductionBlockVM(block);
+
             ProductionBlockButtons.Clear();
             ProductionManager.RemoveActiveLine();
 
@@ -265,11 +293,26 @@ namespace SatisfactoryProductionManager.ViewModel
             }
 
             ActiveBlock = block;
-            ProductionBlockWorkspace = new ProductionBlockVM(block);
-            ProductionBlockWorkspace.ButtonPressed += PlayPushButtonSound;
-            ProductionBlockWorkspace.RequestingAddBlock += CreateProductionBlock;
-            ProductionBlockWorkspace.PropertyChanged += UpdateLineIO;
+            ProductionBlockWorkspace = _productionBlockWorkspaces.First(blockVM => blockVM.SourceBlock == block);
             RaisePropertyChanged(nameof(ProductionBlockWorkspace));
+        }
+
+        private void AddProductionBlockVM(ProductionBlock block)
+        {
+            var blockVM = new ProductionBlockVM(block);
+
+            blockVM.ButtonPressed += PlayPushButtonSound;
+            blockVM.RequestingAddBlock += CreateProductionBlock;
+            blockVM.PropertyChanged += UpdateLineIO;
+
+            _productionBlockWorkspaces.Add(blockVM);
+        }
+
+        private void RemoveProductionBlockVM(ProductionBlock block)
+        {
+            var deprecatedBlockVM = _productionBlockWorkspaces
+                .First(blockVM => blockVM.SourceBlock == block);
+            _productionBlockWorkspaces.Remove(deprecatedBlockVM);
         }
 
         private void SetProductionBlocks(ProductionLine prodLine)
