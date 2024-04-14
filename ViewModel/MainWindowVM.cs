@@ -179,7 +179,12 @@ namespace SatisfactoryProductionManager.ViewModel
 
             var lines = ProductionManager.ProductionLines.Select(pl => new ProductionLineButtonVM(pl)).ToList();
             ProductionLineButtons.AddRange(lines);
-            foreach (var line in ProductionLineButtons) line.ObjectSelected += SetActiveLine;
+
+            foreach (var button in ProductionLineButtons)
+            {
+                button.ObjectSelected += PlayPushButtonSound;
+                button.ObjectSelected += SetActiveLine;
+            }
         }
 
         private void UpdateLineIO()
