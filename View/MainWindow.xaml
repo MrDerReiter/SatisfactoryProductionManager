@@ -247,7 +247,7 @@
                                 <ItemsControl
                                     DockPanel.Dock="Left"
                                     Margin="10,0,0,0"
-                                    ItemsSource="{Binding Path=ActiveLineOutputButtons}">
+                                    ItemsSource="{Binding Path=ActiveLineIO.OutputButtons}">
 
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -285,7 +285,7 @@
 
                                 <ItemsControl
                                     Margin="10,0,0,0"
-                                    ItemsSource="{Binding Path=ActiveLineInputButtons}">
+                                    ItemsSource="{Binding Path=ActiveLineIO.InputButtons}">
 
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>

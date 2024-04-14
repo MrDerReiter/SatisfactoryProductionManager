@@ -38,22 +38,17 @@ namespace SatisfactoryProductionManager.Model
             _productionLines = new BindingList<ProductionLine>(savedData);
         }
 
-        public static void AddProductionLine(ProductionLine prodLine)
-        {
-            _productionLines.Add(prodLine);
-        }
 
-        public static void AddProductionLine(Recipe recipe)
+        public static ProductionLine AddProductionLine(Recipe recipe)
         {
             var line = new ProductionLine(recipe);
             _productionLines.Add(line);
-            ActiveLine = line;
+            return line;
         }
 
         public static void RemoveActiveLine()
         {
             _productionLines.Remove(ActiveLine);
-            ActiveLine = ProductionLines.FirstOrDefault();
         }
 
         public static void MoveActiveLineLeft()
