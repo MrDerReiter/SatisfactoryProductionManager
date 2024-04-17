@@ -16,9 +16,11 @@ using System.Windows.Media;
 
 namespace SatisfactoryProductionManager.ViewModel
 {
+    // TODO: Провести рефакторинг SRP, перенести все манипуляции с фабрикой в ProductionManager
     public class MainWindowVM : BindableBase
     {
         private readonly MediaPlayer _player;
+        // TODO: сделать реализацию через словарь вместо списка
         private readonly List<ProductionLineIOVM> _productionLinesIOs;
         private readonly List<ProductionBlockVM> _productionBlockWorkspaces;
 
@@ -29,14 +31,13 @@ namespace SatisfactoryProductionManager.ViewModel
         public BindingList<ProductionLineButtonVM> ProductionLineButtons { get; }
         public BindingList<ProductionBlockButtonVM> ProductionBlockButtons { get; }
 
-
         public DelegateCommand AddProductionLine { get; }
         public DelegateCommand AddProductionBlock { get; }
         public DelegateCommand MoveActiveLineLeft { get; }
         public DelegateCommand MoveActiveLineRight { get; }
         public DelegateCommand RemoveActiveBlock { get; }
 
-
+        // TODO: Отрефакторить конструктор, он слишком огромный
         public MainWindowVM()
         {
             _player = new MediaPlayer();
@@ -81,96 +82,10 @@ namespace SatisfactoryProductionManager.ViewModel
         }
 
 
-        private void AddProductionLine_CommandHandler()
-        {
-            PlayPushButtonSound();
-
-            var selector = new RecipeSelector();
-            var context = selector.DataContext as RecipeSelectorVM;
-            context.RecipeSelected += PlayPushButtonSound;
-            context.RecipeSelected += CreateProductionLine;
-            selector.ShowDialog();
-        }
-
-        private void AddProductionBlock_CommandHandler()
-        {
-            PlayPushButtonSound();
-            if (ProductionManager.ActiveLine == null) return;
-
-            var selector = new RecipeSelector();
-            var context = selector.DataContext as RecipeSelectorVM;
-            context.RecipeSelected += PlayPushButtonSound;
-            context.RecipeSelected += CreateProductionBlock;
-            selector.ShowDialog();
-        }
-
-        private void AddProductionBlock_CommandHandler(ResourceStream stream)
-        {
-            PlayPushButtonSound();
-
-            try
-            {
-                var selector = new RequestRecipeSelector(stream.ToRequest());
-                var context = selector.DataContext as RequestRecipeSelectorVM;
-                context.RecipeSelected += PlayPushButtonSound;
-                context.RecipeSelected += CreateProductionBlock;
-                selector.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка при инициализации выбора рецепта", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void MoveActiveLineLeft_CommandHandler()
-        {
-            PlayPushButtonSound();
-
-            ProductionManager.MoveActiveLineLeft();
-            UpdateProductionLineButtons();
-        }
-
-        private void MoveActiveLineRight_CommandHandler()
-        {
-            PlayPushButtonSound();
-
-            ProductionManager.MoveActiveLineRight();
-            UpdateProductionLineButtons();
-        }
-
-        private void RemoveActiveBlock_CommandHandler()
-        {
-            PlayPushButtonSound();
-            if (ActiveBlock == null) return;
-
-            if (ActiveBlock == ActiveLine.MainProductionBlock)
-                RemoveActiveLine();
-            else
-            {
-                ActiveLine.RemoveProductionBlock(ActiveBlock);
-                RemoveProductionBlockVM(ActiveBlock);
-
-                SetActiveBlock(ActiveLine.MainProductionBlock);
-                SetProductionBlocks(ActiveLine);
-
-                UpdateLineIO();
-            }
-        }
-
         private void PlayPushButtonSound()
         {
             _player.Stop();
             _player.Play();
-        }
-
-        private void PlayPushButtonSound(object obj)
-        {
-            PlayPushButtonSound();
-        }
-
-        private void PlayPushButtonSound(object obj1, object obj2)
-        {
-            PlayPushButtonSound();
         }
 
         private void UpdateProductionLineButtons()
@@ -192,11 +107,6 @@ namespace SatisfactoryProductionManager.ViewModel
             if (ProductionManager.ActiveLine == null) return;
 
             ActiveLineIO.Update();
-        }
-
-        private void UpdateLineIO(object sender, PropertyChangedEventArgs args)
-        {
-            UpdateLineIO();
         }
 
         private void CreateProductionLine(Recipe recipe)
@@ -252,6 +162,7 @@ namespace SatisfactoryProductionManager.ViewModel
             UpdateLineIO();
         }
 
+        // TODO: Делегировать классу ProductionManager
         private void SetActiveLine(ProductionLine prodLine)
         {
             if (prodLine == null)
@@ -339,5 +250,104 @@ namespace SatisfactoryProductionManager.ViewModel
             }
 
         }
+
+        #region Обработчики команд
+
+        private void AddProductionLine_CommandHandler()
+        {
+            PlayPushButtonSound();
+
+            var selector = new RecipeSelector();
+            var context = selector.DataContext as RecipeSelectorVM;
+            context.RecipeSelected += PlayPushButtonSound;
+            context.RecipeSelected += CreateProductionLine;
+            selector.ShowDialog();
+        }
+
+        private void AddProductionBlock_CommandHandler()
+        {
+            PlayPushButtonSound();
+            if (ProductionManager.ActiveLine == null) return;
+
+            var selector = new RecipeSelector();
+            var context = selector.DataContext as RecipeSelectorVM;
+            context.RecipeSelected += PlayPushButtonSound;
+            context.RecipeSelected += CreateProductionBlock;
+            selector.ShowDialog();
+        }
+
+        private void AddProductionBlock_CommandHandler(ResourceStream stream)
+        {
+            PlayPushButtonSound();
+
+            try
+            {
+                var selector = new RequestRecipeSelector(stream.ToRequest());
+                var context = selector.DataContext as RequestRecipeSelectorVM;
+                context.RecipeSelected += PlayPushButtonSound;
+                context.RecipeSelected += CreateProductionBlock;
+                selector.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка при инициализации выбора рецепта", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MoveActiveLineLeft_CommandHandler()
+        {
+            PlayPushButtonSound();
+
+            ProductionManager.MoveActiveLineLeft();
+            UpdateProductionLineButtons();
+        }
+
+        private void MoveActiveLineRight_CommandHandler()
+        {
+            PlayPushButtonSound();
+
+            ProductionManager.MoveActiveLineRight();
+            UpdateProductionLineButtons();
+        }
+
+        private void RemoveActiveBlock_CommandHandler()
+        {
+            PlayPushButtonSound();
+            if (ActiveBlock == null) return;
+
+            if (ActiveBlock == ActiveLine.MainProductionBlock)
+                RemoveActiveLine();
+            else
+            {
+                ActiveLine.RemoveProductionBlock(ActiveBlock);
+                RemoveProductionBlockVM(ActiveBlock);
+
+                SetActiveBlock(ActiveLine.MainProductionBlock);
+                SetProductionBlocks(ActiveLine);
+
+                UpdateLineIO();
+            }
+        }
+
+        #endregion
+
+        #region Вспомогательные перегрузки методов
+
+        private void PlayPushButtonSound<T>(T obj)
+        {
+            PlayPushButtonSound();
+        }
+
+        private void PlayPushButtonSound<T1, T2>(T1 obj1, T2 obj2)
+        {
+            PlayPushButtonSound();
+        }
+
+        private void UpdateLineIO(object sender, PropertyChangedEventArgs args)
+        {
+            UpdateLineIO();
+        }
+
+        #endregion
     }
 }

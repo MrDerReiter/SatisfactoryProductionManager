@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SatisfactoryProductionManager.Model
@@ -23,7 +24,7 @@ namespace SatisfactoryProductionManager.Model
         private List<Recipe> ReadRecipiesFromFile(string filePath)
         {
             var list = new List<Recipe>();
-            var content = File.ReadAllLines(filePath,Encoding.Unicode);
+            var content = File.ReadAllLines(filePath, Encoding.Unicode);
 
             for (int i = 0; i < content.Length; i++)
             {
@@ -70,7 +71,7 @@ namespace SatisfactoryProductionManager.Model
         public IEnumerable<Recipe> GetAllRecipiesOfCategory(string category)
         {
             var list = _recipies.FindAll(x => x.Category == category);
-            return list.Count > 0 ? list 
+            return list.Count > 0 ? list
                 : throw new InvalidOperationException("Не удалось найти рецепты в данной категории");
         }
 
@@ -93,8 +94,14 @@ namespace SatisfactoryProductionManager.Model
 
         public Recipe GetRecipeByName(string name)
         {
-            return _recipies.Find(x => x.Name == name)
-                ?? throw new ArgumentException($"Не удалось найти рецепт с названием {name}");
+            try
+            {
+                return _recipies.First(x => x.Name == name);
+            }
+            catch
+            {
+                throw new KeyNotFoundException($"Не удалось найти в базе рецепт {name}");
+            }
         }
     }
 }

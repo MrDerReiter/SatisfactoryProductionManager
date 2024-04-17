@@ -1,14 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection.PortableExecutable;
-using System.Xml.Linq;
-
-namespace SatisfactoryProductionManager.Model.Elements;
+﻿namespace SatisfactoryProductionManager.Model.Elements;
 
 /// <summary>
 /// Инкапсулирует рецепт, используемый на производственной линии.
 /// </summary>
-public class Recipe
+public readonly struct Recipe
 {
     public string Name { get; }
     public string Category { get; }
@@ -29,5 +24,15 @@ public class Recipe
         Product = product;
         Byproduct = byproduct;
         Inputs = inputs;
+    }
+
+    public static bool operator ==(Recipe left, Recipe right)
+    {
+        return left.Name == right.Name;
+    }
+
+    public static bool operator !=(Recipe left, Recipe right)
+    {
+        return !(left == right);
     }
 }
