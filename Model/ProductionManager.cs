@@ -22,12 +22,11 @@ namespace SatisfactoryProductionManager.Model
             get => _activeLine;
             set
             {
-                _activeLine = value;
-                ActiveLineChanged?.Invoke(ActiveLine);
+                if (_productionLines.Contains(value) || value == null) _activeLine = value;
+                else throw new InvalidOperationException
+                        ("Попытка использовать в качестве активной линию, которой нет в списке менеджера.");
             }
         }
-
-        public static event Action<ProductionLine> ActiveLineChanged;
 
         static ProductionManager()
         {
