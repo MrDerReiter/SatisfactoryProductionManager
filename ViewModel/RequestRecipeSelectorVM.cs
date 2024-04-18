@@ -13,14 +13,14 @@ namespace SatisfactoryProductionManager.ViewModel
 
         public List<RecipeSelectButtonVM> Buttons { get; }
 
-        public event Action<ResourceRequest,Recipe> RecipeSelected;
+        public event Action<ResourceRequest, Recipe> RecipeSelected;
 
 
         public RequestRecipeSelectorVM(ResourceRequest request)
         {
             _request = request;
 
-            Buttons = 
+            Buttons =
                 ProductionManager.RecipeProvider
                 .GetAllRecipiesOfProduct(_request.Resource)
                 .Select((recipe) => new RecipeSelectButtonVM(recipe)).ToList();
