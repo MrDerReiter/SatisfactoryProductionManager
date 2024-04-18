@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 
-namespace SatisfactoryProductionManager.Model
+namespace SatisfactoryProductionManager.Services
 {
     public static class NameTranslatorRU
     {

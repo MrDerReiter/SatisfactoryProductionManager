@@ -1,7 +1,7 @@
 ﻿using SatisfactoryProductionManager.Model.Interfaces;
 using Unity;
 
-namespace SatisfactoryProductionManager.Model
+namespace SatisfactoryProductionManager.Services
 {
     public static class CommonUnityDIContainer
     {

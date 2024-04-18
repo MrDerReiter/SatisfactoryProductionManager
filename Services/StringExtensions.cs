@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SatisfactoryProductionManager.Model
+namespace SatisfactoryProductionManager.Services
 {
     public static class StringExtensions
     {

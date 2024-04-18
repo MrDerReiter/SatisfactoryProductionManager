@@ -1,4 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
+﻿using SatisfactoryProductionManager.Model;
+using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.Model.Interfaces;
 using SatisfactoryProductionManager.Model.Production;
 using System;
@@ -7,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 
-namespace SatisfactoryProductionManager.Model
+namespace SatisfactoryProductionManager.Services
 {
     public class FileSaveLoadManager : IFactorySaveLoadManager
     {
@@ -175,7 +176,7 @@ namespace SatisfactoryProductionManager.Model
 
                 File.WriteAllLines(_filePath, allProdLines);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\nПри попытке сохранить фабрику возникла ошибка.\nПри следующем сеансе текущая фабрика не будет восстановлена.",
                     "Ошибка при сохранении фабрики", MessageBoxButton.OK, MessageBoxImage.Error);

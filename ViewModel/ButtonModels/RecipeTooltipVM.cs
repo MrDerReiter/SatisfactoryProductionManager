@@ -1,8 +1,7 @@
-﻿using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.Model.Elements;
+﻿using SatisfactoryProductionManager.Model.Elements;
+using SatisfactoryProductionManager.Services;
 using System;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,7 +21,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 
             if (recipe.HasByproduct)
             {
-                Outputs = 
+                Outputs =
                     [
                         new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute),
                         new ImageTuple(recipe.Byproduct.Value.Resource, recipe.Byproduct.Value.CountPerMinute)
@@ -34,7 +33,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
             }
 
             Inputs = recipe.Inputs
-                .Select(stream =>new ImageTuple(stream.Resource, stream.CountPerMinute)).ToArray();
+                .Select(stream => new ImageTuple(stream.Resource, stream.CountPerMinute)).ToArray();
         }
 
 
@@ -45,7 +44,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 
             public ImageTuple(string resource, double count)
             {
-                Image = new BitmapImage(new Uri ($"../Assets/Resources/{resource}.png", UriKind.Relative));
+                Image = new BitmapImage(new Uri($"../Assets/Resources/{resource}.png", UriKind.Relative));
                 Count = count.ToString("0.###", CultureInfo.InvariantCulture) + "/мин.";
             }
         }

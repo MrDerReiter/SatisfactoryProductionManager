@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SatisfactoryProductionManager.Model
+namespace SatisfactoryProductionManager.Services
 {
     public class FileRecipeProvider : IRecipeProvider
     {

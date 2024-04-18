@@ -1,6 +1,7 @@
 ﻿using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.Model.Interfaces;
 using SatisfactoryProductionManager.Model.Production;
+using SatisfactoryProductionManager.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
