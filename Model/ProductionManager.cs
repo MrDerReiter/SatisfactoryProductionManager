@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Unity;
 
 namespace SatisfactoryProductionManager.Model
 {
@@ -30,8 +31,8 @@ namespace SatisfactoryProductionManager.Model
 
         static ProductionManager()
         {
-            _SaveLoadManager = new FileSaveLoadManager();
-            RecipeProvider = new FileRecipeProvider();
+            _SaveLoadManager = CommonUnityDIContainer.GetContainer().Resolve<IFactorySaveLoadManager>();
+            RecipeProvider = CommonUnityDIContainer.GetContainer().Resolve<IRecipeProvider>();
 
             var savedData = _SaveLoadManager.LoadFactory();
             _productionLines = new BindingList<ProductionLine>(savedData);

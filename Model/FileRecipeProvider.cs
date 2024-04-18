@@ -11,12 +11,16 @@ namespace SatisfactoryProductionManager.Model
 {
     public class FileRecipeProvider : IRecipeProvider
     {
-        private readonly string _path = $"{Environment.CurrentDirectory}\\Recipies.txt";
+        private readonly string _path;
         private List<Recipe> _recipies;
 
 
         public FileRecipeProvider()
+           : this($"{Environment.CurrentDirectory}\\Recipies.txt") { }
+
+        public FileRecipeProvider(string path)
         {
+            _path = path;
             _recipies = ReadRecipiesFromFile(_path);
         }
 
