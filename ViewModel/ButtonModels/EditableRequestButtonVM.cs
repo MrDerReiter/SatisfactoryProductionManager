@@ -17,7 +17,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
             {
                 try
                 {
-                    if (Regex.IsMatch(value, @"^\d*\.?\d*\s*[-+*/]\s*\d*\.?\d*$"))
+                    if (Regex.IsMatch(value, @"^\d+\.?\d*\s*[-+*/]\s*\d+\.?\d*$"))
                     {
                         var leftNumber = double.Parse(Regex.Match(value, @"^\s*\d*\.?\d*").Value, CultureInfo.InvariantCulture);
                         var rightNumber = double.Parse(Regex.Match(value, @"\d*\.?\d*\s*$").Value, CultureInfo.InvariantCulture);
