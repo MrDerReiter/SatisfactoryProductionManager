@@ -116,11 +116,11 @@ namespace SatisfactoryProductionManager.Services
                 controlUnitList.RemoveAt(0);
             else throw new InvalidDataException("Ошибка в сохранённых данных; главный цех производственного блока не совпадает с его сигнатурой.");
 
-            for (int i = 0; i < controlUnitList.Count; i++)
+            for (int i = 0; i < controlUnitList.Count; i++) 
             {
-                for (int j = 0; j < block.Inputs.Count; j++)
+                for (int j = 0; j < block.Inputs.Count; j++) 
                 {
-                    if (controlUnitList[i].ProductionRequest == block.Inputs[j])
+                    if (controlUnitList[i].ProductionRequest == block.Inputs[j]) 
                     {
                         block.AddProductionUnit(block.Inputs[j], controlUnitList[i].Recipe);
                         controlUnitList.RemoveAt(i);
