@@ -500,8 +500,9 @@
 
                                                 <StackPanel
                                                     Background="Gray"
-                                                    VerticalAlignment="Center"
-                                                    Width="30">
+                                                    VerticalAlignment="Bottom"
+                                                    Width="32"
+                                                    ToolTip="Разгон">
 
                                                     <Button
                                                         Background="LightGray"
@@ -522,11 +523,53 @@
                                                             Source="../Assets/AddItem.png"
                                                             RenderOptions.BitmapScalingMode="HighQuality"/>
                                                     </Button>
+
+                                                    <StackPanel
+                                                        Height="40">
+                                                        
+                                                        <TextBox
+                                                            Height="20"
+                                                            DockPanel.Dock="Top"
+                                                            Background="GhostWhite"
+                                                            VerticalContentAlignment="Center"
+                                                            FontSize="10"
+                                                            TextOptions.TextRenderingMode="Aliased"
+                                                            TextAlignment="Center"
+                                                            Text="{Binding Path=Overclock}"/>
+
+                                                        <StackPanel
+                                                            Orientation="Horizontal">
+
+                                                            <Button
+                                                                Background="GhostWhite"
+                                                                Width="16"
+                                                                HorizontalAlignment="Left"
+                                                                Command="{Binding Path=DecreaseOverclock}">
+                                                                
+                                                                <Image
+                                                                    Source="../Assets/MoveLineLeft.png"
+                                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            </Button>
+
+                                                            <Button
+                                                                Background="GhostWhite"
+                                                                Width="16"
+                                                                HorizontalAlignment="Right"
+                                                                Command="{Binding Path=IncreaseOverclock}">
+                                                                
+                                                                <Image
+                                                                    Source="../Assets/MoveLineRight.png"
+                                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                                            </Button>
+                                                        </StackPanel>
+                                                        
+                                                    </StackPanel>
                                                 </StackPanel>
 
                                                 <StackPanel
                                                     Background="LightGray"
-                                                    Width="65"
+                                                    Width="70"
                                                     Margin="3">
 
                                                     <TextBlock
@@ -568,7 +611,7 @@
                                                             <DataTemplate>
 
                                                                 <StackPanel
-                                                                    Width="65"
+                                                                    Width="70"
                                                                     Background="LightBlue">
 
                                                                     <Image
@@ -609,7 +652,7 @@
                                                             <DataTemplate>
 
                                                                 <StackPanel
-                                                                    Width="65"
+                                                                    Width="70"
                                                                     Background="LightGreen">
 
                                                                     <Image
