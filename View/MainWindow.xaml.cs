@@ -1,8 +1,11 @@
 ﻿using Prism.Commands;
 using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel;
+using SatisfactoryProductionManager.ViewModel.ProductionModels;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 
 namespace SatisfactoryProductionManager.View
@@ -52,6 +55,14 @@ namespace SatisfactoryProductionManager.View
         private void SaveBeforeClosing(object sender, CancelEventArgs e)
         {
             ProductionManager.SaveFactory();
+        }
+
+        private void OverclockMouseWheelControl(object sender, MouseWheelEventArgs args)
+        {
+            args.Handled = true;
+            var context = (sender as TextBox).DataContext as ProductionUnitVM;
+            var command = args.Delta > 0 ? context.IncreaseOverclock : context.DecreaseOverclock;
+            command.Execute(10);
         }
     }
 }

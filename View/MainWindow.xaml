@@ -535,6 +535,7 @@
                                                             FontSize="10"
                                                             TextOptions.TextRenderingMode="Aliased"
                                                             TextAlignment="Center"
+                                                            MouseWheel="OverclockMouseWheelControl"
                                                             Text="{Binding Path=Overclock}"/>
 
                                                         <StackPanel

@@ -6,7 +6,7 @@ namespace SatisfactoryProductionManager.Model.Production
 {
     public class ProductionUnit
     {
-        private double _overclock = 1;
+        private double _overclock = 100;
         private readonly ResourceRequest[] _inputs;
 
         public Recipe Recipe { get; }
@@ -15,11 +15,11 @@ namespace SatisfactoryProductionManager.Model.Production
             get => _overclock;
             set
             {
-                if(value > 0 && value <= 2.5) _overclock = value;
+                if(value > 0 && value <= 250) _overclock = value;
             }
         }
         public string Machine { get => Recipe.Machine; }
-        public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute / Overclock; }
+        public double MachinesCount { get => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute / (Overclock * 0.01); }
         public bool HasByproduct { get => Recipe.HasByproduct; }
         public ResourceRequest ProductionRequest { get; }
         public ResourceStream Byproduct { get; private set; }

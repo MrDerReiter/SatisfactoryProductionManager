@@ -6,6 +6,7 @@ using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -20,16 +21,28 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         public string MachineCount { get => _sourceUnit.MachinesCount.ToString("0.###", CultureInfo.InvariantCulture); }
         public string Overclock
         {
-            get => (_sourceUnit.Overclock * 100).ToString("0.###", CultureInfo.InvariantCulture) + "%";
+            get => _sourceUnit.Overclock.ToString("0.#", CultureInfo.InvariantCulture) + "%";
             set
             {
-                if (double.TryParse(value.Replace("%", string.Empty), CultureInfo.InvariantCulture, out double result))
+                try
                 {
-                    _sourceUnit.Overclock = result / 100;
+                    if (Regex.IsMatch(value, @"^\d+\.?\d*\s*[-+*/]\s*\d+\.?\d*$"))
+                    {
+                         var result = double.Parse(RegexCalculator.Calculate(value), CultureInfo.InvariantCulture);
+                        _sourceUnit.Overclock = result;
+                    }
+                    else if (Regex.IsMatch(value, @"^\d+\.?\d*%?$"))
+                    {
+                        var result = double.Parse(value.Replace("%", ""), CultureInfo.InvariantCulture);
+                        _sourceUnit.Overclock = result;
+                    }
+                }
+                catch (Exception) { }
+                finally
+                {
                     RaisePropertyChanged(nameof(Overclock));
                     RaisePropertyChanged(nameof(MachineCount));
                 }
-                    
             }
         }
         public ResourceStreamButtonVM[] Products { get; }
@@ -37,8 +50,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         public DelegateCommand RemoveProdUnit { get; }
         public DelegateCommand ConvertUnitToBlock { get; }
-        public DelegateCommand IncreaseOverclock { get; }
-        public DelegateCommand DecreaseOverclock { get; }
+        public DelegateCommand<double?> IncreaseOverclock { get; }
+        public DelegateCommand<double?> DecreaseOverclock { get; }
 
         public event Action<ProductionUnit> RequestingRemoveProdUnit;
         public event Action<ProductionUnit> RequestingConvertUnitToBlock;
@@ -66,8 +79,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             RemoveProdUnit = new DelegateCommand(RemoveProdUnit_CommandHandler);
             ConvertUnitToBlock = new DelegateCommand(ConvertUnitToBlock_CommandHandler);
-            IncreaseOverclock = new DelegateCommand(IncreaseOverclock_CommandHandler);
-            DecreaseOverclock = new DelegateCommand(DecreaseOverclock_CommandHandler);
+            IncreaseOverclock = new DelegateCommand<double?>(IncreaseOverclock_CommandHandler);
+            DecreaseOverclock = new DelegateCommand<double?>(DecreaseOverclock_CommandHandler);
         }
 
 
@@ -81,23 +94,23 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             RequestingConvertUnitToBlock?.Invoke(_sourceUnit);
         }
 
-        private void IncreaseOverclock_CommandHandler()
+        private void IncreaseOverclock_CommandHandler(double? value)
         {
-            if (_sourceUnit.Overclock > 2) return;
+            if (!value.HasValue) value = 50;
+            if (_sourceUnit.Overclock + value > 250) return;
 
-            if (_sourceUnit.Overclock >= 1) _sourceUnit.Overclock += 0.5;
-            else _sourceUnit.Overclock += 0.1;
+            _sourceUnit.Overclock += (double)value;
 
             RaisePropertyChanged(nameof(Overclock));
             RaisePropertyChanged(nameof(MachineCount));
         }
 
-        private void DecreaseOverclock_CommandHandler()
+        private void DecreaseOverclock_CommandHandler(double? value)
         {
-            if (_sourceUnit.Overclock <= 0.1001) return;
+            if (!value.HasValue) value = 50;
+            if (_sourceUnit.Overclock - value <= 0) return;
 
-            if (_sourceUnit.Overclock >= 1.5) _sourceUnit.Overclock -= 0.5;
-            else _sourceUnit.Overclock -= 0.1;
+            _sourceUnit.Overclock -= (double)value;
 
             RaisePropertyChanged(nameof(Overclock));
             RaisePropertyChanged(nameof(MachineCount));

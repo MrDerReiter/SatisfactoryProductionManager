@@ -1,7 +1,9 @@
 ﻿using Prism.Commands;
 using SatisfactoryProductionManager.Model.Elements;
+using SatisfactoryProductionManager.Services;
 using System;
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -17,29 +19,18 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
             {
                 try
                 {
-                    if (Regex.IsMatch(value, @"^\d+\.?\d*\s*[-+*/]\s*\d+\.?\d*$"))
+                    if(Regex.IsMatch(value, @"^\d+\.?\d*\s*[-+*/]\s*\d+\.?\d*$"))
                     {
-                        var leftNumber = double.Parse(Regex.Match(value, @"^\s*\d*\.?\d*").Value, CultureInfo.InvariantCulture);
-                        var rightNumber = double.Parse(Regex.Match(value, @"\d*\.?\d*\s*$").Value, CultureInfo.InvariantCulture);
-                        var operation = Regex.Match(value, @"[-+*/]").Value;
+                        var result = double.Parse(RegexCalculator.Calculate(value), CultureInfo.InvariantCulture);
 
-                        var total = operation switch
-                        {
-                            "+" => leftNumber + rightNumber,
-                            "-" => leftNumber - rightNumber,
-                            "*" => leftNumber * rightNumber,
-                            "/" => rightNumber != 0 ? leftNumber / rightNumber : throw new InvalidOperationException(),
-                            _ => throw new InvalidOperationException()
-                        };
-
-                        InnerObject.CountPerMinute = total;
+                        InnerObject.CountPerMinute = result;
                         RaisePropertyChanged(nameof(RequestValue));
                     }
                     else
                     {
                         InnerObject.CountPerMinute = double.Parse(value, CultureInfo.InvariantCulture);
                         RaisePropertyChanged(nameof(RequestValue));
-                    }   
+                    }
                 }
                 catch
                 {
