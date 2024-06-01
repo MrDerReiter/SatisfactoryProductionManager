@@ -1,5 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Services;
+﻿using SatisfactoryProductionManager.Model;
+using FactoryManagementCore.Services;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
         public ImageTuple[] Inputs { get; }
 
 
-        public RecipeTooltipVM(Recipe recipe)
+        public RecipeTooltipVM(SatisfactoryRecipe recipe)
         {
             Title = recipe.Name.TranslateRU();
 

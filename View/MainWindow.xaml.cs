@@ -54,7 +54,7 @@ namespace SatisfactoryProductionManager.View
 
         private void SaveBeforeClosing(object sender, CancelEventArgs e)
         {
-            ProductionManager.SaveFactory();
+            Model.ProductionManager.SaveFactory();
         }
 
         private void OverclockMouseWheelControl(object sender, MouseWheelEventArgs args)

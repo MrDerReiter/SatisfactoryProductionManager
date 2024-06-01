@@ -1,6 +1,7 @@
-﻿using Prism.Mvvm;
-using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Model.Production;
+﻿using FactoryManagementCore.Production;
+using FactoryManagementCore.Elements;
+using Prism.Mvvm;
+using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.View;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
@@ -44,7 +45,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             RequestButtons = new BindingList<RequestButtonVM>(requestButtons);
             foreach (var button in RequestButtons) button.ObjectSelected += RunSelector;
 
-            var byproductButtons = _sourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
+            var byproductButtons = _sourceBlock.Outputs.Skip(1).Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
             ByproductButtons = new BindingList<ByproductButtonVM>(byproductButtons);
 
             ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
@@ -103,7 +104,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             RequestButtons.AddRange(requestButtons);
             foreach (var button in RequestButtons) button.ObjectSelected += RunSelector;
 
-            var byproductButtons = _sourceBlock.Byproducts.Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
+            var byproductButtons = _sourceBlock.Outputs.Skip(1).Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
             ByproductButtons.Clear();
             ByproductButtons.AddRange(byproductButtons);
 
@@ -128,7 +129,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             }
         }
 
-        private void ExpandRequestToProductionUnit(ResourceRequest request, Recipe recipe)
+        private void ExpandRequestToProductionUnit(ResourceRequest request, SatisfactoryRecipe recipe)
         {
             ButtonPressed_EventStarter(null);
 

@@ -1,4 +1,4 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
+﻿using FactoryManagementCore.Elements;
 using SatisfactoryProductionManager.ViewModel;
 using System.Windows;
 using System.Windows.Input;

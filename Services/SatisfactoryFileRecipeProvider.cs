@@ -1,5 +1,6 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Model.Interfaces;
+﻿using FactoryManagementCore.Elements;
+using FactoryManagementCore.Interfaces;
+using SatisfactoryProductionManager.Model;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,25 +10,25 @@ using System.Text;
 
 namespace SatisfactoryProductionManager.Services
 {
-    public class FileRecipeProvider : IRecipeProvider
+    public class SatisfactoryFileRecipeProvider : IRecipeProvider<SatisfactoryRecipe>
     {
         private readonly string _path;
-        private List<Recipe> _recipies;
+        private HashSet<SatisfactoryRecipe> _recipies;
 
 
-        public FileRecipeProvider()
+        public SatisfactoryFileRecipeProvider()
            : this($"{Environment.CurrentDirectory}\\Recipies.txt") { }
 
-        public FileRecipeProvider(string path)
+        public SatisfactoryFileRecipeProvider(string path)
         {
             _path = path;
             _recipies = ReadRecipiesFromFile(_path);
         }
 
 
-        private List<Recipe> ReadRecipiesFromFile(string filePath)
+        private HashSet<SatisfactoryRecipe> ReadRecipiesFromFile(string filePath)
         {
-            var list = new List<Recipe>();
+            var list = new HashSet<SatisfactoryRecipe>();
             var content = File.ReadAllLines(filePath, Encoding.Unicode);
 
             for (int i = 0; i < content.Length; i++)
@@ -38,19 +39,13 @@ namespace SatisfactoryProductionManager.Services
                     string category = content[i + 2];
                     string machine = content[i + 3];
 
-                    string[] outputs = content[i + 4].Split("||");
-                    string prodRes = outputs[0].Split(' ')[0];
-                    double prodCount = double.Parse(outputs[0].Split(' ')[1], CultureInfo.InvariantCulture);
-                    var product = new ResourceStream(prodRes, prodCount);
-
-                    ResourceStream? byproduct;
-                    if (outputs[1] == "null") byproduct = null;
-                    else
+                    string[] strOutputs = content[i + 4].Split("||");
+                    var outputs = new ResourceStream[strOutputs[1] == "null" ? 1 : 2];
+                    for (int j = 0; j < outputs.Length; j++)
                     {
-                        string byprRes = outputs[1].Split(' ')[0];
-                        double byprCount = double.Parse(outputs[1].Split(' ')[1], CultureInfo.InvariantCulture);
-
-                        byproduct = new ResourceStream(byprRes, byprCount);
+                        string outRes = strOutputs[j].Split(' ')[0];
+                        double outCount = double.Parse(strOutputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
+                        outputs[j] = new ResourceStream(outRes, outCount);
                     }
 
                     string[] strInputs = content[i + 5].Split("||");
@@ -62,8 +57,7 @@ namespace SatisfactoryProductionManager.Services
                         inputs[j] = new ResourceStream(inpRes, inpCount);
                     }
 
-                    var recipe = new Recipe(name, machine, category, product, inputs, byproduct);
-                    list.Add(recipe);
+                    list.Add(new SatisfactoryRecipe(name, machine, category, inputs, outputs));
                     i += 5;
                 }
             }
@@ -72,31 +66,30 @@ namespace SatisfactoryProductionManager.Services
         }
 
 
-        public IEnumerable<Recipe> GetAllRecipiesOfCategory(string category)
+        public IEnumerable<SatisfactoryRecipe> GetAllRecipiesOfCategory(string category)
         {
-            var list = _recipies.FindAll(x => x.Category == category);
-            return list.Count > 0 ? list
+            var list = _recipies.Where(x => x.Category == category);
+            return list.Count() > 0 ? list
                 : throw new InvalidOperationException("Не удалось найти рецепты в данной категории");
         }
 
-        public IEnumerable<Recipe> GetAllRecipiesOfInput(string input)
+        public IEnumerable<SatisfactoryRecipe> GetAllRecipiesOfInput(string input)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Recipe> GetAllRecipiesOfMachine(string machine)
+        public IEnumerable<SatisfactoryRecipe> GetAllRecipiesOfMachine(string machine)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Recipe> GetAllRecipiesOfProduct(string product)
+        public IEnumerable<SatisfactoryRecipe> GetAllRecipiesOfProduct(string product)
         {
-            var list = _recipies.FindAll
-                (recipe => recipe.Product.Resource == product);
-            return list.Count > 0 ? list : throw new InvalidOperationException("Не удалось найти ни одного подходящего рецепта для данного продукта");
+            var list = _recipies.Where(recipe => recipe.Product.Resource == product);
+            return list.Count() > 0 ? list : throw new InvalidOperationException("Не удалось найти ни одного подходящего рецепта для данного продукта");
         }
 
-        public Recipe GetRecipeByName(string name)
+        public SatisfactoryRecipe GetRecipeByName(string name)
         {
             try
             {

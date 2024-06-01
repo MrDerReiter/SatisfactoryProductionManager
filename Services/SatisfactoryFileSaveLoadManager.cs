@@ -1,16 +1,17 @@
-﻿using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Model.Interfaces;
-using SatisfactoryProductionManager.Model.Production;
+﻿using FactoryManagementCore.Production;
+using FactoryManagementCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using FactoryManagementCore.Elements;
+using SatisfactoryProductionManager.Model;
+using System.Linq;
 
 namespace SatisfactoryProductionManager.Services
 {
-    public class FileSaveLoadManager : IFactorySaveLoadManager
+    public class SatisfactoryFileSaveLoadManager : IFactorySaveLoadManager
     {
         private readonly string _filePath = $"{Environment.CurrentDirectory}\\ProductionLines.txt";
 
@@ -30,16 +31,16 @@ namespace SatisfactoryProductionManager.Services
             List<string> serializedBlock = ["\tProductionBlock:", string.Empty];
 
             serializedBlock.Add($"\t\tProductionRequest: {prodBlock.ProductionRequest}");
-            serializedBlock.Add($"\t\tRecipe: {prodBlock.MainProductionUnit.Recipe.Name}");
+            serializedBlock.Add($"\t\tRecipe: {(prodBlock.MainProductionUnit as SatisfactoryProductionUnit).Recipe.Name}");
             serializedBlock.Add(string.Empty);
 
-            foreach (var unit in prodBlock.ProductionUnits)
+            foreach (var unit in prodBlock.ProductionUnits.Cast<SatisfactoryProductionUnit>())
                 serializedBlock.AddRange(SerializeProductionUnit(unit));
 
             return serializedBlock;
         }
 
-        private static List<string> SerializeProductionUnit(ProductionUnit prodUnit)
+        private static List<string> SerializeProductionUnit(SatisfactoryProductionUnit prodUnit)
         {
             List<string> serializedUnit = ["\t\t\tProductionUnit:", string.Empty];
 
@@ -79,8 +80,8 @@ namespace SatisfactoryProductionManager.Services
             var recipeName = savedContent[index + 1].Split(' ')[1];
             var recipe = ProductionManager.RecipeProvider.GetRecipeByName(recipeName);
 
-            var block = new ProductionBlock(request, recipe);
-            var savedUnits = new List<ProductionUnit>();
+            var block = new ProductionBlock(new SatisfactoryProductionUnit(request, recipe));
+            var savedUnits = new List<SatisfactoryProductionUnit>();
 
             for (int i = index + 3; i < savedContent.Length; i++)
             {
@@ -98,7 +99,7 @@ namespace SatisfactoryProductionManager.Services
             return block;
         }
 
-        private static ProductionUnit DeserializeProductionUnit(string[] savedContent, int index)
+        private static SatisfactoryProductionUnit DeserializeProductionUnit(string[] savedContent, int index)
         {
             var resource = savedContent[index].Split(' ')[1];
             var countPerMinute = double.Parse(savedContent[index].Split(' ')[2], CultureInfo.InvariantCulture);
@@ -107,10 +108,10 @@ namespace SatisfactoryProductionManager.Services
             var recipeName = savedContent[index + 1].Split(' ')[1];
             var recipe = ProductionManager.RecipeProvider.GetRecipeByName(recipeName);
 
-            return new ProductionUnit(request, recipe);
+            return new SatisfactoryProductionUnit(request, recipe);
         }
 
-        private static void ReconstructProductionBlock(ProductionBlock block, List<ProductionUnit> controlUnitList)
+        private static void ReconstructProductionBlock(ProductionBlock block, List<SatisfactoryProductionUnit> controlUnitList)
         {
             if (controlUnitList[0].ProductionRequest == block.ProductionRequest)
                 controlUnitList.RemoveAt(0);
@@ -122,7 +123,9 @@ namespace SatisfactoryProductionManager.Services
                 {
                     if (controlUnitList[i].ProductionRequest == block.Inputs[j]) 
                     {
-                        block.AddProductionUnit(block.Inputs[j], controlUnitList[i].Recipe);
+                        var unit = new SatisfactoryProductionUnit
+                            (block.Inputs[j], controlUnitList[i].Recipe);
+                        block.AddProductionUnit(unit);
                         controlUnitList.RemoveAt(i);
                         i = -1;
                         break;
@@ -167,7 +170,7 @@ namespace SatisfactoryProductionManager.Services
 
             try
             {
-                foreach (var line in ProductionManager.ProductionLines)
+                foreach (var line in Model.ProductionManager.ProductionLines)
                 {
                     var serializedProdLine = SerializeProductionLine(line);
                     allProdLines.AddRange(serializedProdLine);

@@ -1,6 +1,6 @@
-﻿using SatisfactoryProductionManager.Model.Production;
-using System;
+﻿using System;
 using System.Windows.Media.Imaging;
+using FactoryManagementCore.Production;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {

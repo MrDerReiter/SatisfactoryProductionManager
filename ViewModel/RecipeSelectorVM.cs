@@ -1,5 +1,4 @@
 ﻿using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.Model.Elements;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> BurnableButtons { get; private set; }
         public List<RecipeSelectButtonVM> NuclearButtons { get; private set; }
 
-        public event Action<Recipe> RecipeSelected;
+        public event Action<SatisfactoryRecipe> RecipeSelected;
 
 
         public RecipeSelectorVM()
@@ -52,7 +51,7 @@ namespace SatisfactoryProductionManager.ViewModel
             return list;
         }
 
-        private void RecipeSelected_EventStarter(Recipe recipe)
+        private void RecipeSelected_EventStarter(SatisfactoryRecipe recipe)
         {
             RecipeSelected(recipe);
         }

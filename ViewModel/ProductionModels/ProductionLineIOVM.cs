@@ -1,5 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Model.Production;
+﻿using FactoryManagementCore.Production;
+using FactoryManagementCore.Elements;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.ComponentModel;

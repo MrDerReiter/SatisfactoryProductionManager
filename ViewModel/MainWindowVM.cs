@@ -1,8 +1,8 @@
-﻿using Prism.Commands;
+﻿using FactoryManagementCore.Production;
+using FactoryManagementCore.Elements;
+using Prism.Commands;
 using Prism.Mvvm;
 using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Model.Production;
 using SatisfactoryProductionManager.View;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using SatisfactoryProductionManager.ViewModel.ProductionModels;
@@ -104,7 +104,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ActiveLineIO.Update();
         }
 
-        private void CreateProductionLine(Recipe recipe)
+        private void CreateProductionLine(SatisfactoryRecipe recipe)
         {
             var line = ProductionManager.AddProductionLine(recipe);
             AddProductionBlockVM(line.MainProductionBlock);
@@ -121,7 +121,7 @@ namespace SatisfactoryProductionManager.ViewModel
             lineButton.ObjectSelected += SetActiveLine;
         }
 
-        private void CreateProductionBlock(Recipe recipe)
+        private void CreateProductionBlock(SatisfactoryRecipe recipe)
         {
             ActiveLine.AddProductionBlock(recipe);
 
@@ -132,7 +132,7 @@ namespace SatisfactoryProductionManager.ViewModel
             SetProductionBlocks(ActiveLine);
         }
 
-        private void CreateProductionBlock(ResourceRequest request, Recipe recipe)
+        private void CreateProductionBlock(ResourceRequest request, SatisfactoryRecipe recipe)
         {
             ProductionManager.ActiveLine.AddProductionBlock(request, recipe);
 
@@ -257,7 +257,7 @@ namespace SatisfactoryProductionManager.ViewModel
         private void AddProductionBlock_CommandHandler()
         {
             PlayPushButtonSound();
-            if (ProductionManager.ActiveLine == null) return;
+            if (Model.ProductionManager.ActiveLine == null) return;
 
             var selector = new RecipeSelector();
             var context = selector.DataContext as RecipeSelectorVM;
@@ -288,7 +288,7 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             PlayPushButtonSound();
 
-            ProductionManager.MoveActiveLineLeft();
+            Model.ProductionManager.MoveActiveLineLeft();
             UpdateProductionLineButtons();
         }
 
@@ -296,7 +296,7 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             PlayPushButtonSound();
 
-            ProductionManager.MoveActiveLineRight();
+            Model.ProductionManager.MoveActiveLineRight();
             UpdateProductionLineButtons();
         }
 

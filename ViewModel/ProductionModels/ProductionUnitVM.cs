@@ -1,7 +1,8 @@
-﻿using Prism.Commands;
+﻿using FactoryManagementCore.Production;
+using FactoryManagementCore.Services;
+using Prism.Commands;
 using Prism.Mvvm;
-using SatisfactoryProductionManager.Model.Production;
-using SatisfactoryProductionManager.Services;
+using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Globalization;
@@ -14,7 +15,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 {
     public class ProductionUnitVM : BindableBase
     {
-        private ProductionUnit _sourceUnit;
+        private SatisfactoryProductionUnit _sourceUnit;
 
         public ImageSource Machine { get; }
         public string MachineName { get; }
@@ -58,22 +59,21 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         public ProductionUnitVM(ProductionUnit sourceUnit)
         {
-            _sourceUnit = sourceUnit;
+            _sourceUnit = sourceUnit as SatisfactoryProductionUnit;
 
             Machine = new BitmapImage(new Uri($"../Assets/Machines/{_sourceUnit.Machine}.png", UriKind.Relative));
             MachineName = _sourceUnit.Machine.TranslateRU();
 
             if (_sourceUnit.HasByproduct)
             {
-                Products = new ResourceStreamButtonVM[]
-                {
+                Products =
+                [
                     new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream()),
                     new ResourceStreamButtonVM(_sourceUnit.Byproduct)
-                };
+                ];
             }
             else
-                Products = new ResourceStreamButtonVM[]
-                { new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream()) };
+                Products = [new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream())];
 
             Requests = _sourceUnit.Inputs.Select((input) => new RequestButtonVM(input)).ToArray();
 

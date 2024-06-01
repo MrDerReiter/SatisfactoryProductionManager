@@ -1,6 +1,5 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Model.Interfaces;
-using SatisfactoryProductionManager.Model.Production;
+﻿using FactoryManagementCore.Interfaces;
+using FactoryManagementCore.Production;
 using SatisfactoryProductionManager.Services;
 using System;
 using System.Collections.Generic;
@@ -12,12 +11,13 @@ namespace SatisfactoryProductionManager.Model
 {
     public static class ProductionManager
     {
+        private static readonly UnityContainer _DIContainer;
         private static IFactorySaveLoadManager _SaveLoadManager;
         private static ProductionLine _activeLine;
         private static readonly BindingList<ProductionLine> _productionLines;
 
         public static IReadOnlyList<ProductionLine> ProductionLines { get => _productionLines; }
-        public static IRecipeProvider RecipeProvider { get; }
+        public static IRecipeProvider<SatisfactoryRecipe> RecipeProvider { get; }
         public static ProductionLine LastLine { get => _productionLines.Last(); }
         public static ProductionLine ActiveLine
         {
@@ -32,17 +32,22 @@ namespace SatisfactoryProductionManager.Model
 
         static ProductionManager()
         {
-            _SaveLoadManager = CommonUnityDIContainer.GetContainer().Resolve<IFactorySaveLoadManager>();
-            RecipeProvider = CommonUnityDIContainer.GetContainer().Resolve<IRecipeProvider>();
+            _DIContainer = new UnityContainer();
+            _DIContainer.RegisterType<IFactorySaveLoadManager, SatisfactoryFileSaveLoadManager>();
+            _DIContainer.RegisterType<IRecipeProvider<SatisfactoryRecipe>, SatisfactoryFileRecipeProvider>();
+
+            _SaveLoadManager = _DIContainer.Resolve<IFactorySaveLoadManager>();
+            RecipeProvider = _DIContainer.Resolve<IRecipeProvider<SatisfactoryRecipe>>();
 
             var savedData = _SaveLoadManager.LoadFactory();
             _productionLines = new BindingList<ProductionLine>(savedData);
         }
 
 
-        public static ProductionLine AddProductionLine(Recipe recipe)
+        public static ProductionLine AddProductionLine(SatisfactoryRecipe recipe)
         {
-            var line = new ProductionLine(recipe);
+            var line = new ProductionLine();
+            line.AddProductionBlock(recipe);
             _productionLines.Add(line);
             return line;
         }

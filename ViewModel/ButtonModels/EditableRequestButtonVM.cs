@@ -1,9 +1,7 @@
-﻿using Prism.Commands;
-using SatisfactoryProductionManager.Model.Elements;
-using SatisfactoryProductionManager.Services;
+﻿using FactoryManagementCore.Elements;
+using FactoryManagementCore.Services;
 using System;
 using System.Globalization;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Imaging;

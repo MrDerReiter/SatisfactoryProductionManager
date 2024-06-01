@@ -116,6 +116,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Reference Include="FactoryManagementCore">
+	    <HintPath>..\MyCustomLibs\FactoryManagementCore\bin\Debug\net8.0-windows\FactoryManagementCore.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
 		<Resource Include="Assets\AddItem.png" />
 		<Resource Include="Assets\AddLine.png" />
 		<Resource Include="Assets\Close.png" />

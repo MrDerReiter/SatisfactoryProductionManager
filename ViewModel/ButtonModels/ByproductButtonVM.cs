@@ -1,4 +1,4 @@
-﻿using SatisfactoryProductionManager.Model.Elements;
+﻿using FactoryManagementCore.Elements;
 using System;
 using System.Globalization;
 using System.Windows.Media.Imaging;

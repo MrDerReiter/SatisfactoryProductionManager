@@ -1,5 +1,5 @@
-﻿using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.Model.Elements;
+﻿using FactoryManagementCore.Elements;
+using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         public List<RecipeSelectButtonVM> Buttons { get; }
 
-        public event Action<ResourceRequest, Recipe> RecipeSelected;
+        public event Action<ResourceRequest, SatisfactoryRecipe> RecipeSelected;
 
 
         public RequestRecipeSelectorVM(ResourceRequest request)
@@ -28,7 +28,7 @@ namespace SatisfactoryProductionManager.ViewModel
         }
 
 
-        private void RecipeSelected_EventStarter(Recipe recipe)
+        private void RecipeSelected_EventStarter(SatisfactoryRecipe recipe)
         {
             RecipeSelected(_request, recipe);
         }
