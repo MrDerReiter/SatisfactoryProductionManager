@@ -10,9 +10,9 @@ namespace SatisfactoryProductionManager.View
         public RequestRecipeSelector(ResourceRequest request)
         {
             InitializeComponent();
-            DataContext = new RequestRecipeSelectorVM(request);
+            var context = new RequestRecipeSelectorVM(request);
+            DataContext = context;
 
-            var context = DataContext as RequestRecipeSelectorVM;
             context.RecipeSelected += (request, recipe) => Close();
 
             KeyDown += (sender, args) => { if (args.Key == Key.Escape) Close(); };

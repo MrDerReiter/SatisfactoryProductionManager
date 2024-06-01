@@ -26,7 +26,7 @@ namespace SatisfactoryProductionManager.ViewModel
                 .Select((recipe) => new RecipeSelectButtonVM(recipe)).ToList();
             foreach (var button in Buttons) button.ObjectSelected += RecipeSelected_EventStarter;
         }
-
+    
 
         private void RecipeSelected_EventStarter(SatisfactoryRecipe recipe)
         {

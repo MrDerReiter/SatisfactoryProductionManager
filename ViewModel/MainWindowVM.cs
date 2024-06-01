@@ -257,7 +257,7 @@ namespace SatisfactoryProductionManager.ViewModel
         private void AddProductionBlock_CommandHandler()
         {
             PlayPushButtonSound();
-            if (Model.ProductionManager.ActiveLine == null) return;
+            if (ProductionManager.ActiveLine == null) return;
 
             var selector = new RecipeSelector();
             var context = selector.DataContext as RecipeSelectorVM;
@@ -274,9 +274,18 @@ namespace SatisfactoryProductionManager.ViewModel
             {
                 var selector = new RequestRecipeSelector(stream.ToRequest());
                 var context = selector.DataContext as RequestRecipeSelectorVM;
-                context.RecipeSelected += PlayPushButtonSound;
-                context.RecipeSelected += CreateProductionBlock;
-                selector.ShowDialog();
+
+                if (context.Buttons.Count == 1)
+                {
+                    CreateProductionBlock(stream.ToRequest(), context.Buttons[0].InnerObject);
+                    selector.Close();
+                }
+                else
+                {
+                    context.RecipeSelected += PlayPushButtonSound;
+                    context.RecipeSelected += CreateProductionBlock;
+                    selector.ShowDialog();
+                }
             }
             catch (Exception ex)
             {

@@ -119,9 +119,17 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             {
                 var selector = new RequestRecipeSelector(request);
                 var context = selector.DataContext as RequestRecipeSelectorVM;
-                context.RecipeSelected += ExpandRequestToProductionUnit;
 
-                selector.ShowDialog();
+                if (context.Buttons.Count == 1)
+                {
+                    ExpandRequestToProductionUnit(request, context.Buttons[0].InnerObject);
+                    selector.Close();
+                }
+                else
+                {
+                    context.RecipeSelected += ExpandRequestToProductionUnit;
+                    selector.ShowDialog();
+                }
             }
             catch (Exception ex)
             {
