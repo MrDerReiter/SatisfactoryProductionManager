@@ -1,5 +1,5 @@
 ﻿using FactoryManagementCore.Elements;
-using FactoryManagementCore.Services;
+using SatisfactoryProductionManager.Services;
 using System;
 using System.Globalization;
 using System.Windows.Media.Imaging;

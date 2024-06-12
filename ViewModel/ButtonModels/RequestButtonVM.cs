@@ -1,8 +1,8 @@
 ﻿using FactoryManagementCore.Elements;
-using FactoryManagementCore.Services;
 using System;
 using System.Globalization;
 using System.Windows.Media.Imaging;
+using SatisfactoryProductionManager.Services;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {

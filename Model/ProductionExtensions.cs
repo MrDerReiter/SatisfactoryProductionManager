@@ -19,13 +19,6 @@ namespace SatisfactoryProductionManager.Model
             line.AddProductionBlock(request, recipe);
         }
 
-        public static void AddProductionBlock(this ProductionLine line, ProductionUnit unit)
-        {
-            var block = new ProductionBlock(unit);
-            line.AddProductionBlock(block);
-        }
-
-
         public static void AddProductionUnit
             (this ProductionBlock block, ResourceRequest request, SatisfactoryRecipe recipe)
         {

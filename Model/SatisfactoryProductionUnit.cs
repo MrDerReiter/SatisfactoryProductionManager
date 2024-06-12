@@ -1,5 +1,7 @@
 ﻿using FactoryManagementCore.Elements;
 using FactoryManagementCore.Production;
+using System.Linq;
+using System;
 
 namespace SatisfactoryProductionManager.Model
 {
@@ -20,9 +22,14 @@ namespace SatisfactoryProductionManager.Model
         public ResourceStream Byproduct { get; private set; }
 
 
-        public SatisfactoryProductionUnit (ResourceRequest request, SatisfactoryRecipe recipe) : base(request, recipe)
+        public SatisfactoryProductionUnit(ResourceRequest productionRequest, SatisfactoryRecipe recipe)
         {
+            if (recipe.Product.Resource != productionRequest.Resource)
+                throw new InvalidOperationException("Несовпадение выходного ресурса в рецепте и запросе на ресурс");
+
             Recipe = recipe;
+            ProductionRequest = productionRequest;
+            ProductionRequest.IsSatisfied = true;
 
             _inputs = new ResourceRequest[Recipe.Inputs.Length];
             for (int i = 0; i < Recipe.Inputs.Length; i++)
@@ -49,10 +56,16 @@ namespace SatisfactoryProductionManager.Model
 
         protected override double GetMachinesCount()
         {
-            return
-                ProductionRequest.CountPerMinute /
-                Recipe.Outputs[0].CountPerMinute /
-                (_overclock / 100);
+            return ProductionRequest.CountPerMinute /
+                   Recipe.Product.CountPerMinute /
+                   (_overclock / 100);
+        }
+
+
+        public SatisfactoryProductionUnit Clone()
+        {
+            var newRequest = new ResourceRequest(ProductionRequest.Resource, ProductionRequest.CountPerMinute);
+            return new SatisfactoryProductionUnit(newRequest, Recipe);
         }
     }
 }

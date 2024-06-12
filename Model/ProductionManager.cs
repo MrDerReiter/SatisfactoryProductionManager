@@ -5,19 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Unity;
 
 namespace SatisfactoryProductionManager.Model
 {
     public static class ProductionManager
     {
-        private static readonly UnityContainer _DIContainer;
-        private static IFactorySaveLoadManager _SaveLoadManager;
+        private static IFactorySaveLoadManager _saveLoadManager;
         private static ProductionLine _activeLine;
         private static readonly BindingList<ProductionLine> _productionLines;
 
         public static IReadOnlyList<ProductionLine> ProductionLines { get => _productionLines; }
         public static IRecipeProvider<SatisfactoryRecipe> RecipeProvider { get; }
+        public static INameTranslator NameTranslator { get; }
         public static ProductionLine LastLine { get => _productionLines.Last(); }
         public static ProductionLine ActiveLine
         {
@@ -32,14 +31,11 @@ namespace SatisfactoryProductionManager.Model
 
         static ProductionManager()
         {
-            _DIContainer = new UnityContainer();
-            _DIContainer.RegisterType<IFactorySaveLoadManager, SatisfactoryFileSaveLoadManager>();
-            _DIContainer.RegisterType<IRecipeProvider<SatisfactoryRecipe>, SatisfactoryFileRecipeProvider>();
+            _saveLoadManager = new SaveLoadManagerStub();
+            RecipeProvider = new SatisfactoryFileRecipeProvider();
+            NameTranslator = new FileNameTranslatorRU();
 
-            _SaveLoadManager = _DIContainer.Resolve<IFactorySaveLoadManager>();
-            RecipeProvider = _DIContainer.Resolve<IRecipeProvider<SatisfactoryRecipe>>();
-
-            var savedData = _SaveLoadManager.LoadFactory();
+            var savedData = _saveLoadManager.LoadFactory();
             _productionLines = new BindingList<ProductionLine>(savedData);
         }
 
@@ -81,7 +77,7 @@ namespace SatisfactoryProductionManager.Model
 
         public static void SaveFactory()
         {
-            _SaveLoadManager.SaveFactory();
+            _saveLoadManager.SaveFactory();
         }
     }
 }

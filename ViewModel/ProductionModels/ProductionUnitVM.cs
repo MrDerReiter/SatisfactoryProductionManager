@@ -3,6 +3,7 @@ using FactoryManagementCore.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using SatisfactoryProductionManager.Model;
+using SatisfactoryProductionManager.Services;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Globalization;

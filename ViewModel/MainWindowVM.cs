@@ -147,7 +147,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void CreateProductionBlock(ProductionUnit unit)
         {
-            ActiveLine.AddProductionBlock(unit);
+            ActiveLine.AddProductionBlock((unit as SatisfactoryProductionUnit).Clone());
 
             var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);

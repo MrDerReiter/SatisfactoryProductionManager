@@ -41,7 +41,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
             }
             
-            var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
+            var requestButtons = _sourceBlock.Inputs
+                .Where(input => input.CountPerMinute > 0)
+                .Select((input) => new RequestButtonVM(input)).ToList();
             RequestButtons = new BindingList<RequestButtonVM>(requestButtons);
             foreach (var button in RequestButtons) button.ObjectSelected += RunSelector;
 
@@ -82,7 +84,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Не удалось преобразовать цех", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(ex.Message, "Не удалось преобразовать", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -99,7 +101,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
             }
 
-            var requestButtons = _sourceBlock.Inputs.Select((input) => new RequestButtonVM(input)).ToList();
+            var requestButtons = _sourceBlock.Inputs
+                .Where(input => input.CountPerMinute > 0)
+                .Select(input => new RequestButtonVM(input));
             RequestButtons.Clear();
             RequestButtons.AddRange(requestButtons);
             foreach (var button in RequestButtons) button.ObjectSelected += RunSelector;
