@@ -1,4 +1,6 @@
 ﻿using FactoryManagementCore.Elements;
+using FactoryManagementCore.Interfaces;
+using FactoryManagementCore.Production;
 using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
@@ -21,7 +23,7 @@ namespace SatisfactoryProductionManager.ViewModel
             _request = request;
 
             Buttons =
-                ProductionManager.RecipeProvider
+                (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>)
                 .GetAllRecipiesOfProduct(_request.Resource)
                 .Select((recipe) => new RecipeSelectButtonVM(recipe)).ToList();
             foreach (var button in Buttons) button.ObjectSelected += RecipeSelected_EventStarter;

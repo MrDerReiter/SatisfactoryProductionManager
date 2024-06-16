@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using FactoryManagementCore.Production;
+using Prism.Commands;
 using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel;
 using SatisfactoryProductionManager.ViewModel.ProductionModels;
@@ -17,8 +18,8 @@ namespace SatisfactoryProductionManager.View
             InitializeComponent();
 
             CloseWindowButton.Command = new DelegateCommand(Close);
-            Closing += SaveBeforeClosing;
             Loaded += MainWindow_Loaded;
+            Closing += SaveBeforeClosing;
 
             var context = DataContext as MainWindowVM;
             context.PropertyChanged += Context_ProductionBlockChanged;
@@ -54,7 +55,7 @@ namespace SatisfactoryProductionManager.View
 
         private void SaveBeforeClosing(object sender, CancelEventArgs e)
         {
-            Model.ProductionManager.SaveFactory();
+            ProductionManager.SaveFactory();
         }
 
         private void OverclockMouseWheelControl(object sender, MouseWheelEventArgs args)

@@ -1,4 +1,4 @@
-﻿using SatisfactoryProductionManager.Model;
+﻿using FactoryManagementCore.Production;
 
 namespace SatisfactoryProductionManager.Services
 {

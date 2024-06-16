@@ -1,9 +1,10 @@
-﻿using SatisfactoryProductionManager.Model;
+﻿using FactoryManagementCore.Interfaces;
+using FactoryManagementCore.Production;
+using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace SatisfactoryProductionManager.ViewModel
 {
@@ -43,7 +44,8 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private List<RecipeSelectButtonVM> CreateButtonsCollection(string cathegory)
         {
-            var list = ProductionManager.RecipeProvider
+            var list = 
+                 (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>)
                 .GetAllRecipiesOfCategory(cathegory)
                 .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
             foreach (var button in list) button.ObjectSelected += RecipeSelected_EventStarter;

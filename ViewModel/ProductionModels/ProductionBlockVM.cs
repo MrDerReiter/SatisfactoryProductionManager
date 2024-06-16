@@ -145,7 +145,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         {
             ButtonPressed_EventStarter(null);
 
-            _sourceBlock.AddProductionUnit(request, recipe);
+            var unit = new SatisfactoryProductionUnit(request, recipe);
+            _sourceBlock.AddProductionUnit(unit);
             UpdateUnitsVM(null, null);
         }
     }

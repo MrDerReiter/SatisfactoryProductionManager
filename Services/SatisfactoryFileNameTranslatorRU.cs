@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace SatisfactoryProductionManager.Services
 {
-    public class FileNameTranslatorRU : INameTranslator
+    public class SatisfactoryFileNameTranslatorRU : INameTranslator
     {
         private static readonly string _dictPath = $"{Environment.CurrentDirectory}\\DictionaryRU.txt";
         private static readonly Dictionary<string, string> _dictionary = InitializeDictionary();

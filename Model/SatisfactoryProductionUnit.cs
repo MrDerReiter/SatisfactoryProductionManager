@@ -1,6 +1,5 @@
 ﻿using FactoryManagementCore.Elements;
 using FactoryManagementCore.Production;
-using System.Linq;
 using System;
 
 namespace SatisfactoryProductionManager.Model
@@ -59,13 +58,6 @@ namespace SatisfactoryProductionManager.Model
             return ProductionRequest.CountPerMinute /
                    Recipe.Product.CountPerMinute /
                    (_overclock / 100);
-        }
-
-
-        public SatisfactoryProductionUnit Clone()
-        {
-            var newRequest = new ResourceRequest(ProductionRequest.Resource, ProductionRequest.CountPerMinute);
-            return new SatisfactoryProductionUnit(newRequest, Recipe);
         }
     }
 }

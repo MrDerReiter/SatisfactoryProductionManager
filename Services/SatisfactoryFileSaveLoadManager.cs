@@ -78,7 +78,7 @@ namespace SatisfactoryProductionManager.Services
             var request = new ResourceRequest(resource, countPerMinute);
 
             var recipeName = savedContent[index + 1].Split(' ')[1];
-            var recipe = ProductionManager.RecipeProvider.GetRecipeByName(recipeName);
+            var recipe = (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>).GetRecipeByName(recipeName);
 
             var block = new ProductionBlock(new SatisfactoryProductionUnit(request, recipe));
             var savedUnits = new List<SatisfactoryProductionUnit>();
@@ -106,7 +106,7 @@ namespace SatisfactoryProductionManager.Services
             var request = new ResourceRequest(resource, countPerMinute);
 
             var recipeName = savedContent[index + 1].Split(' ')[1];
-            var recipe = ProductionManager.RecipeProvider.GetRecipeByName(recipeName);
+            var recipe = (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>).GetRecipeByName(recipeName);
 
             return new SatisfactoryProductionUnit(request, recipe);
         }
@@ -170,7 +170,7 @@ namespace SatisfactoryProductionManager.Services
 
             try
             {
-                foreach (var line in Model.ProductionManager.ProductionLines)
+                foreach (var line in ProductionManager.ProductionLines)
                 {
                     var serializedProdLine = SerializeProductionLine(line);
                     allProdLines.AddRange(serializedProdLine);

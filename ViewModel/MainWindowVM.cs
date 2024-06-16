@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using SatisfactoryProductionManager.Services;
 
 namespace SatisfactoryProductionManager.ViewModel
 {
@@ -37,10 +38,15 @@ namespace SatisfactoryProductionManager.ViewModel
 
         public MainWindowVM()
         {
+            ProductionManager.Initialize
+                <SatisfactoryFileRecipeProvider, 
+                 SaveLoadManagerStub,
+                 SatisfactoryFileNameTranslatorRU>();
+
             _player = new MediaPlayer();
             _player.Open(new Uri("Click.mp3", UriKind.Relative));
 
-            var lines = ProductionManager.ProductionLines.Select(pl => new ProductionLineButtonVM(pl)).ToList();
+            var lines = ProductionManager.ProductionLines.Select(prodLine => new ProductionLineButtonVM(prodLine)).ToList();
             ProductionLineButtons = new BindingList<ProductionLineButtonVM>(lines);
             foreach (var button in ProductionLineButtons)
             {
@@ -73,7 +79,6 @@ namespace SatisfactoryProductionManager.ViewModel
 
             if (ProductionManager.ProductionLines.Count > 0)
                 SetActiveLine(ProductionManager.ProductionLines[0]);
-
         }
 
 
@@ -106,7 +111,12 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void CreateProductionLine(SatisfactoryRecipe recipe)
         {
-            var line = ProductionManager.AddProductionLine(recipe);
+            var request = new ResourceRequest(recipe.Product.Resource, 0);
+            var line = new ProductionLine();
+            var unit = new SatisfactoryProductionUnit(request, recipe);
+            line.AddProductionBlock(unit);
+
+            ProductionManager.AddProductionLine(line);
             AddProductionBlockVM(line.MainProductionBlock);
 
             var lineIO = new ProductionLineIOVM(line);
@@ -123,7 +133,9 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void CreateProductionBlock(SatisfactoryRecipe recipe)
         {
-            ActiveLine.AddProductionBlock(recipe);
+            var request = new ResourceRequest(recipe.Product.Resource, 0);
+            var unit = new SatisfactoryProductionUnit(request, recipe);
+            ActiveLine.AddProductionBlock(unit);
 
             var block = ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);
@@ -134,7 +146,8 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void CreateProductionBlock(ResourceRequest request, SatisfactoryRecipe recipe)
         {
-            ProductionManager.ActiveLine.AddProductionBlock(request, recipe);
+            var unit = new SatisfactoryProductionUnit(request, recipe);
+            ProductionManager.ActiveLine.AddProductionBlock(unit);
 
             var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);
@@ -147,7 +160,9 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void CreateProductionBlock(ProductionUnit unit)
         {
-            ActiveLine.AddProductionBlock((unit as SatisfactoryProductionUnit).Clone());
+            var request = unit.ProductionRequest.Clone();
+            var recipe = unit.Recipe as SatisfactoryRecipe;
+            ActiveLine.AddProductionBlock(new SatisfactoryProductionUnit(request, recipe));
 
             var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);
@@ -297,7 +312,7 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             PlayPushButtonSound();
 
-            Model.ProductionManager.MoveActiveLineLeft();
+            ProductionManager.MoveActiveLineLeft();
             UpdateProductionLineButtons();
         }
 
@@ -305,7 +320,7 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             PlayPushButtonSound();
 
-            Model.ProductionManager.MoveActiveLineRight();
+            ProductionManager.MoveActiveLineRight();
             UpdateProductionLineButtons();
         }
 
