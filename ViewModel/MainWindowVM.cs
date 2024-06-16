@@ -41,7 +41,7 @@ namespace SatisfactoryProductionManager.ViewModel
             ProductionManager.Initialize
                 <SatisfactoryFileRecipeProvider, 
                  SaveLoadManagerStub,
-                 SatisfactoryFileNameTranslatorRU>();
+                 SatisfactoryDBNameTranslatorRU>();
 
             _player = new MediaPlayer();
             _player.Open(new Uri("Click.mp3", UriKind.Relative));
