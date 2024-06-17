@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>0.9.12</Version>
+		<Version>0.9.13</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>Disable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -47,7 +47,6 @@
 		<None Remove="Assets\Resources\Cable.png" />
 		<None Remove="Assets\Resources\CircuitBoard.png" />
 		<None Remove="Assets\Resources\ClusterNobelisk.png" />
-		<None Remove="Assets\Resources\ColorCartridge.png" />
 		<None Remove="Assets\Resources\CompactedCoal.png" />
 		<None Remove="Assets\Resources\Computer.png" />
 		<None Remove="Assets\Resources\CoolingSystem.png" />
@@ -183,7 +182,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Resources\ClusterNobelisk.png" />
-		<Resource Include="Assets\Resources\ColorCartridge.png" />
 		<Resource Include="Assets\Resources\CompactedCoal.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -473,6 +471,9 @@
 	<ItemGroup>
 		<None Update="Click.mp3">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="config.cfg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Recipies.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

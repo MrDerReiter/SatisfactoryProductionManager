@@ -1,6 +1,5 @@
 ﻿using FactoryManagementCore.Production;
 using Prism.Commands;
-using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel;
 using SatisfactoryProductionManager.ViewModel.ProductionModels;
 using System.ComponentModel;
