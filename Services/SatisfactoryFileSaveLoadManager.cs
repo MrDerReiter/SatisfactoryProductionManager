@@ -13,7 +13,7 @@ namespace SatisfactoryProductionManager.Services
 {
     public class SatisfactoryFileSaveLoadManager : IFactorySaveLoadManager
     {
-        private readonly string _filePath = $"{Environment.CurrentDirectory}\\ProductionLines.txt";
+        private readonly string _filePath = "ProductionLines.cfg";
 
 
         private static List<string> SerializeProductionLine(ProductionLine prodLine)
@@ -139,9 +139,10 @@ namespace SatisfactoryProductionManager.Services
         {
             try
             {
-                var productionLines = new List<ProductionLine>();
                 string[] savedContent = File.ReadAllLines(_filePath);
+                if (savedContent.Length == 0) return new List<ProductionLine>();
 
+                var productionLines = new List<ProductionLine>();
                 for (int i = 0; i < savedContent.Length; i++)
                 {
                     if (savedContent[i] == "ProductionLine:")

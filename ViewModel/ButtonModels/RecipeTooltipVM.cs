@@ -1,11 +1,10 @@
-﻿using SatisfactoryProductionManager.Model;
-using FactoryManagementCore.Services;
+﻿using FactoryManagementCore.Extensions;
+using SatisfactoryProductionManager.Model;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using SatisfactoryProductionManager.Services;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {
@@ -18,7 +17,7 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 
         public RecipeTooltipVM(SatisfactoryRecipe recipe)
         {
-            Title = recipe.Name.TranslateRU();
+            Title = recipe.Name.Translate();
 
             if (recipe.HasByproduct)
             {

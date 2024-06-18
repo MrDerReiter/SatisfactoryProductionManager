@@ -3,12 +3,13 @@ using System;
 using System.Globalization;
 using System.Windows.Media.Imaging;
 using SatisfactoryProductionManager.Services;
+using FactoryManagementCore.Extensions;
 
 namespace SatisfactoryProductionManager.ViewModel.ButtonModels
 {
     public class RequestButtonVM : ObjectButtonVM<ResourceRequest>
     {
-        public string Tooltip { get => InnerObject.Resource.TranslateRU(); }
+        public string Tooltip { get => InnerObject.Resource.Translate(); }
         public string Count { get => InnerObject.CountPerMinute.ToString("0.###", CultureInfo.InvariantCulture); }
 
 

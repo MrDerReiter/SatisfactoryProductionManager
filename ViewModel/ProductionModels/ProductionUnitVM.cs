@@ -1,9 +1,9 @@
-﻿using FactoryManagementCore.Production;
+﻿using FactoryManagementCore.Extensions;
+using FactoryManagementCore.Production;
 using FactoryManagementCore.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.Services;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
 using System;
 using System.Globalization;
@@ -63,7 +63,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             _sourceUnit = sourceUnit as SatisfactoryProductionUnit;
 
             Machine = new BitmapImage(new Uri($"../Assets/Machines/{_sourceUnit.Machine}.png", UriKind.Relative));
-            MachineName = _sourceUnit.Machine.TranslateRU();
+            MachineName = _sourceUnit.Machine.Translate();
 
             if (_sourceUnit.HasByproduct)
             {

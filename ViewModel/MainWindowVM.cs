@@ -40,8 +40,8 @@ namespace SatisfactoryProductionManager.ViewModel
         {
             ProductionManager.Initialize
                 <SatisfactoryFileRecipeProvider, 
-                 SaveLoadManagerStub,
-                 SatisfactoryDBNameTranslatorRU>();
+                 SatisfactoryFileSaveLoadManager,
+                 SatisfactoryFileNameTranslator>();
 
             _player = new MediaPlayer();
             _player.Open(new Uri("Click.mp3", UriKind.Relative));

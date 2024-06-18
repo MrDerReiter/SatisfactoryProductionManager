@@ -12,21 +12,10 @@ namespace SatisfactoryProductionManager.Services
 {
     public class SatisfactoryFileRecipeProvider : IRecipeProvider<SatisfactoryRecipe>
     {
-        private readonly string _path;
-        private HashSet<SatisfactoryRecipe> _recipies;
+        private HashSet<SatisfactoryRecipe> _recipies = ReadRecipiesFromFile("Recipies.cfg");
 
 
-        public SatisfactoryFileRecipeProvider()
-           : this($"{Environment.CurrentDirectory}\\Recipies.txt") { }
-
-        public SatisfactoryFileRecipeProvider(string path)
-        {
-            _path = path;
-            _recipies = ReadRecipiesFromFile(_path);
-        }
-
-
-        private HashSet<SatisfactoryRecipe> ReadRecipiesFromFile(string filePath)
+        private static HashSet<SatisfactoryRecipe> ReadRecipiesFromFile(string filePath)
         {
             var list = new HashSet<SatisfactoryRecipe>();
             var content = File.ReadAllLines(filePath, Encoding.Unicode);
@@ -35,11 +24,11 @@ namespace SatisfactoryProductionManager.Services
             {
                 if (content[i] == "<--->")
                 {
-                    string name = content[i + 1];
-                    string category = content[i + 2];
-                    string machine = content[i + 3];
+                    string name = content[++i];
+                    string category = content[++i];
+                    string machine = content[++i];
 
-                    string[] strOutputs = content[i + 4].Split("||");
+                    string[] strOutputs = content[++i].Split("||");
                     var outputs = new ResourceStream[strOutputs[1] == "null" ? 1 : 2];
                     for (int j = 0; j < outputs.Length; j++)
                     {
@@ -48,7 +37,7 @@ namespace SatisfactoryProductionManager.Services
                         outputs[j] = new ResourceStream(outRes, outCount);
                     }
 
-                    string[] strInputs = content[i + 5].Split("||");
+                    string[] strInputs = content[++i].Split("||");
                     var inputs = new ResourceStream[strInputs.Length];
                     for (int j = 0; j < strInputs.Length; j++)
                     {
@@ -58,7 +47,6 @@ namespace SatisfactoryProductionManager.Services
                     }
 
                     list.Add(new SatisfactoryRecipe(name, machine, category, inputs, outputs));
-                    i += 5;
                 }
             }
 
