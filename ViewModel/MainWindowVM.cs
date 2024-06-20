@@ -109,12 +109,10 @@ namespace SatisfactoryProductionManager.ViewModel
             ActiveLineIO.Update();
         }
 
-        private void CreateProductionLine(SatisfactoryRecipe recipe)
+        private void CreateProductionLine(Recipe recipe)
         {
-            var request = new ResourceRequest(recipe.Product.Resource, 0);
             var line = new ProductionLine();
-            var unit = new SatisfactoryProductionUnit(request, recipe);
-            line.AddProductionBlock(unit);
+            line.AddProductionBlock(recipe);
 
             ProductionManager.AddProductionLine(line);
             AddProductionBlockVM(line.MainProductionBlock);
@@ -131,11 +129,9 @@ namespace SatisfactoryProductionManager.ViewModel
             lineButton.ObjectSelected += SetActiveLine;
         }
 
-        private void CreateProductionBlock(SatisfactoryRecipe recipe)
+        private void CreateProductionBlock(Recipe recipe)
         {
-            var request = new ResourceRequest(recipe.Product.Resource, 0);
-            var unit = new SatisfactoryProductionUnit(request, recipe);
-            ActiveLine.AddProductionBlock(unit);
+            ActiveLine.AddProductionBlock(recipe);
 
             var block = ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);
@@ -144,10 +140,9 @@ namespace SatisfactoryProductionManager.ViewModel
             SetProductionBlocks(ActiveLine);
         }
 
-        private void CreateProductionBlock(ResourceRequest request, SatisfactoryRecipe recipe)
+        private void CreateProductionBlock(ResourceRequest request, Recipe recipe)
         {
-            var unit = new SatisfactoryProductionUnit(request, recipe);
-            ProductionManager.ActiveLine.AddProductionBlock(unit);
+            ProductionManager.ActiveLine.AddProductionBlock(request, recipe);
 
             var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);
@@ -161,8 +156,8 @@ namespace SatisfactoryProductionManager.ViewModel
         private void CreateProductionBlock(ProductionUnit unit)
         {
             var request = unit.ProductionRequest.Clone();
-            var recipe = unit.Recipe as SatisfactoryRecipe;
-            ActiveLine.AddProductionBlock(new SatisfactoryProductionUnit(request, recipe));
+            var recipe = unit.Recipe;
+            ActiveLine.AddProductionBlock(request, recipe);
 
             var block = ProductionManager.ActiveLine.ProductionBlocks.Last();
             AddProductionBlockVM(block);

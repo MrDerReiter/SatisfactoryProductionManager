@@ -141,12 +141,11 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             }
         }
 
-        private void ExpandRequestToProductionUnit(ResourceRequest request, SatisfactoryRecipe recipe)
+        private void ExpandRequestToProductionUnit(ResourceRequest request, Recipe recipe)
         {
             ButtonPressed_EventStarter(null);
 
-            var unit = new SatisfactoryProductionUnit(request, recipe);
-            _sourceBlock.AddProductionUnit(unit);
+            _sourceBlock.AddProductionUnit(request, recipe);
             UpdateUnitsVM(null, null);
         }
     }

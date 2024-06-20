@@ -1,4 +1,5 @@
-﻿using FactoryManagementCore.Interfaces;
+﻿using FactoryManagementCore.Elements;
+using FactoryManagementCore.Interfaces;
 using FactoryManagementCore.Production;
 using SatisfactoryProductionManager.Model;
 using SatisfactoryProductionManager.ViewModel.ButtonModels;
@@ -23,7 +24,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> BurnableButtons { get; private set; }
         public List<RecipeSelectButtonVM> NuclearButtons { get; private set; }
 
-        public event Action<SatisfactoryRecipe> RecipeSelected;
+        public event Action<Recipe> RecipeSelected;
 
 
         public RecipeSelectorVM()
