@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using SatisfactoryProductionManager.Services;
 
 namespace SatisfactoryProductionManager.ViewModel
 {
@@ -38,11 +37,6 @@ namespace SatisfactoryProductionManager.ViewModel
 
         public MainWindowVM()
         {
-            ProductionManager.Initialize
-                <SatisfactoryFileRecipeProvider, 
-                 SatisfactoryFileSaveLoadManager,
-                 SatisfactoryFileNameTranslator>();
-
             _player = new MediaPlayer();
             _player.Open(new Uri("Click.mp3", UriKind.Relative));
 
