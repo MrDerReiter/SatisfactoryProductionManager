@@ -28,25 +28,33 @@ namespace SatisfactoryProductionManager.Services
                     string category = content[++i];
                     string machine = content[++i];
 
-                    string[] strOutputs = content[++i].Split("||");
-                    var outputs = new ResourceStream[strOutputs[1] == "null" ? 1 : 2];
-                    for (int j = 0; j < outputs.Length; j++)
+                    try
                     {
-                        string outRes = strOutputs[j].Split(' ')[0];
-                        double outCount = double.Parse(strOutputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
-                        outputs[j] = new ResourceStream(outRes, outCount);
-                    }
+                        string[] strOutputs = content[++i].Split("||");
+                        var outputs = new ResourceStream[strOutputs[1] == "null" ? 1 : 2];
+                        for (int j = 0; j < outputs.Length; j++)
+                        {
+                            string outRes = strOutputs[j].Split(' ')[0];
+                            double outCount = double.Parse(strOutputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
+                            outputs[j] = new ResourceStream(outRes, outCount);
+                        }
 
-                    string[] strInputs = content[++i].Split("||");
-                    var inputs = new ResourceStream[strInputs.Length];
-                    for (int j = 0; j < strInputs.Length; j++)
+                        string[] strInputs = content[++i].Split("||");
+                        var inputs = new ResourceStream[strInputs.Length];
+                        for (int j = 0; j < strInputs.Length; j++)
+                        {
+                            string inpRes = strInputs[j].Split(' ')[0];
+                            double inpCount = double.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
+                            inputs[j] = new ResourceStream(inpRes, inpCount);
+                        }
+
+                        list.Add(new SatisfactoryRecipe(name, machine, category, inputs, outputs));
+                    }
+                    catch (Exception ex)
                     {
-                        string inpRes = strInputs[j].Split(' ')[0];
-                        double inpCount = double.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
-                        inputs[j] = new ResourceStream(inpRes, inpCount);
+                        throw new InvalidDataException
+                            ($"Error during parsing recipe: {name}\nCheck data in .cfg file", ex);
                     }
-
-                    list.Add(new SatisfactoryRecipe(name, machine, category, inputs, outputs));
                 }
             }
 
