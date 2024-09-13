@@ -245,6 +245,7 @@
                                     Text="Выход"/>
 
                                 <ItemsControl
+									MaxWidth="300"
                                     DockPanel.Dock="Left"
                                     Margin="10,0,0,0"
                                     ItemsSource="{Binding Path=ActiveLineIO.OutputButtons}">
