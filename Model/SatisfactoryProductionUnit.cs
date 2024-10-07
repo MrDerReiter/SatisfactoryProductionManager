@@ -7,6 +7,8 @@ namespace SatisfactoryProductionManager.Model
     public class SatisfactoryProductionUnit : ProductionUnit
     {
         private double _overclock = 100;
+        private double OverclockModifier => _overclock / 100;
+        private double SupposedMachinesCount => MachinesCount * OverclockModifier;
 
         public override SatisfactoryRecipe Recipe { get; }
         public double Overclock
@@ -47,10 +49,14 @@ namespace SatisfactoryProductionManager.Model
 
         protected override void UpdateIO()
         {
-            base.UpdateIO();
+            for (int i = 0; i < _inputs.Length; i++)
+                _inputs[i].CountPerMinute = Recipe.Inputs[i].CountPerMinute * SupposedMachinesCount;
+
+            for (int i = 0; i < _outputs.Length; i++)
+                _outputs[i] = Recipe.Outputs[i] * SupposedMachinesCount;
 
             if (HasByproduct)
-                Byproduct = Recipe.Byproduct.Value * MachinesCount;
+                Byproduct = Recipe.Byproduct.Value * SupposedMachinesCount;
         }
 
         protected override double GetMachinesCount()
