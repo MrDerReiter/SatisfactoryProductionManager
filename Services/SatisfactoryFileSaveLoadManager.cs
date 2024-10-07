@@ -158,7 +158,7 @@ namespace SatisfactoryProductionManager.Services
             catch (Exception ex)
             {
                 MessageBox.Show
-                    (ex.Message + "\n\nНе удалось загрузить ранее сохранённую фабрику. Вы можете создать новую с нуля.",
+                    ("Не удалось загрузить ранее сохранённую фабрику:\n" + ex.Message,
                     "Ошибка загрузки сохранённой фабрики", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return new List<ProductionLine>();

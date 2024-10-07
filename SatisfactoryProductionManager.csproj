@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>0.10.1</Version>
+		<Version>0.10.2</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>Disable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -28,6 +28,7 @@
 		<None Remove="Assets\Machines\Blender.png" />
 		<None Remove="Assets\Machines\Collider.png" />
 		<None Remove="Assets\Machines\Constructor.png" />
+		<None Remove="Assets\Machines\Converter.png" />
 		<None Remove="Assets\Machines\Foundry.png" />
 		<None Remove="Assets\Machines\Manufacturer.png" />
 		<None Remove="Assets\Machines\NuclearPowerPlant.png" />
@@ -52,12 +53,14 @@
 		<None Remove="Assets\Resources\CoolingSystem.png" />
 		<None Remove="Assets\Resources\CrudeOil.png" />
 		<None Remove="Assets\Resources\CrystalOscillator.png" />
+		<None Remove="Assets\Resources\DissolvedSilica.png" />
 		<None Remove="Assets\Resources\ElectromagneticControlRod.png" />
 		<None Remove="Assets\Resources\EmptyCanister.png" />
 		<None Remove="Assets\Resources\EmptyGasTank.png" />
 		<None Remove="Assets\Resources\EncasedPlutoniumCell.png" />
 		<None Remove="Assets\Resources\EncasedUraniumCell.png" />
 		<None Remove="Assets\Resources\ExplosiveRebar.png" />
+		<None Remove="Assets\Resources\FicsiteIngot.png" />
 		<None Remove="Assets\Resources\Fuel.png" />
 		<None Remove="Assets\Resources\GasFilter.png" />
 		<None Remove="Assets\Resources\GasNobelisk.png" />
@@ -96,8 +99,11 @@
 		<None Remove="Assets\Resources\PulseNobelisk.png" />
 		<None Remove="Assets\Resources\Quickwire.png" />
 		<None Remove="Assets\Resources\RadioControlUnit.png" />
+		<None Remove="Assets\Resources\ReanimatedSAM.png" />
 		<None Remove="Assets\Resources\RifleAmmo.png" />
 		<None Remove="Assets\Resources\Rotor.png" />
+		<None Remove="Assets\Resources\SAM.png" />
+		<None Remove="Assets\Resources\SAMFluctuator.png" />
 		<None Remove="Assets\Resources\ShatterRebar.png" />
 		<None Remove="Assets\Resources\SmartPlating.png" />
 		<None Remove="Assets\Resources\SmokelessPowder.png" />
@@ -138,6 +144,7 @@
 		<Resource Include="Assets\Machines\Blender.png" />
 		<Resource Include="Assets\Machines\Collider.png" />
 		<Resource Include="Assets\Machines\Constructor.png" />
+		<Resource Include="Assets\Machines\Converter.png" />
 		<Resource Include="Assets\Machines\Foundry.png" />
 		<Resource Include="Assets\Machines\Manufacturer.png" />
 		<Resource Include="Assets\Machines\NuclearPowerPlant.png" />
@@ -199,6 +206,7 @@
 		<Resource Include="Assets\Resources\CrystalOscillator.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\DissolvedSilica.png" />
 		<Resource Include="Assets\Resources\ElectromagneticControlRod.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -215,6 +223,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Resources\ExplosiveRebar.png" />
+		<Resource Include="Assets\Resources\FicsiteIngot.png" />
 		<Resource Include="Assets\Resources\Fuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -316,10 +325,13 @@
 		<Resource Include="Assets\Resources\RadioControlUnit.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\ReanimatedSAM.png" />
 		<Resource Include="Assets\Resources\RifleAmmo.png" />
 		<Resource Include="Assets\Resources\Rotor.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\SAM.png" />
+		<Resource Include="Assets\Resources\SAMFluctuator.png" />
 		<Resource Include="Assets\Resources\ShatterRebar.png" />
 		<Resource Include="Assets\Resources\SmartPlating.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
