@@ -31,12 +31,15 @@
 		<DockPanel>
 
 			<Border DockPanel.Dock="Top"
+					Background="Gray"
 					MinHeight="60"
 					BorderBrush="Chocolate"
 					BorderThickness="1"
-					CornerRadius="10,10,0,0">
+					CornerRadius="10,10,0,0"
+					MouseMove="MainWindow_MouseMove">
 
 				<Grid>
+					
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
@@ -437,8 +440,7 @@
 										  HorizontalAlignment="Stretch"
 										  VerticalAlignment="Stretch"
 										  Background="Gray"
-										  VerticalScrollBarVisibility="Auto"
-										  ScrollBar.MouseMove="ScrollViewerBar_MouseMove">
+										  VerticalScrollBarVisibility="Auto">
 
 								<ItemsControl ItemsSource="{Binding Path=UnitModels}">
 
@@ -603,8 +605,6 @@
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>
 							</ScrollViewer>
-
-
 						</Grid>
 					</Border>
 

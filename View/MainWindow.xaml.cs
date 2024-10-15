@@ -5,7 +5,6 @@ using SatisfactoryProductionManager.ViewModel.ProductionModels;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 
@@ -18,7 +17,6 @@ namespace SatisfactoryProductionManager.View
             InitializeComponent();
 
             CloseWindowButton.Command = new DelegateCommand(Close);
-            MouseMove += MainWindow_MouseMove;
             Loaded += MainWindow_Loaded;
             Closing += SaveBeforeClosing;
 
@@ -29,11 +27,6 @@ namespace SatisfactoryProductionManager.View
         private void MainWindow_MouseMove(object sender, MouseEventArgs args)
         {
             if (args.LeftButton == MouseButtonState.Pressed) DragMove();
-        }
-
-        private void ScrollViewerBar_MouseMove(object sender, MouseEventArgs args)
-        {
-            args.Handled = true;
         }
 
         private void RequestButtonShowHideTrigger(MainWindowVM context)
