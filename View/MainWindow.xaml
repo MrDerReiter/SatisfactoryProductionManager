@@ -16,7 +16,7 @@
 		WindowStartupLocation="CenterScreen">
 
 	<WindowChrome.WindowChrome>
-		<WindowChrome CaptionHeight="20" />
+		<WindowChrome CaptionHeight="5"/>
 	</WindowChrome.WindowChrome>
 
 	<Window.DataContext>
@@ -437,7 +437,8 @@
 										  HorizontalAlignment="Stretch"
 										  VerticalAlignment="Stretch"
 										  Background="Gray"
-										  VerticalScrollBarVisibility="Auto">
+										  VerticalScrollBarVisibility="Auto"
+										  ScrollBar.MouseMove="ScrollViewerBar_MouseMove">
 
 								<ItemsControl ItemsSource="{Binding Path=UnitModels}">
 
@@ -602,6 +603,7 @@
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>
 							</ScrollViewer>
+
 
 						</Grid>
 					</Border>
