@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>0.10.3</Version>
+		<Version>0.10.4</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>Disable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -53,6 +53,7 @@
 		<None Remove="Assets\Resources\CoolingSystem.png" />
 		<None Remove="Assets\Resources\CrudeOil.png" />
 		<None Remove="Assets\Resources\CrystalOscillator.png" />
+		<None Remove="Assets\Resources\DarkMatterCrystal.png" />
 		<None Remove="Assets\Resources\DissolvedSilica.png" />
 		<None Remove="Assets\Resources\ElectromagneticControlRod.png" />
 		<None Remove="Assets\Resources\EmptyCanister.png" />
@@ -61,6 +62,7 @@
 		<None Remove="Assets\Resources\EncasedUraniumCell.png" />
 		<None Remove="Assets\Resources\ExplosiveRebar.png" />
 		<None Remove="Assets\Resources\FicsiteIngot.png" />
+		<None Remove="Assets\Resources\FicsiteTrigon.png" />
 		<None Remove="Assets\Resources\Fuel.png" />
 		<None Remove="Assets\Resources\GasFilter.png" />
 		<None Remove="Assets\Resources\GasNobelisk.png" />
@@ -69,6 +71,7 @@
 		<None Remove="Assets\Resources\HighSpeedConnector.png" />
 		<None Remove="Assets\Resources\HomingRifleAmmo.png" />
 		<None Remove="Assets\Resources\IodineInfusedFilter.png" />
+		<None Remove="Assets\Resources\IonizedFuel.png" />
 		<None Remove="Assets\Resources\IronRebar.png" />
 		<None Remove="Assets\Resources\Leaves.png" />
 		<None Remove="Assets\Resources\LiquidBiofuel.png" />
@@ -86,9 +89,11 @@
 		<None Remove="Assets\Resources\PackagedCrudeOil.png" />
 		<None Remove="Assets\Resources\PackagedFuel.png" />
 		<None Remove="Assets\Resources\PackagedHeavyOil.png" />
+		<None Remove="Assets\Resources\PackagedIonizedFuel.png" />
 		<None Remove="Assets\Resources\PackagedLiquidBiofuel.png" />
 		<None Remove="Assets\Resources\PackagedNitricAcid.png" />
 		<None Remove="Assets\Resources\PackagedNitrogen.png" />
+		<None Remove="Assets\Resources\PackagedRocketFuel.png" />
 		<None Remove="Assets\Resources\PackagedSulfuricAcid.png" />
 		<None Remove="Assets\Resources\PackagedTurboFuel.png" />
 		<None Remove="Assets\Resources\PackagedWater.png" />
@@ -101,6 +106,7 @@
 		<None Remove="Assets\Resources\RadioControlUnit.png" />
 		<None Remove="Assets\Resources\ReanimatedSAM.png" />
 		<None Remove="Assets\Resources\RifleAmmo.png" />
+		<None Remove="Assets\Resources\RocketFuel.png" />
 		<None Remove="Assets\Resources\Rotor.png" />
 		<None Remove="Assets\Resources\SAM.png" />
 		<None Remove="Assets\Resources\SAMFluctuator.png" />
@@ -112,6 +118,7 @@
 		<None Remove="Assets\Resources\StunRebar.png" />
 		<None Remove="Assets\Resources\SulfuricAcid.png" />
 		<None Remove="Assets\Resources\SuperComputer.png" />
+		<None Remove="Assets\Resources\SyntheticPowerShard.png" />
 		<None Remove="Assets\Resources\ThermalPropulsionRocket.png" />
 		<None Remove="Assets\Resources\TurboFuel.png" />
 		<None Remove="Assets\Resources\TurboMotor.png" />
@@ -206,6 +213,7 @@
 		<Resource Include="Assets\Resources\CrystalOscillator.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\DarkMatterCrystal.png" />
 		<Resource Include="Assets\Resources\DissolvedSilica.png" />
 		<Resource Include="Assets\Resources\ElectromagneticControlRod.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -224,6 +232,7 @@
 		</Resource>
 		<Resource Include="Assets\Resources\ExplosiveRebar.png" />
 		<Resource Include="Assets\Resources\FicsiteIngot.png" />
+		<Resource Include="Assets\Resources\FicsiteTrigon.png" />
 		<Resource Include="Assets\Resources\Fuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -240,6 +249,7 @@
 		</Resource>
 		<Resource Include="Assets\Resources\HomingRifleAmmo.png" />
 		<Resource Include="Assets\Resources\IodineInfusedFilter.png" />
+		<Resource Include="Assets\Resources\IonizedFuel.png" />
 		<Resource Include="Assets\Resources\IronIngot.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -288,6 +298,7 @@
 		<Resource Include="Assets\Resources\PackagedHeavyOil.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\PackagedIonizedFuel.png" />
 		<Resource Include="Assets\Resources\PackagedLiquidBiofuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -297,6 +308,7 @@
 		<Resource Include="Assets\Resources\PackagedNitrogen.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\PackagedRocketFuel.png" />
 		<Resource Include="Assets\Resources\PackagedSulfuricAcid.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -327,6 +339,7 @@
 		</Resource>
 		<Resource Include="Assets\Resources\ReanimatedSAM.png" />
 		<Resource Include="Assets\Resources\RifleAmmo.png" />
+		<Resource Include="Assets\Resources\RocketFuel.png" />
 		<Resource Include="Assets\Resources\Rotor.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -398,6 +411,7 @@
 		<Resource Include="Assets\Resources\SuperComputer.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\SyntheticPowerShard.png" />
 		<Resource Include="Assets\Resources\ThermalPropulsionRocket.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

@@ -53,7 +53,7 @@ namespace SatisfactoryProductionManager.Services
                     catch (Exception ex)
                     {
                         throw new InvalidDataException
-                            ($"Error during parsing recipe: {name}\nCheck data in .cfg file", ex);
+                            ($"Ошибка при обработке рецепта: {name}\nПроверьте данные в файле .cfg с рецептами", ex);
                     }
                 }
             }
