@@ -11,7 +11,9 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
         public RecipeSelectButtonVM(SatisfactoryRecipe recipe)
         {
             InnerObject = recipe;
-            ImageSource = new BitmapImage(new Uri($"../Assets/Resources/{recipe.Product.Resource}.png", UriKind.Relative));
+            ImageSource = recipe.Category == "PowerGenerating" ?
+                new BitmapImage(new Uri($"../Assets/Resources/{recipe.Inputs[0].Resource}.png", UriKind.Relative)) :
+                new BitmapImage(new Uri($"../Assets/Resources/{recipe.Product.Resource}.png", UriKind.Relative));
             Tooltip = new RecipeTooltipVM(recipe);
         }
     }

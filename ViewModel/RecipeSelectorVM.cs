@@ -23,6 +23,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> PackagesButtons { get; private set; }
         public List<RecipeSelectButtonVM> BurnableButtons { get; private set; }
         public List<RecipeSelectButtonVM> NuclearButtons { get; private set; }
+        public List<RecipeSelectButtonVM> PowerGeneratingButtons { get; private set; }
 
         public event Action<Recipe> RecipeSelected;
 

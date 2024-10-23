@@ -27,26 +27,23 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
                         new ImageTuple(recipe.Byproduct.Value.Resource, recipe.Byproduct.Value.CountPerMinute)
                     ];
             }
-            else
-            {
-                Outputs = [new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute)];
-            }
+
+            else if (recipe.Category == "PowerGenerating")
+                Outputs = [new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute, true)];
+
+            else Outputs = [new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute)];
 
             Inputs = recipe.Inputs
                 .Select(stream => new ImageTuple(stream.Resource, stream.CountPerMinute)).ToArray();
         }
 
 
-        public struct ImageTuple
+        public readonly struct ImageTuple(string resource, double count, bool isOutputPower = false)
         {
-            public ImageSource Image { get; }
-            public string Count { get; }
-
-            public ImageTuple(string resource, double count)
-            {
-                Image = new BitmapImage(new Uri($"../Assets/Resources/{resource}.png", UriKind.Relative));
-                Count = count.ToString("0.###", CultureInfo.InvariantCulture) + "/мин.";
-            }
+            public ImageSource Image { get; } = new BitmapImage(new Uri($"../Assets/Resources/{resource}.png", UriKind.Relative));
+            public string Count { get; } = isOutputPower ?
+                count.ToString("0.###", CultureInfo.InvariantCulture) + " MW" :
+                count.ToString("0.###", CultureInfo.InvariantCulture) + "/мин.";
         }
     }
 }

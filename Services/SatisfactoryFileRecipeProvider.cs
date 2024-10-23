@@ -81,8 +81,12 @@ namespace SatisfactoryProductionManager.Services
 
         public IEnumerable<SatisfactoryRecipe> GetAllRecipiesOfProduct(string product)
         {
-            var list = _recipies.Where(recipe => recipe.Product.Resource == product);
-            return list.Count() > 0 ? list : throw new InvalidOperationException("Не удалось найти ни одного подходящего рецепта для данного продукта");
+            var list = _recipies
+                .Where(recipe => recipe.Product.Resource == product);
+
+            return list.Any() ? list : 
+                throw new InvalidOperationException
+                ("Не удалось найти ни одного подходящего рецепта для данного продукта");
         }
 
         public SatisfactoryRecipe GetRecipeByName(string name)

@@ -6,7 +6,7 @@
 		xmlns:ViewModel="clr-namespace:SatisfactoryProductionManager.ViewModel"
 		mc:Ignorable="d"
 		AllowsTransparency="True" Background="Transparent" WindowStyle="None"
-		Title="RecipeSelector" MinWidth="480" MinHeight="350" Width="480" Height="370"
+		Title="RecipeSelector" MinWidth="520" MinHeight="350" Width="480" Height="370"
 		WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
@@ -614,7 +614,7 @@
                             BorderBrush="Chocolate"
                             BorderThickness="1" 
 					        Background="DarkGray" 
-                            ToolTip="Ядерная энергия"
+                            ToolTip="Ядерные технологии"
 					        Padding="3"
 					        Margin="-8,-3,-8,-5"
 					        Width="40" 
@@ -652,7 +652,46 @@
                     </ItemsControl>
                 </TabItem>
 
-            </TabControl>
+				<TabItem>
+					<TabItem.Header>
+						<Border BorderBrush="Chocolate"
+								BorderThickness="1"
+								Background="DarkGray"
+								ToolTip="Производство электроэнергии"
+								Padding="3"
+								Margin="-8,-3,-8,-5"
+								Width="40"
+								Height="40">
+
+							<Image Source="../Assets/Resources/Power.png"
+								   RenderOptions.BitmapScalingMode="HighQuality" />
+						</Border>
+					</TabItem.Header>
+					<ItemsControl ItemsSource="{Binding Path=PowerGeneratingButtons}"
+								  Margin="-3,10">
+
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Button Width="50"
+										Height="50"
+										Background="DarkGray"
+										ToolTip="{StaticResource ResourceKey=RecipeTooltip}"
+										Command="{Binding Path=ReturnObject}">
+
+									<Image Source="{Binding Path=ImageSource}"
+										   RenderOptions.BitmapScalingMode="HighQuality" />
+								</Button>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</TabItem>
+
+			</TabControl>
 
         </StackPanel>
 

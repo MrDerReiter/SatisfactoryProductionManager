@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>0.11.1</Version>
+		<Version>0.12.0</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>Disable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -25,11 +25,14 @@
 		<None Remove="Assets\DeleteItem.png" />
 		<None Remove="Assets\Icon.ico" />
 		<None Remove="Assets\Machines\Assembler.png" />
+		<None Remove="Assets\Machines\BiomassBurner.png" />
 		<None Remove="Assets\Machines\Blender.png" />
+		<None Remove="Assets\Machines\CoalGenerator.png" />
 		<None Remove="Assets\Machines\Collider.png" />
 		<None Remove="Assets\Machines\Constructor.png" />
 		<None Remove="Assets\Machines\Converter.png" />
 		<None Remove="Assets\Machines\Foundry.png" />
+		<None Remove="Assets\Machines\FuelGenerator.png" />
 		<None Remove="Assets\Machines\Manufacturer.png" />
 		<None Remove="Assets\Machines\NuclearPowerPlant.png" />
 		<None Remove="Assets\Machines\Packager.png" />
@@ -100,6 +103,7 @@
 		<None Remove="Assets\Resources\PlutoniumFuelRod.png" />
 		<None Remove="Assets\Resources\PlutoniumPellet.png" />
 		<None Remove="Assets\Resources\PlutoniumWaste.png" />
+		<None Remove="Assets\Resources\Power.png" />
 		<None Remove="Assets\Resources\PressureConversionCube.png" />
 		<None Remove="Assets\Resources\PulseNobelisk.png" />
 		<None Remove="Assets\Resources\Quickwire.png" />
@@ -148,11 +152,14 @@
 		<Resource Include="Assets\DeleteItem.png" />
 		<Resource Include="Assets\Icon.ico" />
 		<Resource Include="Assets\Machines\Assembler.png" />
+		<Resource Include="Assets\Machines\BiomassBurner.png" />
 		<Resource Include="Assets\Machines\Blender.png" />
+		<Resource Include="Assets\Machines\CoalGenerator.png" />
 		<Resource Include="Assets\Machines\Collider.png" />
 		<Resource Include="Assets\Machines\Constructor.png" />
 		<Resource Include="Assets\Machines\Converter.png" />
 		<Resource Include="Assets\Machines\Foundry.png" />
+		<Resource Include="Assets\Machines\FuelGenerator.png" />
 		<Resource Include="Assets\Machines\Manufacturer.png" />
 		<Resource Include="Assets\Machines\NuclearPowerPlant.png" />
 		<Resource Include="Assets\Machines\Packager.png" />
@@ -327,6 +334,7 @@
 		<Resource Include="Assets\Resources\PlutoniumWaste.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\Power.png" />
 		<Resource Include="Assets\Resources\PressureConversionCube.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
