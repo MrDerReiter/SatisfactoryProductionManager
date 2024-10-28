@@ -40,7 +40,10 @@ namespace SatisfactoryProductionManager.ViewModel
             _player = new MediaPlayer();
             _player.Open(new Uri("Click.mp3", UriKind.Relative));
 
-            var lines = ProductionManager.ProductionLines.Select(prodLine => new ProductionLineButtonVM(prodLine)).ToList();
+            var lines = ProductionManager.ProductionLines
+                .Select(prodLine => new ProductionLineButtonVM(prodLine))
+                .ToList();
+
             ProductionLineButtons = new BindingList<ProductionLineButtonVM>(lines);
             foreach (var button in ProductionLineButtons)
             {

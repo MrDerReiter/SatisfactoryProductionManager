@@ -17,6 +17,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public List<RecipeSelectButtonVM> IndustrialPartsButtons { get; private set; }
         public List<RecipeSelectButtonVM> ElectronicsButtons { get; private set; }
         public List<RecipeSelectButtonVM> CommunicationsButtons { get; private set; }
+        public List<RecipeSelectButtonVM> QuantumTechButtons { get; private set; }
         public List<RecipeSelectButtonVM> SpaceElevatorPartsButtons { get; private set; }
         public List<RecipeSelectButtonVM> SuppliesButtons { get; private set; }
         public List<RecipeSelectButtonVM> LiquidsButtons { get; private set; }

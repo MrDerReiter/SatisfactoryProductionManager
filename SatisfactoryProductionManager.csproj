@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>0.12.0</Version>
+		<Version>0.12.1</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>Disable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -36,16 +36,21 @@
 		<None Remove="Assets\Machines\Manufacturer.png" />
 		<None Remove="Assets\Machines\NuclearPowerPlant.png" />
 		<None Remove="Assets\Machines\Packager.png" />
+		<None Remove="Assets\Machines\QuantumEncoder.png" />
 		<None Remove="Assets\Machines\Refinery.png" />
 		<None Remove="Assets\Machines\Smelter.png" />
 		<None Remove="Assets\MoveLineLeft.png" />
 		<None Remove="Assets\MoveLineRight.png" />
 		<None Remove="Assets\Resources\AdaptiveControlUnit.png" />
+		<None Remove="Assets\Resources\AIExpansionServer.png" />
 		<None Remove="Assets\Resources\AILimiter.png" />
+		<None Remove="Assets\Resources\AlienPowerMatrix.png" />
 		<None Remove="Assets\Resources\AluminaSolution.png" />
 		<None Remove="Assets\Resources\AssemblyDirectorSystem.png" />
 		<None Remove="Assets\Resources\AutomatedWiring.png" />
+		<None Remove="Assets\Resources\BallisticWarpDrive.png" />
 		<None Remove="Assets\Resources\Battery.png" />
+		<None Remove="Assets\Resources\BiochemicalSculptor.png" />
 		<None Remove="Assets\Resources\Biomass.png" />
 		<None Remove="Assets\Resources\BlackPowder.png" />
 		<None Remove="Assets\Resources\Cable.png" />
@@ -56,16 +61,20 @@
 		<None Remove="Assets\Resources\CoolingSystem.png" />
 		<None Remove="Assets\Resources\CrudeOil.png" />
 		<None Remove="Assets\Resources\CrystalOscillator.png" />
+		<None Remove="Assets\Resources\DarkMatter.png" />
 		<None Remove="Assets\Resources\DarkMatterCrystal.png" />
+		<None Remove="Assets\Resources\Diamond.png" />
 		<None Remove="Assets\Resources\DissolvedSilica.png" />
 		<None Remove="Assets\Resources\ElectromagneticControlRod.png" />
 		<None Remove="Assets\Resources\EmptyCanister.png" />
 		<None Remove="Assets\Resources\EmptyGasTank.png" />
 		<None Remove="Assets\Resources\EncasedPlutoniumCell.png" />
 		<None Remove="Assets\Resources\EncasedUraniumCell.png" />
+		<None Remove="Assets\Resources\ExcitedPhotonicMatter.png" />
 		<None Remove="Assets\Resources\ExplosiveRebar.png" />
 		<None Remove="Assets\Resources\FicsiteIngot.png" />
 		<None Remove="Assets\Resources\FicsiteTrigon.png" />
+		<None Remove="Assets\Resources\Ficsonium.png" />
 		<None Remove="Assets\Resources\Fuel.png" />
 		<None Remove="Assets\Resources\GasFilter.png" />
 		<None Remove="Assets\Resources\GasNobelisk.png" />
@@ -82,6 +91,7 @@
 		<None Remove="Assets\Resources\ModularEngine.png" />
 		<None Remove="Assets\Resources\Motor.png" />
 		<None Remove="Assets\Resources\Mycelia.png" />
+		<None Remove="Assets\Resources\NeuralQuantumProcessor.png" />
 		<None Remove="Assets\Resources\NitricAcid.png" />
 		<None Remove="Assets\Resources\Nitrogen.png" />
 		<None Remove="Assets\Resources\Nobelisk.png" />
@@ -115,6 +125,7 @@
 		<None Remove="Assets\Resources\SAM.png" />
 		<None Remove="Assets\Resources\SAMFluctuator.png" />
 		<None Remove="Assets\Resources\ShatterRebar.png" />
+		<None Remove="Assets\Resources\SingularityCell.png" />
 		<None Remove="Assets\Resources\SmartPlating.png" />
 		<None Remove="Assets\Resources\SmokelessPowder.png" />
 		<None Remove="Assets\Resources\SolidBiofuel.png" />
@@ -122,8 +133,10 @@
 		<None Remove="Assets\Resources\StunRebar.png" />
 		<None Remove="Assets\Resources\SulfuricAcid.png" />
 		<None Remove="Assets\Resources\SuperComputer.png" />
+		<None Remove="Assets\Resources\SuperpositionOscillator.png" />
 		<None Remove="Assets\Resources\SyntheticPowerShard.png" />
 		<None Remove="Assets\Resources\ThermalPropulsionRocket.png" />
+		<None Remove="Assets\Resources\TimeCrystal.png" />
 		<None Remove="Assets\Resources\TurboFuel.png" />
 		<None Remove="Assets\Resources\TurboMotor.png" />
 		<None Remove="Assets\Resources\TurboRifleAmmo.png" />
@@ -141,7 +154,7 @@
 
 	<ItemGroup>
 	  <Reference Include="FactoryManagementCore">
-	    <HintPath>..\MyCustomLibs\FactoryManagementCore\bin\Debug\net8.0-windows\FactoryManagementCore.dll</HintPath>
+	    <HintPath>..\MyCustomLibs\FactoryManagementCore\bin\Release\net8.0-windows\FactoryManagementCore.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 
@@ -163,6 +176,7 @@
 		<Resource Include="Assets\Machines\Manufacturer.png" />
 		<Resource Include="Assets\Machines\NuclearPowerPlant.png" />
 		<Resource Include="Assets\Machines\Packager.png" />
+		<Resource Include="Assets\Machines\QuantumEncoder.png" />
 		<Resource Include="Assets\Machines\Refinery.png" />
 		<Resource Include="Assets\Machines\Smelter.png" />
 		<Resource Include="Assets\MoveLineLeft.png" />
@@ -170,9 +184,11 @@
 		<Resource Include="Assets\Resources\AdaptiveControlUnit.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\AIExpansionServer.png" />
 		<Resource Include="Assets\Resources\AILimiter.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\AlienPowerMatrix.png" />
 		<Resource Include="Assets\Resources\AluminaSolution.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -185,9 +201,11 @@
 		<Resource Include="Assets\Resources\AutomatedWiring.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\BallisticWarpDrive.png" />
 		<Resource Include="Assets\Resources\Battery.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\BiochemicalSculptor.png" />
 		<Resource Include="Assets\Resources\Biomass.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -220,7 +238,9 @@
 		<Resource Include="Assets\Resources\CrystalOscillator.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\DarkMatter.png" />
 		<Resource Include="Assets\Resources\DarkMatterCrystal.png" />
+		<Resource Include="Assets\Resources\Diamond.png" />
 		<Resource Include="Assets\Resources\DissolvedSilica.png" />
 		<Resource Include="Assets\Resources\ElectromagneticControlRod.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -237,9 +257,11 @@
 		<Resource Include="Assets\Resources\EncasedUraniumCell.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\ExcitedPhotonicMatter.png" />
 		<Resource Include="Assets\Resources\ExplosiveRebar.png" />
 		<Resource Include="Assets\Resources\FicsiteIngot.png" />
 		<Resource Include="Assets\Resources\FicsiteTrigon.png" />
+		<Resource Include="Assets\Resources\Ficsonium.png" />
 		<Resource Include="Assets\Resources\Fuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -279,6 +301,7 @@
 		<Resource Include="Assets\Resources\Mycelia.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\NeuralQuantumProcessor.png" />
 		<Resource Include="Assets\Resources\NitricAcid.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -354,6 +377,7 @@
 		<Resource Include="Assets\Resources\SAM.png" />
 		<Resource Include="Assets\Resources\SAMFluctuator.png" />
 		<Resource Include="Assets\Resources\ShatterRebar.png" />
+		<Resource Include="Assets\Resources\SingularityCell.png" />
 		<Resource Include="Assets\Resources\SmartPlating.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -419,10 +443,12 @@
 		<Resource Include="Assets\Resources\SuperComputer.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\SuperpositionOscillator.png" />
 		<Resource Include="Assets\Resources\SyntheticPowerShard.png" />
 		<Resource Include="Assets\Resources\ThermalPropulsionRocket.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\TimeCrystal.png" />
 		<Resource Include="Assets\Resources\TurboFuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

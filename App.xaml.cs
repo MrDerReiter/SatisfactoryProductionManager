@@ -1,7 +1,5 @@
 ﻿using FactoryManagementCore.Production;
 using SatisfactoryProductionManager.Services;
-using System.Configuration;
-using System.Data;
 using System.Windows;
 
 namespace SatisfactoryProductionManager

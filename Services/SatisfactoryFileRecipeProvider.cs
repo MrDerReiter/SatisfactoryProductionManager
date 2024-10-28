@@ -12,7 +12,7 @@ namespace SatisfactoryProductionManager.Services
 {
     public class SatisfactoryFileRecipeProvider : IRecipeProvider<SatisfactoryRecipe>
     {
-        private HashSet<SatisfactoryRecipe> _recipies = ReadRecipiesFromFile("Recipies.cfg");
+        private readonly HashSet<SatisfactoryRecipe> _recipies = ReadRecipiesFromFile("Recipies.cfg");
 
 
         private static HashSet<SatisfactoryRecipe> ReadRecipiesFromFile(string filePath)
@@ -39,13 +39,19 @@ namespace SatisfactoryProductionManager.Services
                             outputs[j] = new ResourceStream(outRes, outCount);
                         }
 
-                        string[] strInputs = content[++i].Split("||");
-                        var inputs = new ResourceStream[strInputs.Length];
-                        for (int j = 0; j < strInputs.Length; j++)
+                        ResourceStream[] inputs;
+
+                        if (content[++i] == "null") inputs = [];
+                        else
                         {
-                            string inpRes = strInputs[j].Split(' ')[0];
-                            double inpCount = double.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
-                            inputs[j] = new ResourceStream(inpRes, inpCount);
+                            string[] strInputs = content[i].Split("||");
+                            inputs = new ResourceStream[strInputs.Length];
+                            for (int j = 0; j < strInputs.Length; j++)
+                            {
+                                string inpRes = strInputs[j].Split(' ')[0];
+                                double inpCount = double.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
+                                inputs[j] = new ResourceStream(inpRes, inpCount);
+                            }
                         }
 
                         list.Add(new SatisfactoryRecipe(name, machine, category, inputs, outputs));
@@ -84,7 +90,7 @@ namespace SatisfactoryProductionManager.Services
             var list = _recipies
                 .Where(recipe => recipe.Product.Resource == product);
 
-            return list.Any() ? list : 
+            return list.Any() ? list :
                 throw new InvalidOperationException
                 ("Не удалось найти ни одного подходящего рецепта для данного продукта");
         }
