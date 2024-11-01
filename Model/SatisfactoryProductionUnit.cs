@@ -33,7 +33,8 @@ namespace SatisfactoryProductionManager.Model
             get => _overclock;
             set
             {
-                if (value > 0 && value <= 250) _overclock = value;
+                if (value != _overclock && 
+                    value > 0 && value <= 250) _overclock = value;
             }
         }
         public int SomersloopCount => GetSomersloopCount();
@@ -99,6 +100,26 @@ namespace SatisfactoryProductionManager.Model
             if (_isSomersloopUsed)
                 return BaseMachinesCount / OverclockModifier / _somersloopModifier;
             else return BaseMachinesCount / OverclockModifier;
+        }
+
+
+        public SatisfactoryProductionUnit CloneWithNewRequestInstance(ResourceRequest newRequestInstance)
+        {
+            if (newRequestInstance.Resource != ProductionRequest.Resource)
+                throw new ArgumentNullException
+                    (nameof(newRequestInstance),
+                    "Новый экземпляр производственного запроса для " +
+                    "клонированного цеха должен соответствовать сигнатуре исходного запроса.");
+
+            var cloneUnit = MemberwiseClone() as SatisfactoryProductionUnit;
+            cloneUnit.Dispose();
+
+            cloneUnit.ProductionRequest = newRequestInstance;
+            cloneUnit.ProductionRequest.RequestChanged += UpdateIO;
+            cloneUnit.ProductionRequest.IsSatisfied = true;
+            cloneUnit.UpdateIO();
+
+            return cloneUnit;
         }
     }
 }

@@ -47,6 +47,8 @@ namespace SatisfactoryProductionManager.Services
 
             serializedUnit.Add($"\t\t\t\tProductionRequest: {prodUnit.ProductionRequest}");
             serializedUnit.Add($"\t\t\t\tRecipe: {prodUnit.Recipe.Name}");
+            serializedUnit.Add($"\t\t\t\tOverclock: {prodUnit.Overclock}");
+            serializedUnit.Add($"\t\t\t\tIsSomersloopUsed: {prodUnit.IsSomersloopUsed}");
             serializedUnit.Add(string.Empty);
 
             return serializedUnit;
@@ -82,10 +84,9 @@ namespace SatisfactoryProductionManager.Services
 
             var recipeName = savedContent[++index].Split(' ')[1];
             var recipe = (ProductionManager.RecipeProvider).GetRecipeByName(recipeName);
-
-            var block = new ProductionBlock(new SatisfactoryProductionUnit(request, (SatisfactoryRecipe)recipe));
-            var savedUnits = new List<SatisfactoryProductionUnit>();
             index += 2;
+
+            var savedUnits = new List<SatisfactoryProductionUnit>();
 
             for (int i = index; i < savedContent.Length; i++)
             {
@@ -98,9 +99,7 @@ namespace SatisfactoryProductionManager.Services
                 else continue;
             }
 
-            ReconstructProductionBlock(block, savedUnits);
-
-            return block;
+            return ReconstructProductionBlock(savedUnits, request, recipe);
         }
 
         private static SatisfactoryProductionUnit DeserializeProductionUnit(string[] savedContent, int index)
@@ -112,23 +111,35 @@ namespace SatisfactoryProductionManager.Services
             var recipeName = savedContent[++index].Split(' ')[1];
             var recipe = ProductionManager.RecipeProvider.GetRecipeByName(recipeName);
 
-            return new SatisfactoryProductionUnit(request, (SatisfactoryRecipe)recipe);
+            var overclock = double.Parse(savedContent[++index].Split(" ")[1], CultureInfo.InvariantCulture);
+            var isSomersloopUsed = Convert.ToBoolean(savedContent[++index].Split(" ")[1]);
+
+            var unit = new SatisfactoryProductionUnit(request, (SatisfactoryRecipe)recipe)
+            {
+                Overclock = overclock,
+                IsSomersloopUsed = isSomersloopUsed
+            };
+            return unit;
         }
 
-        private static void ReconstructProductionBlock(ProductionBlock block, List<SatisfactoryProductionUnit> controlUnitList)
+        private static ProductionBlock ReconstructProductionBlock
+            (List<SatisfactoryProductionUnit> controlUnitList, ResourceRequest request, Recipe recipe)
         {
-            if (controlUnitList[0].ProductionRequest == block.ProductionRequest)
-                controlUnitList.RemoveAt(0);
-            else throw new InvalidDataException("Ошибка в сохранённых данных; главный цех производственного блока не совпадает с его сигнатурой.");
+            if (controlUnitList[0].ProductionRequest != request ||
+                controlUnitList[0].Recipe != recipe)
+                throw new InvalidDataException("Ошибка в сохранённых данных; главный цех производственного блока не совпадает с его сигнатурой.");
 
-            for (int i = 0; i < controlUnitList.Count; i++) 
+            var block = new ProductionBlock(controlUnitList[0]);
+            controlUnitList.RemoveAt(0);
+
+            for (int i = 0; i < controlUnitList.Count; i++)
             {
-                for (int j = 0; j < block.Inputs.Count; j++) 
+                for (int j = 0; j < block.Inputs.Count; j++)
                 {
-                    if (controlUnitList[i].ProductionRequest == block.Inputs[j]) 
+                    if (controlUnitList[i].ProductionRequest == block.Inputs[j])
                     {
-                        var unit = new SatisfactoryProductionUnit
-                            (block.Inputs[j], controlUnitList[i].Recipe);
+                        var unit = controlUnitList[i].CloneWithNewRequestInstance(block.Inputs[j]);
+
                         block.AddProductionUnit(unit);
                         controlUnitList.RemoveAt(i);
                         i = -1;
@@ -136,8 +147,11 @@ namespace SatisfactoryProductionManager.Services
                     }
                 }
             }
+
+            return block;
         }
         #endregion
+
 
         public List<ProductionLine> LoadFactory()
         {
