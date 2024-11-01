@@ -19,11 +19,11 @@ namespace SatisfactoryProductionManager.Model
             { "Smelter", 1 },
             { "Assembler", 2 },
             { "Refinery", 2 },
+            { "Converter", 2 },
             { "Foundry", 2 },
             { "Manufacturer", 4 },
             { "Blender", 4 },
             { "Collider", 4 },
-            { "Converter", 4 },
             { "QuantumEncoder", 4 }
         };
 
@@ -115,8 +115,7 @@ namespace SatisfactoryProductionManager.Model
             cloneUnit.Dispose();
 
             cloneUnit.ProductionRequest = newRequestInstance;
-            cloneUnit.ProductionRequest.RequestChanged += UpdateIO;
-            cloneUnit.ProductionRequest.IsSatisfied = true;
+            cloneUnit.ProductionRequest.RequestChanged += cloneUnit.UpdateIO;
             cloneUnit.UpdateIO();
 
             return cloneUnit;

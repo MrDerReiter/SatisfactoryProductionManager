@@ -148,6 +148,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 _sourceBlock.RaiseIOChanged();
             }
 
+            if (args?.PropertyName == "RequestValue" && IsSomewhereSomersloopUsed)
+                RaisePropertyChanged(nameof(SomersloopsCount));
+
             RaisePropertyChanged("ProductionBlockIO");
         }
 
