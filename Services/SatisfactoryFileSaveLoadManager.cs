@@ -16,6 +16,7 @@ namespace SatisfactoryProductionManager.Services
         private readonly string _filePath = "ProductionLines.cfg";
 
 
+        #region Сохранение
         private static List<string> SerializeProductionLine(ProductionLine prodLine)
         {
             List<string> serializedLine = ["ProductionLine:", string.Empty];
@@ -28,10 +29,10 @@ namespace SatisfactoryProductionManager.Services
 
         private static List<string> SerializeProductionBlock(ProductionBlock prodBlock)
         {
-            List<string> serializedBlock = ["\tProductionBlock:", string.Empty];
+            List<string> serializedBlock = ["\tProductionBlock:"];
 
             serializedBlock.Add($"\t\tProductionRequest: {prodBlock.ProductionRequest}");
-            serializedBlock.Add($"\t\tRecipe: {(prodBlock.MainProductionUnit as SatisfactoryProductionUnit).Recipe.Name}");
+            serializedBlock.Add($"\t\tRecipe: {prodBlock.MainProductionUnit.Recipe.Name}");
             serializedBlock.Add(string.Empty);
 
             foreach (var unit in prodBlock.ProductionUnits.Cast<SatisfactoryProductionUnit>())
@@ -42,7 +43,7 @@ namespace SatisfactoryProductionManager.Services
 
         private static List<string> SerializeProductionUnit(SatisfactoryProductionUnit prodUnit)
         {
-            List<string> serializedUnit = ["\t\t\tProductionUnit:", string.Empty];
+            List<string> serializedUnit = ["\t\t\tProductionUnit:"];
 
             serializedUnit.Add($"\t\t\t\tProductionRequest: {prodUnit.ProductionRequest}");
             serializedUnit.Add($"\t\t\t\tRecipe: {prodUnit.Recipe.Name}");
@@ -50,7 +51,9 @@ namespace SatisfactoryProductionManager.Services
 
             return serializedUnit;
         }
+        #endregion
 
+        #region Загрузка
         private static ProductionLine DeserializeProductionLine(string[] savedContent, int index)
         {
             var line = new ProductionLine();
@@ -59,7 +62,7 @@ namespace SatisfactoryProductionManager.Services
             {
                 if (savedContent[i] == "\tProductionBlock:")
                 {
-                    var block = DeserializeProductionBlock(savedContent, i + 2);
+                    var block = DeserializeProductionBlock(savedContent, ++i);
                     line.AddProductionBlock(block);
 
                     continue;
@@ -77,17 +80,18 @@ namespace SatisfactoryProductionManager.Services
             var countPerMinute = double.Parse(savedContent[index].Split(' ')[2], CultureInfo.InvariantCulture);
             var request = new ResourceRequest(resource, countPerMinute);
 
-            var recipeName = savedContent[index + 1].Split(' ')[1];
-            var recipe = (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>).GetRecipeByName(recipeName);
+            var recipeName = savedContent[++index].Split(' ')[1];
+            var recipe = (ProductionManager.RecipeProvider).GetRecipeByName(recipeName);
 
-            var block = new ProductionBlock(new SatisfactoryProductionUnit(request, recipe));
+            var block = new ProductionBlock(new SatisfactoryProductionUnit(request, (SatisfactoryRecipe)recipe));
             var savedUnits = new List<SatisfactoryProductionUnit>();
+            index += 2;
 
-            for (int i = index + 3; i < savedContent.Length; i++)
+            for (int i = index; i < savedContent.Length; i++)
             {
                 if (savedContent[i] == "\t\t\tProductionUnit:")
                 {
-                    var unit = DeserializeProductionUnit(savedContent, i + 2);
+                    var unit = DeserializeProductionUnit(savedContent, ++i);
                     savedUnits.Add(unit);
                 }
                 else if (savedContent[i] == "\tProductionBlock:") break;
@@ -105,10 +109,10 @@ namespace SatisfactoryProductionManager.Services
             var countPerMinute = double.Parse(savedContent[index].Split(' ')[2], CultureInfo.InvariantCulture);
             var request = new ResourceRequest(resource, countPerMinute);
 
-            var recipeName = savedContent[index + 1].Split(' ')[1];
-            var recipe = (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>).GetRecipeByName(recipeName);
+            var recipeName = savedContent[++index].Split(' ')[1];
+            var recipe = ProductionManager.RecipeProvider.GetRecipeByName(recipeName);
 
-            return new SatisfactoryProductionUnit(request, recipe);
+            return new SatisfactoryProductionUnit(request, (SatisfactoryRecipe)recipe);
         }
 
         private static void ReconstructProductionBlock(ProductionBlock block, List<SatisfactoryProductionUnit> controlUnitList)
@@ -133,7 +137,7 @@ namespace SatisfactoryProductionManager.Services
                 }
             }
         }
-
+        #endregion
 
         public List<ProductionLine> LoadFactory()
         {
@@ -182,7 +186,8 @@ namespace SatisfactoryProductionManager.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\nПри попытке сохранить фабрику возникла ошибка.\nПри следующем сеансе текущая фабрика не будет восстановлена.",
+                MessageBox.Show(ex.Message + "\n\nПри попытке сохранить фабрику возникла ошибка." +
+                    "\nПри следующем сеансе текущая фабрика не будет восстановлена.",
                     "Ошибка при сохранении фабрики", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 File.Create(_filePath);
