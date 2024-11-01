@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:ViewModel="clr-namespace:SatisfactoryProductionManager.ViewModel"
+		xmlns:Service="clr-namespace:SatisfactoryProductionManager.Services"
 		mc:Ignorable="d"
 		Title="Менеджер производства"
 		Height="600"
@@ -16,12 +17,19 @@
 		WindowStartupLocation="CenterScreen">
 
 	<WindowChrome.WindowChrome>
-		<WindowChrome CaptionHeight="5"/>
+		<WindowChrome CaptionHeight="5" />
 	</WindowChrome.WindowChrome>
 
 	<Window.DataContext>
 		<ViewModel:MainWindowVM />
 	</Window.DataContext>
+
+	<Window.Resources>
+		<ResourceDictionary>
+
+			<Service:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+		</ResourceDictionary>
+	</Window.Resources>
 
 	<Border BorderBrush="Chocolate"
 			BorderThickness="2"
@@ -39,7 +47,7 @@
 					MouseMove="MainWindow_MouseMove">
 
 				<Grid>
-					
+
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
@@ -399,39 +407,56 @@
 										   TextAlignment="Left"
 										   Text="Вход" />
 
-								<ItemsControl ItemsSource="{Binding Path=RequestButtons}">
+								<StackPanel Orientation="Horizontal">
 
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<WrapPanel />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
+									<ItemsControl ItemsSource="{Binding Path=RequestButtons}">
 
-											<StackPanel Width="50"
-														Margin="1,0,0,0">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<WrapPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
 
-												<Button Background="LightGreen"
-														BorderThickness="0"
-														ToolTip="Развернуть производственный цех"
-														Command="{Binding Path=ReturnObject}">
+												<StackPanel Width="50"
+															Margin="1,0,0,0">
 
-													<Image Source="{Binding Path=ImageSource}"
-														   RenderOptions.BitmapScalingMode="HighQuality" />
+													<Button Background="LightGreen"
+															BorderThickness="0"
+															ToolTip="Развернуть производственный цех"
+															Command="{Binding Path=ReturnObject}">
 
-												</Button>
+														<Image Source="{Binding Path=ImageSource}"
+															   RenderOptions.BitmapScalingMode="HighQuality" />
 
-												<TextBlock Background="Green"
-														   Foreground="GhostWhite"
-														   TextAlignment="Center"
-														   Text="{Binding Path=Count}" />
+													</Button>
 
-											</StackPanel>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
+													<TextBlock Background="Green"
+															   Foreground="GhostWhite"
+															   TextAlignment="Center"
+															   Text="{Binding Path=Count}" />
 
+												</StackPanel>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+
+									<StackPanel Margin="5,0,0,0"
+												Width="50"
+												Background="MediumPurple"
+												Visibility="{Binding Path=IsSomewhereSomersloopUsed, Converter={StaticResource VisibilityConverter}}">
+
+										<Image Margin="5"
+											   Source="../Assets/Resources/Somersloop.png"
+											   RenderOptions.BitmapScalingMode="HighQuality" />
+
+										<TextBlock Background="Purple"
+												   Foreground="GhostWhite"
+												   TextAlignment="Center"
+												   Text="{Binding SomersloopsCount}" />
+									</StackPanel>
+								</StackPanel>
 							</StackPanel>
 
 							<ScrollViewer Grid.Row="1"
@@ -485,27 +510,31 @@
 																 MouseWheel="OverclockMouseWheelControl"
 																 Text="{Binding Path=Overclock}" />
 
-														<StackPanel Orientation="Horizontal">
+														<Button HorizontalAlignment="Stretch"
+																Height="20"
+																ToolTip="Использовать петлевик"
+																Command="{Binding SetSomersloop}">
 
-															<Button Background="GhostWhite"
-																	Width="16"
-																	HorizontalAlignment="Left"
-																	Command="{Binding Path=DecreaseOverclock}">
+															<Button.Style>
+																<Style TargetType="Button">
 
-																<Image Source="../Assets/MoveLineLeft.png"
-																	   RenderOptions.BitmapScalingMode="HighQuality" />
-															</Button>
+																	<Setter Property="Background"
+																			Value="GhostWhite" />
 
-															<Button Background="GhostWhite"
-																	Width="16"
-																	HorizontalAlignment="Right"
-																	Command="{Binding Path=IncreaseOverclock}">
+																	<Style.Triggers>
+																		<DataTrigger Binding="{Binding IsSomersloopUsed}"
+																					 Value="True">
 
-																<Image Source="../Assets/MoveLineRight.png"
-																	   RenderOptions.BitmapScalingMode="HighQuality" />
+																			<Setter Property="Background"
+																					Value="MediumPurple" />
+																		</DataTrigger>
+																	</Style.Triggers>
+																</Style>
+															</Button.Style>
 
-															</Button>
-														</StackPanel>
+															<Image Source="../Assets/Resources/Somersloop.png"
+																   RenderOptions.BitmapScalingMode="HighQuality" />
+														</Button>
 
 													</StackPanel>
 												</StackPanel>
@@ -600,6 +629,26 @@
 													</ItemsControl>
 												</StackPanel>
 
+												<StackPanel Margin="3"
+															Visibility="{Binding Path=IsSomersloopUsed, Converter={StaticResource VisibilityConverter}}">
+
+													<TextBlock Foreground="GhostWhite"
+															   TextAlignment="Center"
+															   Text="Петлевики" />
+
+													<StackPanel Width="70"
+																Background="MediumPurple">
+
+														<Image Margin="5"
+															   Source="../Assets/Resources/Somersloop.png"
+															   RenderOptions.BitmapScalingMode="HighQuality" />
+
+														<TextBlock Background="Purple"
+																   Foreground="GhostWhite"
+																   TextAlignment="Center"
+																   Text="{Binding SomersloopCount}" />
+													</StackPanel>
+												</StackPanel>
 											</StackPanel>
 										</DataTemplate>
 									</ItemsControl.ItemTemplate>

@@ -47,16 +47,32 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 }
             }
         }
+        public string SomersloopCount => _sourceUnit.SomersloopCount.ToString();
+        public bool IsSomersloopUsed 
+        {
+            get => _sourceUnit.IsSomersloopUsed;
+            set
+            {
+                if (IsSomersloopUsed == value) return;
+
+                _sourceUnit.IsSomersloopUsed = value;
+                RaisePropertyChanged(nameof(IsSomersloopUsed));
+                RaisePropertyChanged(nameof(SomersloopCount));
+                RaisePropertyChanged(nameof(MachineCount));
+            }
+        }
         public ResourceStreamButtonVM[] Products { get; }
         public RequestButtonVM[] Requests { get; }
 
         public DelegateCommand RemoveProdUnit { get; }
         public DelegateCommand ConvertUnitToBlock { get; }
+        public DelegateCommand SetSomersloop{ get; }
         public DelegateCommand<double?> IncreaseOverclock { get; }
         public DelegateCommand<double?> DecreaseOverclock { get; }
 
         public event Action<ProductionUnit> RequestingRemoveProdUnit;
         public event Action<ProductionUnit> RequestingConvertUnitToBlock;
+        public event Action<object> ButtonPressed;
 
         public ProductionUnitVM(ProductionUnit sourceUnit)
         {
@@ -80,6 +96,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             RemoveProdUnit = new DelegateCommand(RemoveProdUnit_CommandHandler);
             ConvertUnitToBlock = new DelegateCommand(ConvertUnitToBlock_CommandHandler);
+            SetSomersloop = new DelegateCommand(SetSomersloop_CommandHandler);
             IncreaseOverclock = new DelegateCommand<double?>(IncreaseOverclock_CommandHandler);
             DecreaseOverclock = new DelegateCommand<double?>(DecreaseOverclock_CommandHandler);
         }
@@ -87,12 +104,22 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         private void RemoveProdUnit_CommandHandler()
         {
+            ButtonPressed?.Invoke(null);
             RequestingRemoveProdUnit?.Invoke(_sourceUnit);
         }
 
         private void ConvertUnitToBlock_CommandHandler()
         {
+            ButtonPressed?.Invoke(null);
             RequestingConvertUnitToBlock?.Invoke(_sourceUnit);
+        }
+
+        private void SetSomersloop_CommandHandler()
+        {
+            ButtonPressed?.Invoke(null);
+
+            if (!IsSomersloopUsed) IsSomersloopUsed = true;
+            else IsSomersloopUsed = false;
         }
 
         private void IncreaseOverclock_CommandHandler(double? value)
@@ -104,6 +131,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             RaisePropertyChanged(nameof(Overclock));
             RaisePropertyChanged(nameof(MachineCount));
+
+            if(IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
         }
 
         private void DecreaseOverclock_CommandHandler(double? value)
@@ -115,6 +144,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             RaisePropertyChanged(nameof(Overclock));
             RaisePropertyChanged(nameof(MachineCount));
+
+            if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
         }
     }
 }

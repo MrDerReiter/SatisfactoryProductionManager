@@ -66,8 +66,8 @@ namespace SatisfactoryProductionManager.View
         {
             args.Handled = true;
             var context = (sender as TextBox).DataContext as ProductionUnitVM;
-            var command = args.Delta > 0 ? context.IncreaseOverclock : context.DecreaseOverclock;
-            command.Execute(10);
+            var command = args.Delta > 0 ? context?.IncreaseOverclock : context?.DecreaseOverclock;
+            command?.Execute(10);
         }
     }
 }

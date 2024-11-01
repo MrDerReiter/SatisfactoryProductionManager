@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>0.12.1</Version>
+		<Version>0.13.0</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>Disable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
@@ -75,6 +75,7 @@
 		<None Remove="Assets\Resources\FicsiteIngot.png" />
 		<None Remove="Assets\Resources\FicsiteTrigon.png" />
 		<None Remove="Assets\Resources\Ficsonium.png" />
+		<None Remove="Assets\Resources\FicsoniumFuelRod.png" />
 		<None Remove="Assets\Resources\Fuel.png" />
 		<None Remove="Assets\Resources\GasFilter.png" />
 		<None Remove="Assets\Resources\GasNobelisk.png" />
@@ -129,6 +130,7 @@
 		<None Remove="Assets\Resources\SmartPlating.png" />
 		<None Remove="Assets\Resources\SmokelessPowder.png" />
 		<None Remove="Assets\Resources\SolidBiofuel.png" />
+		<None Remove="Assets\Resources\Somersloop.png" />
 		<None Remove="Assets\Resources\Stator.png" />
 		<None Remove="Assets\Resources\StunRebar.png" />
 		<None Remove="Assets\Resources\SulfuricAcid.png" />
@@ -262,6 +264,7 @@
 		<Resource Include="Assets\Resources\FicsiteIngot.png" />
 		<Resource Include="Assets\Resources\FicsiteTrigon.png" />
 		<Resource Include="Assets\Resources\Ficsonium.png" />
+		<Resource Include="Assets\Resources\FicsoniumFuelRod.png" />
 		<Resource Include="Assets\Resources\Fuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -385,6 +388,7 @@
 		<Resource Include="Assets\Resources\SolidBiofuel.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="Assets\Resources\Somersloop.png" />
 		<Resource Include="Assets\Resources\Stator.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

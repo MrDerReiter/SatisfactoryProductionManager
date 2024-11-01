@@ -351,7 +351,7 @@ namespace SatisfactoryProductionManager.ViewModel
 
         private void UpdateLineIO(object sender, PropertyChangedEventArgs args)
         {
-            UpdateLineIO();
+            if (args?.PropertyName == "ProductionBlockIO") UpdateLineIO();
         }
 
         #endregion

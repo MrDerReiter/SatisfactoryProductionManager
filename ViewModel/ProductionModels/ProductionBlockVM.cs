@@ -21,6 +21,26 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         public BindingList<RequestButtonVM> RequestButtons { get; }
         public BindingList<ByproductButtonVM> ByproductButtons { get; }
         public EditableRequestButtonVM ProductionRequestButton { get; }
+        public bool IsSomewhereSomersloopUsed
+        {
+            get
+            {
+                foreach (var unit in UnitModels)
+                    if (unit.IsSomersloopUsed) return true;
+
+                return false;
+            }
+        }
+        public int SomersloopsCount
+        {
+            get
+            {
+                return UnitModels
+                      .Where(unit => unit.IsSomersloopUsed)
+                      .Select(unit => int.Parse(unit.SomersloopCount))
+                      .Sum();
+            }
+        }
 
         public event Action<object> ButtonPressed;
         public event Action<ProductionUnit> RequestingAddBlock;
@@ -33,14 +53,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit)).ToList();
             UnitModels = new BindingList<ProductionUnitVM>(unitModels);
-            foreach ( var unitModel in UnitModels )
-            {
-                unitModel.RequestingRemoveProdUnit += ButtonPressed_EventStarter;
-                unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
-                unitModel.RequestingConvertUnitToBlock += ButtonPressed_EventStarter;
-                unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
-            }
-            
+            foreach (var unitModel in UnitModels)
+                SubscribeToUnitEvents(unitModel);
+
             var requestButtons = _sourceBlock.Inputs
                 .Where(input => input.CountPerMinute > 0)
                 .Select((input) => new RequestButtonVM(input)).ToList();
@@ -70,7 +85,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"Не удалось удалить цех", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(ex.Message, "Не удалось удалить цех", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -88,18 +103,32 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             }
         }
 
+        private void ExpandRequestToProductionUnit(ResourceRequest request, Recipe recipe)
+        {
+            ButtonPressed_EventStarter(null);
+
+            _sourceBlock.AddProductionUnit(request, recipe);
+            UpdateUnitsVM(null, null);
+        }
+
         private void UpdateUnitsVM(object sender, PropertyChangedEventArgs args)
         {
+            if (args?.PropertyName == "Overclock")
+            {
+                if (sender is ProductionUnitVM unitModel &&
+                    unitModel.IsSomersloopUsed)
+                    RaisePropertyChanged(nameof(SomersloopsCount));
+                return;
+            }
+            else if (args?.PropertyName == "MachineCount" ||
+                     args?.PropertyName == "SomersloopCount") return;
+
+
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
             UnitModels.Clear();
             UnitModels.AddRange(unitModels);
             foreach (var unitModel in UnitModels)
-            {
-                unitModel.RequestingRemoveProdUnit += ButtonPressed_EventStarter;
-                unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
-                unitModel.RequestingConvertUnitToBlock += ButtonPressed_EventStarter;
-                unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
-            }
+                SubscribeToUnitEvents(unitModel);
 
             var requestButtons = _sourceBlock.Inputs
                 .Where(input => input.CountPerMinute > 0)
@@ -112,7 +141,22 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             ByproductButtons.Clear();
             ByproductButtons.AddRange(byproductButtons);
 
-            RaisePropertyChanged();
+            if (args?.PropertyName == "IsSomersloopUsed")
+            {
+                RaisePropertyChanged(nameof(IsSomewhereSomersloopUsed));
+                RaisePropertyChanged(nameof(SomersloopsCount));
+                _sourceBlock.RaiseIOChanged();
+            }
+
+            RaisePropertyChanged("ProductionBlockIO");
+        }
+
+        private void SubscribeToUnitEvents(ProductionUnitVM unitModel)
+        {
+            unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
+            unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
+            unitModel.ButtonPressed += ButtonPressed_EventStarter;
+            unitModel.PropertyChanged += UpdateUnitsVM;
         }
 
         private void RunSelector(ResourceRequest request)
@@ -139,14 +183,6 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             {
                 MessageBox.Show(ex.Message, "Ошибка при инициализации выбора рецепта", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private void ExpandRequestToProductionUnit(ResourceRequest request, Recipe recipe)
-        {
-            ButtonPressed_EventStarter(null);
-
-            _sourceBlock.AddProductionUnit(request, recipe);
-            UpdateUnitsVM(null, null);
         }
     }
 }
