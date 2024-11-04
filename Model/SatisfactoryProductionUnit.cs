@@ -37,7 +37,9 @@ namespace SatisfactoryProductionManager.Model
                     value > 0 && value <= 250) _overclock = value;
             }
         }
+        public int PowerShardCount => GetPowerShardCount();
         public int SomersloopCount => GetSomersloopCount();
+        public bool IsOverclocked => _overclock > 100;
         public bool IsSomersloopUsed
         {
             get => _isSomersloopUsed;
@@ -74,6 +76,14 @@ namespace SatisfactoryProductionManager.Model
             ProductionRequest.RequestChanged += UpdateIO;
         }
 
+
+        private int GetPowerShardCount()
+        {
+            if (!IsOverclocked) return 0;
+
+            return (int)(Math.Floor(MachinesCount) *
+                         Math.Ceiling((_overclock - 100) / 50));
+        }
 
         private int GetSomersloopCount()
         {

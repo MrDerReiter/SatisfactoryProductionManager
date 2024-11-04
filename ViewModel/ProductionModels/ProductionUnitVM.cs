@@ -1,4 +1,5 @@
-﻿using FactoryManagementCore.Extensions;
+﻿using Accessibility;
+using FactoryManagementCore.Extensions;
 using FactoryManagementCore.Production;
 using FactoryManagementCore.Services;
 using Prism.Commands;
@@ -36,18 +37,26 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                     else if (Regex.IsMatch(value, @"^\d+\.?\d*%?$"))
                     {
                         var result = double.Parse(value.Replace("%", ""), CultureInfo.InvariantCulture);
+                        var isOverclockStatusChanging = IsOverclockStatusChanging(_sourceUnit.Overclock, result);
+
                         _sourceUnit.Overclock = result;
+
+                        if (isOverclockStatusChanging) RaisePropertyChanged(nameof(IsOverclocked));
                     }
                 }
                 catch (Exception) { }
                 finally
                 {
-                    RaisePropertyChanged(nameof(Overclock));
-                    RaisePropertyChanged(nameof(MachineCount));
+                    RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
+
+                    if (IsOverclocked) RaisePropertyChanged(nameof(PowerShardCount));
+                    if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
                 }
             }
         }
+        public string PowerShardCount => _sourceUnit.PowerShardCount.ToString();
         public string SomersloopCount => _sourceUnit.SomersloopCount.ToString();
+        public bool IsOverclocked => _sourceUnit.IsOverclocked;
         public bool IsSomersloopUsed 
         {
             get => _sourceUnit.IsSomersloopUsed;
@@ -102,6 +111,18 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         }
 
 
+        private static bool IsOverclockStatusChanging(double oldOverclock, double newOverclock)
+        {
+            return (newOverclock > 100 && oldOverclock <= 100) ||
+                   (newOverclock <= 100 && oldOverclock > 100);
+        }
+
+        private void RaisePropertiesChanged(params string[] properties)
+        {
+            foreach (var property in properties)
+                RaisePropertyChanged(property);
+        }
+
         private void RemoveProdUnit_CommandHandler()
         {
             ButtonPressed?.Invoke(null);
@@ -126,25 +147,29 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         {
             if (!value.HasValue) value = 50;
             if (_sourceUnit.Overclock + value > 250) return;
+            var isOverclockStatusChanging = 
+                IsOverclockStatusChanging(_sourceUnit.Overclock, _sourceUnit.Overclock + (double)value);
 
             _sourceUnit.Overclock += (double)value;
+            RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
 
-            RaisePropertyChanged(nameof(Overclock));
-            RaisePropertyChanged(nameof(MachineCount));
-
-            if(IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
+            if (isOverclockStatusChanging) RaisePropertyChanged(nameof(IsOverclocked));
+            if (IsOverclocked) RaisePropertyChanged(nameof(PowerShardCount));
+            if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
         }
 
         private void DecreaseOverclock_CommandHandler(double? value)
         {
             if (!value.HasValue) value = 50;
             if (_sourceUnit.Overclock - value <= 0) return;
+            var isOverclockStatusChanging =
+                IsOverclockStatusChanging(_sourceUnit.Overclock, _sourceUnit.Overclock - (double)value);
 
             _sourceUnit.Overclock -= (double)value;
+            RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
 
-            RaisePropertyChanged(nameof(Overclock));
-            RaisePropertyChanged(nameof(MachineCount));
-
+            if (isOverclockStatusChanging) RaisePropertyChanged(nameof(IsOverclocked));
+            if (IsOverclocked) RaisePropertyChanged(nameof(PowerShardCount));
             if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
         }
     }

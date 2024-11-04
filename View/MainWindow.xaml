@@ -8,11 +8,11 @@
 		mc:Ignorable="d"
 		Title="Менеджер производства"
 		Height="600"
-		Width="800"
+		Width="815"
 		AllowsTransparency="True"
 		Background="Transparent"
 		MinHeight="450"
-		MinWidth="800"
+		MinWidth="815"
 		WindowStyle="None"
 		WindowStartupLocation="CenterScreen">
 
@@ -413,7 +413,7 @@
 
 										<ItemsControl.ItemsPanel>
 											<ItemsPanelTemplate>
-												<WrapPanel />
+												<WrapPanel MaxWidth="310"/>
 											</ItemsPanelTemplate>
 										</ItemsControl.ItemsPanel>
 										<ItemsControl.ItemTemplate>
@@ -444,10 +444,29 @@
 
 									<StackPanel Margin="5,0,0,0"
 												Width="50"
+												VerticalAlignment="Top"
+												Background="LightSalmon"
+												Visibility="{Binding Path=IsSomewhereOverclock, Converter={StaticResource VisibilityConverter}}">
+
+										<Image Margin="5"
+											   ToolTip="Энергоячейка"
+											   Source="../Assets/Resources/SyntheticPowerShard.png"
+											   RenderOptions.BitmapScalingMode="HighQuality" />
+
+										<TextBlock Background="Chocolate"
+												   Foreground="GhostWhite"
+												   TextAlignment="Center"
+												   Text="{Binding PowerShardCount}" />
+									</StackPanel>
+
+									<StackPanel Margin="5,0,0,0"
+												Width="50"
+												VerticalAlignment="Top"
 												Background="MediumPurple"
 												Visibility="{Binding Path=IsSomewhereSomersloopUsed, Converter={StaticResource VisibilityConverter}}">
 
 										<Image Margin="5"
+											   ToolTip="Петлевик"
 											   Source="../Assets/Resources/Somersloop.png"
 											   RenderOptions.BitmapScalingMode="HighQuality" />
 
@@ -630,6 +649,28 @@
 												</StackPanel>
 
 												<StackPanel Margin="3"
+															Visibility="{Binding Path=IsOverclocked, Converter={StaticResource VisibilityConverter}}">
+
+													<TextBlock Foreground="GhostWhite"
+															   TextAlignment="Center"
+															   Text="Энергоячейки" />
+
+													<StackPanel Width="70"
+																Background="LightSalmon">
+
+														<Image Margin="5"
+															   ToolTip="Энергоячейка"
+															   Source="../Assets/Resources/SyntheticPowerShard.png"
+															   RenderOptions.BitmapScalingMode="HighQuality" />
+
+														<TextBlock Background="Chocolate"
+																   Foreground="GhostWhite"
+																   TextAlignment="Center"
+																   Text="{Binding PowerShardCount}" />
+													</StackPanel>
+												</StackPanel>
+
+												<StackPanel Margin="3"
 															Visibility="{Binding Path=IsSomersloopUsed, Converter={StaticResource VisibilityConverter}}">
 
 													<TextBlock Foreground="GhostWhite"
@@ -640,6 +681,7 @@
 																Background="MediumPurple">
 
 														<Image Margin="5"
+															   ToolTip="Петлевик"
 															   Source="../Assets/Resources/Somersloop.png"
 															   RenderOptions.BitmapScalingMode="HighQuality" />
 

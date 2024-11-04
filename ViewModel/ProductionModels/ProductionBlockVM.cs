@@ -21,6 +21,16 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         public BindingList<RequestButtonVM> RequestButtons { get; }
         public BindingList<ByproductButtonVM> ByproductButtons { get; }
         public EditableRequestButtonVM ProductionRequestButton { get; }
+        public bool IsSomewhereOverclock
+        {
+            get
+            {
+                foreach (var unit in UnitModels)
+                    if (unit.IsOverclocked) return true;
+
+                return false;
+            }
+        }
         public bool IsSomewhereSomersloopUsed
         {
             get
@@ -31,14 +41,24 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                 return false;
             }
         }
-        public int SomersloopsCount
+        public string PowerShardCount
+        {
+            get
+            {
+                return UnitModels
+                      .Where(unit => unit.IsOverclocked)
+                      .Select(unit => int.Parse(unit.PowerShardCount))
+                      .Sum().ToString();
+            }
+        }
+        public string SomersloopsCount
         {
             get
             {
                 return UnitModels
                       .Where(unit => unit.IsSomersloopUsed)
                       .Select(unit => int.Parse(unit.SomersloopCount))
-                      .Sum();
+                      .Sum().ToString();
             }
         }
 
@@ -111,18 +131,35 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             UpdateUnitsVM(null, null);
         }
 
+        private bool NeedToFullUpdateBlock(object sender, string propertyName)
+        {
+            if (propertyName == "Overclock" && sender is ProductionUnitVM unitModel)
+            {
+                if (unitModel.IsSomersloopUsed)
+                    RaisePropertyChanged(nameof(SomersloopsCount));
+
+                if (unitModel.IsOverclocked)
+                    RaisePropertyChanged(nameof(PowerShardCount));
+
+                return false;
+            }
+
+            else if (propertyName == "IsOverclocked")
+            {
+                RaisePropertyChanged(nameof(IsSomewhereOverclock));
+                return false;
+            }
+
+            else if (propertyName == "MachineCount" ||
+                     propertyName == "PowerShardCount" ||
+                     propertyName == "SomersloopCount") return false;
+
+            return true;
+        }
+
         private void UpdateUnitsVM(object sender, PropertyChangedEventArgs args)
         {
-            if (args?.PropertyName == "Overclock")
-            {
-                if (sender is ProductionUnitVM unitModel &&
-                    unitModel.IsSomersloopUsed)
-                    RaisePropertyChanged(nameof(SomersloopsCount));
-                return;
-            }
-            else if (args?.PropertyName == "MachineCount" ||
-                     args?.PropertyName == "SomersloopCount") return;
-
+            if (!NeedToFullUpdateBlock(sender, args?.PropertyName)) return;
 
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
             UnitModels.Clear();
