@@ -2,6 +2,7 @@
 using FactoryManagementCore.Production;
 using System;
 using System.Collections.Generic;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace SatisfactoryProductionManager.Model
 {
@@ -50,6 +51,11 @@ namespace SatisfactoryProductionManager.Model
             }
         }
         public bool HasByproduct { get => Recipe.HasByproduct; }
+        public ResourceStream Product
+        {
+            get => _outputs[0];
+            private set => _outputs[0] = value;
+        }
         public ResourceStream Byproduct { get; private set; }
 
 
@@ -98,11 +104,12 @@ namespace SatisfactoryProductionManager.Model
                     Recipe.Inputs[i].CountPerMinute * BaseMachinesCount / _somersloopModifier :
                     Recipe.Inputs[i].CountPerMinute * BaseMachinesCount;
 
-            for (int i = 0; i < _outputs.Length; i++)
-                _outputs[i] = Recipe.Outputs[i] * BaseMachinesCount;
+            Product = Recipe.Product * BaseMachinesCount;
 
             if (HasByproduct)
-                Byproduct = Recipe.Byproduct.Value * BaseMachinesCount;
+                Byproduct = _isSomersloopUsed ?
+                    Recipe.Byproduct.Value * BaseMachinesCount / _somersloopModifier :
+                    Recipe.Byproduct.Value * BaseMachinesCount;
         }
 
         protected override double GetMachinesCount()
