@@ -87,7 +87,49 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
             ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
             ProductionRequestButton.ObjectSelected += ButtonPressed_EventStarter;
-            ProductionRequestButton.PropertyChanged += UpdateUnitsVM;
+            ProductionRequestButton.PropertyChanged += IncomePropertyChangedHandler;
+        }
+
+
+        private void IncomePropertyChangedHandler(object sender, PropertyChangedEventArgs args)
+        {
+            switch (args.PropertyName)
+            {
+                case "RequestValue":
+                    UpdateWorkspace(); break;
+
+                case "IsOverclocked":
+                    RaisePropertyChanged(nameof(IsSomewhereOverclock)); break;
+
+                case "PowerShardCount":
+                    RaisePropertyChanged(nameof(PowerShardCount)); break;
+
+                case "IsSomersloopUsed":
+                    _sourceBlock.ForceUpdate();
+                    UpdateWorkspace(); break;
+
+                case "SomersloopCount":
+                    RaisePropertyChanged(nameof(SomersloopsCount)); break;
+            }
+        }
+
+        private void SubscribeToUnitEvents(ProductionUnitVM unitModel)
+        {
+            unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
+            unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
+            unitModel.ButtonPressed += ButtonPressed_EventStarter;
+            unitModel.PropertyChanged += IncomePropertyChangedHandler;
+        }
+
+        private void RaiseAllKeyPropertiesChanged()
+        {
+            RaisePropertyChanged(nameof(IsSomewhereOverclock));
+            if (IsSomewhereOverclock) RaisePropertyChanged(nameof(PowerShardCount));
+
+            RaisePropertyChanged(nameof(IsSomewhereSomersloopUsed));
+            if (IsSomewhereSomersloopUsed) RaisePropertyChanged(nameof(SomersloopsCount));
+
+            RaisePropertyChanged("ProductionBlockIO");
         }
 
 
@@ -101,7 +143,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             try
             {
                 _sourceBlock.RemoveProductionUnit(unit);
-                UpdateUnitsVM(null, null);
+                UpdateWorkspace();
             }
             catch (Exception ex)
             {
@@ -115,7 +157,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             {
                 _sourceBlock.RemoveProductionUnit(unit);
                 RequestingAddBlock?.Invoke(unit);
-                UpdateUnitsVM(null, null);
+                UpdateWorkspace();
             }
             catch (Exception ex)
             {
@@ -128,39 +170,11 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             ButtonPressed_EventStarter(null);
 
             _sourceBlock.AddProductionUnit(request, recipe);
-            UpdateUnitsVM(null, null);
+            UpdateWorkspace();
         }
 
-        private bool NeedToFullUpdateBlock(object sender, string propertyName)
+        private void UpdateWorkspace()
         {
-            if (propertyName == "Overclock" && sender is ProductionUnitVM unitModel)
-            {
-                if (unitModel.IsSomersloopUsed)
-                    RaisePropertyChanged(nameof(SomersloopsCount));
-
-                if (unitModel.IsOverclocked)
-                    RaisePropertyChanged(nameof(PowerShardCount));
-
-                return false;
-            }
-
-            else if (propertyName == "IsOverclocked")
-            {
-                RaisePropertyChanged(nameof(IsSomewhereOverclock));
-                return false;
-            }
-
-            else if (propertyName == "MachineCount" ||
-                     propertyName == "PowerShardCount" ||
-                     propertyName == "SomersloopCount") return false;
-
-            return true;
-        }
-
-        private void UpdateUnitsVM(object sender, PropertyChangedEventArgs args)
-        {
-            if (!NeedToFullUpdateBlock(sender, args?.PropertyName)) return;
-
             var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
             UnitModels.Clear();
             UnitModels.AddRange(unitModels);
@@ -178,25 +192,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             ByproductButtons.Clear();
             ByproductButtons.AddRange(byproductButtons);
 
-            if (args?.PropertyName == "IsSomersloopUsed")
-            {
-                RaisePropertyChanged(nameof(IsSomewhereSomersloopUsed));
-                RaisePropertyChanged(nameof(SomersloopsCount));
-                _sourceBlock.RaiseIOChanged();
-            }
-
-            if (args?.PropertyName == "RequestValue" && IsSomewhereSomersloopUsed)
-                RaisePropertyChanged(nameof(SomersloopsCount));
-
-            RaisePropertyChanged("ProductionBlockIO");
-        }
-
-        private void SubscribeToUnitEvents(ProductionUnitVM unitModel)
-        {
-            unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
-            unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
-            unitModel.ButtonPressed += ButtonPressed_EventStarter;
-            unitModel.PropertyChanged += UpdateUnitsVM;
+            RaiseAllKeyPropertiesChanged();
         }
 
         private void RunSelector(ResourceRequest request)

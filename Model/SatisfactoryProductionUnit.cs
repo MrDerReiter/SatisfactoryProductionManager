@@ -2,7 +2,6 @@
 using FactoryManagementCore.Production;
 using System;
 using System.Collections.Generic;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace SatisfactoryProductionManager.Model
 {
@@ -34,13 +33,22 @@ namespace SatisfactoryProductionManager.Model
             get => _overclock;
             set
             {
-                if (value != _overclock && 
-                    value > 0 && value <= 250) _overclock = value;
+                if (value != _overclock &&
+                    value > 0 && value <= 250)
+                {
+                    var wasOverclockedBefore = IsOverclocked;
+
+                    _overclock = value;
+                    OverclockChanged?.Invoke();
+
+                    if ((!wasOverclockedBefore && IsOverclocked) ||
+                       (wasOverclockedBefore && !IsOverclocked)) OverclockedStatusChanged?.Invoke();
+                }
             }
         }
         public int PowerShardCount => GetPowerShardCount();
         public int SomersloopCount => GetSomersloopCount();
-        public bool IsOverclocked => _overclock > 100;
+        public bool IsOverclocked => _overclock > 100 && MachinesCount >= 1;
         public bool IsSomersloopUsed
         {
             get => _isSomersloopUsed;
@@ -56,7 +64,24 @@ namespace SatisfactoryProductionManager.Model
             get => _outputs[0];
             private set => _outputs[0] = value;
         }
-        public ResourceStream Byproduct { get; private set; }
+        public ResourceStream Byproduct
+        {
+            get => HasByproduct ? _outputs[1] :
+                throw new InvalidOperationException
+                    ("Невозможно запросить данные о побочном продукте, " +
+                     "т.к. используемый в производственном цехе рецепт не подразумевает его наличие.");
+
+            private set
+            {
+                if (HasByproduct) _outputs[1] = value;
+                else throw new InvalidOperationException
+                    ("Невозможно задать значение для побочного продукта, " +
+                     "т.к. используемый в производственном цехе рецепт не подразумевает его наличие.");
+            }
+        }
+
+        public event Action OverclockChanged;
+        public event Action OverclockedStatusChanged;
 
 
         public SatisfactoryProductionUnit(ResourceRequest productionRequest, SatisfactoryRecipe recipe)
@@ -73,11 +98,10 @@ namespace SatisfactoryProductionManager.Model
                 _inputs[i] = (Recipe.Inputs[i] * MachinesCount).ToRequest();
 
             _outputs = new ResourceStream[Recipe.Outputs.Length];
-            for (int i = 0; i < Recipe.Outputs.Length; i++)
-                _outputs[i] = Recipe.Outputs[i] * MachinesCount;
 
-            if (HasByproduct)
-                Byproduct = Recipe.Byproduct.Value * MachinesCount;
+            Product = Recipe.Outputs[0] * MachinesCount;
+
+            if (HasByproduct) Byproduct = Recipe.Byproduct.Value * MachinesCount;
 
             ProductionRequest.RequestChanged += UpdateIO;
         }
@@ -94,7 +118,7 @@ namespace SatisfactoryProductionManager.Model
         private int GetSomersloopCount()
         {
             if (!_isSomersloopUsed) return 0;
-            else return (int)Math.Ceiling(_howManySomersloopsNeed[Machine] * MachinesCount);
+            else return (int)Math.Ceiling(MachinesCount) * _howManySomersloopsNeed[Machine];
         }
 
         protected override void UpdateIO()
@@ -116,6 +140,7 @@ namespace SatisfactoryProductionManager.Model
         {
             if (_isSomersloopUsed)
                 return BaseMachinesCount / OverclockModifier / _somersloopModifier;
+
             else return BaseMachinesCount / OverclockModifier;
         }
 

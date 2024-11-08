@@ -37,11 +37,8 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                     else if (Regex.IsMatch(value, @"^\d+\.?\d*%?$"))
                     {
                         var result = double.Parse(value.Replace("%", ""), CultureInfo.InvariantCulture);
-                        var isOverclockStatusChanging = IsOverclockStatusChanging(_sourceUnit.Overclock, result);
 
                         _sourceUnit.Overclock = result;
-
-                        if (isOverclockStatusChanging) RaisePropertyChanged(nameof(IsOverclocked));
                     }
                 }
                 catch (Exception) { }
@@ -98,8 +95,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                     new ResourceStreamButtonVM(_sourceUnit.Byproduct)
                 ];
             }
-            else
-                Products = [new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream())];
+            else Products = [new ResourceStreamButtonVM(_sourceUnit.ProductionRequest.ToStream())];
 
             Requests = _sourceUnit.Inputs.Select((input) => new RequestButtonVM(input)).ToArray();
 
@@ -108,21 +104,25 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
             SetSomersloop = new DelegateCommand(SetSomersloop_CommandHandler);
             IncreaseOverclock = new DelegateCommand<double?>(IncreaseOverclock_CommandHandler);
             DecreaseOverclock = new DelegateCommand<double?>(DecreaseOverclock_CommandHandler);
+
+            _sourceUnit.OverclockChanged += OverclockChanged_EventHandler;
+            _sourceUnit.OverclockedStatusChanged += OverclockedStatusChanged_EventHandler;
         }
 
 
-        private static bool IsOverclockStatusChanging(double oldOverclock, double newOverclock)
+        #region Обработчики событий
+        private void OverclockChanged_EventHandler()
         {
-            return (newOverclock > 100 && oldOverclock <= 100) ||
-                   (newOverclock <= 100 && oldOverclock > 100);
+            RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
         }
 
-        private void RaisePropertiesChanged(params string[] properties)
+        private void OverclockedStatusChanged_EventHandler()
         {
-            foreach (var property in properties)
-                RaisePropertyChanged(property);
+            RaisePropertyChanged(nameof(IsOverclocked));
         }
+        #endregion
 
+        #region Обработчики команд
         private void RemoveProdUnit_CommandHandler()
         {
             ButtonPressed?.Invoke(null);
@@ -147,13 +147,9 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         {
             if (!value.HasValue) value = 50;
             if (_sourceUnit.Overclock + value > 250) return;
-            var isOverclockStatusChanging = 
-                IsOverclockStatusChanging(_sourceUnit.Overclock, _sourceUnit.Overclock + (double)value);
 
             _sourceUnit.Overclock += (double)value;
-            RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
-
-            if (isOverclockStatusChanging) RaisePropertyChanged(nameof(IsOverclocked));
+            
             if (IsOverclocked) RaisePropertyChanged(nameof(PowerShardCount));
             if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
         }
@@ -162,15 +158,18 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         {
             if (!value.HasValue) value = 50;
             if (_sourceUnit.Overclock - value <= 0) return;
-            var isOverclockStatusChanging =
-                IsOverclockStatusChanging(_sourceUnit.Overclock, _sourceUnit.Overclock - (double)value);
 
             _sourceUnit.Overclock -= (double)value;
-            RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
 
-            if (isOverclockStatusChanging) RaisePropertyChanged(nameof(IsOverclocked));
             if (IsOverclocked) RaisePropertyChanged(nameof(PowerShardCount));
             if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
+        }
+        #endregion
+
+        private void RaisePropertiesChanged(params string[] properties)
+        {
+            foreach (var property in properties)
+                RaisePropertyChanged(property);
         }
     }
 }
