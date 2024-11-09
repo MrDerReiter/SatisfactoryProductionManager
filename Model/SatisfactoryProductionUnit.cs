@@ -131,9 +131,7 @@ namespace SatisfactoryProductionManager.Model
             Product = Recipe.Product * BaseMachinesCount;
 
             if (HasByproduct)
-                Byproduct = _isSomersloopUsed ?
-                    Recipe.Byproduct.Value * BaseMachinesCount / _somersloopModifier :
-                    Recipe.Byproduct.Value * BaseMachinesCount;
+                Byproduct = Recipe.Byproduct.Value * BaseMachinesCount;
         }
 
         protected override double GetMachinesCount()

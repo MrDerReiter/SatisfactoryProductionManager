@@ -572,10 +572,10 @@
 														   Source="{Binding Path=Machine}"
 														   RenderOptions.BitmapScalingMode="HighQuality" />
 
-													<TextBlock VerticalAlignment="Bottom"
+													<TextBox VerticalAlignment="Bottom"
 															   Background="Orange"
 															   TextAlignment="Center"
-															   Text="{Binding Path=MachineCount}" />
+															   Text="{Binding Path=MachineCount, Mode=TwoWay}" />
 												</StackPanel>
 
 												<StackPanel Margin="3">

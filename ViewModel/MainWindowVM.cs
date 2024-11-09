@@ -35,6 +35,7 @@ namespace SatisfactoryProductionManager.ViewModel
         public DelegateCommand MoveActiveLineRight { get; }
         public DelegateCommand RemoveActiveBlock { get; }
 
+
         public MainWindowVM()
         {
             _player = new MediaPlayer();

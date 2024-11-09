@@ -105,7 +105,6 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
                     RaisePropertyChanged(nameof(PowerShardCount)); break;
 
                 case "IsSomersloopUsed":
-                    _sourceBlock.ForceUpdate();
                     UpdateWorkspace(); break;
 
                 case "SomersloopCount":

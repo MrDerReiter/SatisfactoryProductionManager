@@ -1,4 +1,5 @@
 ﻿using Accessibility;
+using FactoryManagementCore.Elements;
 using FactoryManagementCore.Extensions;
 using FactoryManagementCore.Production;
 using FactoryManagementCore.Services;
@@ -10,6 +11,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -21,7 +23,41 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
 
         public ImageSource Machine { get; }
         public string MachineName { get; }
-        public string MachineCount { get => _sourceUnit.MachinesCount.ToString("0.###", CultureInfo.InvariantCulture); }
+        public string MachineCount 
+        { 
+            get => _sourceUnit.MachinesCount.ToString("0.###", CultureInfo.InvariantCulture);
+            set
+            {
+                try
+                {
+                    var targetMachineCount = double.Parse(value, CultureInfo.InvariantCulture);
+                    var targetOverclock = GetOptimalOverclock(targetMachineCount);
+                    
+                    _sourceUnit.Overclock = targetOverclock;
+
+                    if (IsSomersloopUsed) RaisePropertyChanged(nameof(SomersloopCount));
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show
+                        ("Неподходящее значение для количества станков. " +
+                        "Введите целое число, либо дробное число " +
+                        "с точкой в качестве разделителя.",
+                        "Введено некорректное значение", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                    RaisePropertyChanged(nameof(MachineCount));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show
+                        (ex.Message, "Не удалось установить количество станков",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                    RaisePropertyChanged(nameof(MachineCount));
+                }
+            }
+        }
         public string Overclock
         {
             get => _sourceUnit.Overclock.ToString("0.#", CultureInfo.InvariantCulture) + "%";
@@ -114,6 +150,7 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         private void OverclockChanged_EventHandler()
         {
             RaisePropertiesChanged(nameof(Overclock), nameof(MachineCount));
+            if (IsOverclocked) RaisePropertyChanged(nameof(PowerShardCount));
         }
 
         private void OverclockedStatusChanged_EventHandler()
@@ -170,6 +207,32 @@ namespace SatisfactoryProductionManager.ViewModel.ProductionModels
         {
             foreach (var property in properties)
                 RaisePropertyChanged(property);
+        }
+
+        private double GetOptimalOverclock(double targetMachineCount)
+        {
+            double baseMachinesCount = 
+                _sourceUnit.ProductionRequest.CountPerMinute /
+                _sourceUnit.Recipe.Product.CountPerMinute;
+
+            double targetOverclock = baseMachinesCount / targetMachineCount * 100;
+            if (IsSomersloopUsed) targetOverclock /= 2;
+
+            if (targetOverclock > 250)
+                throw new InvalidOperationException
+                    ("Невозможно выполнить производственный запрос с заданным количеством станков; " +
+                     "даже при максимальном разгоне выход продукции будет недостаточным. " +
+                     "В данном цехе станков должно быть как минимум " +
+                    $"{GetMinimalMachineCount(baseMachinesCount)} (при максимальном разгоне)");
+
+            return targetOverclock;
+        }
+
+        private double GetMinimalMachineCount(double baseMachinesCount)
+        {
+            return IsSomersloopUsed ?
+                baseMachinesCount / 5 :
+                baseMachinesCount / 2.5;
         }
     }
 }
