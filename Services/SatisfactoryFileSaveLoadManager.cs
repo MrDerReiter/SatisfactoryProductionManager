@@ -173,12 +173,8 @@ namespace SatisfactoryProductionManager.Services
 
                 return productionLines;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show
-                    ("Не удалось загрузить ранее сохранённую фабрику:\n" + ex.Message,
-                    "Ошибка загрузки сохранённой фабрики", MessageBoxButton.OK, MessageBoxImage.Error);
-
                 return new List<ProductionLine>();
             }
         }

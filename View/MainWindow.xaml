@@ -446,7 +446,7 @@
 												Width="50"
 												VerticalAlignment="Top"
 												Background="LightSalmon"
-												Visibility="{Binding Path=IsSomewhereOverclock, Converter={StaticResource VisibilityConverter}}">
+												Visibility="{Binding Path=IsSomewhereOverclock, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}">
 
 										<Image Margin="5"
 											   ToolTip="Энергоячейка"
@@ -463,7 +463,7 @@
 												Width="50"
 												VerticalAlignment="Top"
 												Background="MediumPurple"
-												Visibility="{Binding Path=IsSomewhereSomersloopUsed, Converter={StaticResource VisibilityConverter}}">
+												Visibility="{Binding Path=IsSomewhereSomersloopUsed, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}">
 
 										<Image Margin="5"
 											   ToolTip="Петлевик"
