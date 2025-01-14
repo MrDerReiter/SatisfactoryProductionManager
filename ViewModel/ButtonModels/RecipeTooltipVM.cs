@@ -22,14 +22,16 @@ namespace SatisfactoryProductionManager.ViewModel.ButtonModels
             if (recipe.HasByproduct)
             {
                 if (recipe.Category == "PowerGenerating")
-                    Outputs = [
+                    Outputs = 
+                        [
                             new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute, true),
-                            new ImageTuple(recipe.Byproduct.Value.Resource, recipe.Byproduct.Value.CountPerMinute)
+                            new ImageTuple(recipe.Byproduct.Resource, recipe.Byproduct.CountPerMinute)
                         ];
 
-                else Outputs = [
+                else Outputs = 
+                        [
                             new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute),
-                            new ImageTuple(recipe.Byproduct.Value.Resource, recipe.Byproduct.Value.CountPerMinute) 
+                            new ImageTuple(recipe.Byproduct.Resource, recipe.Byproduct.CountPerMinute)
                         ];
             }
 

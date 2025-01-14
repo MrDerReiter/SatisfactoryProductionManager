@@ -1,21 +1,27 @@
 ﻿using FactoryManagementCore.Elements;
+using System.Collections.Generic;
 
 namespace SatisfactoryProductionManager.Model;
 
 public class SatisfactoryRecipe : Recipe
 {
     public string Category { get; }
-    public bool HasByproduct { get => Byproduct.HasValue; }
-    public ResourceStream Product { get; }
-    public ResourceStream? Byproduct { get; }
+    public bool HasByproduct => Byproduct is not null;
+    public ResourceStream Product => Outputs[0];
+    public ResourceStream Byproduct => Outputs?.Count > 1 ? Outputs[1] : null;
+
 
     public SatisfactoryRecipe
         (string name, string machine, string category,
-        ResourceStream[] inputs, ResourceStream[] outputs) 
-        : base (name, machine, inputs, outputs)
+        List<ResourceStream> inputs, List<ResourceStream> outputs)
+            : base(name, machine, inputs, outputs)
     {
-        Category = category;   
-        Product = Outputs[0];
-        Byproduct = Outputs.Length > 1 ? Outputs[1] : null;
+        Category = category;
+    }
+
+    public SatisfactoryRecipe
+        (string name, string machine, string category) : base(name, machine)
+    {
+        Category = category;
     }
 }

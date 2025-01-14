@@ -31,27 +31,22 @@ namespace SatisfactoryProductionManager.Services
                     try
                     {
                         string[] strOutputs = content[++i].Split("||");
-                        var outputs = new ResourceStream[strOutputs[1] == "null" ? 1 : 2];
-                        for (int j = 0; j < outputs.Length; j++)
-                        {
-                            string outRes = strOutputs[j].Split(' ')[0];
-                            double outCount = double.Parse(strOutputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
-                            outputs[j] = new ResourceStream(outRes, outCount);
-                        }
+                        var outputs = new List<ResourceStream>();
 
-                        ResourceStream[] inputs;
+                        foreach (var str in strOutputs)
+                            if (str != "null")
+                                outputs.Add(new ResourceStream(str));
+
+                        List<ResourceStream> inputs;
 
                         if (content[++i] == "null") inputs = [];
                         else
                         {
                             string[] strInputs = content[i].Split("||");
-                            inputs = new ResourceStream[strInputs.Length];
-                            for (int j = 0; j < strInputs.Length; j++)
-                            {
-                                string inpRes = strInputs[j].Split(' ')[0];
-                                double inpCount = double.Parse(strInputs[j].Split(' ')[1], CultureInfo.InvariantCulture);
-                                inputs[j] = new ResourceStream(inpRes, inpCount);
-                            }
+                            inputs = [];
+
+                            foreach (var str in strInputs)
+                                inputs.Add(new ResourceStream(str));
                         }
 
                         list.Add(new SatisfactoryRecipe(name, machine, category, inputs, outputs));
@@ -67,6 +62,8 @@ namespace SatisfactoryProductionManager.Services
             return list;
         }
 
+
+        public IEnumerable<SatisfactoryRecipe> GetAll() => _recipies;
 
         public IEnumerable<SatisfactoryRecipe> GetAllRecipiesOfCategory(string category)
         {

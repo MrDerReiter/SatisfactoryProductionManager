@@ -93,15 +93,15 @@ namespace SatisfactoryProductionManager.Model
             ProductionRequest = productionRequest;
             ProductionRequest.IsSatisfied = true;
 
-            _inputs = new ResourceRequest[Recipe.Inputs.Length];
-            for (int i = 0; i < Recipe.Inputs.Length; i++)
+            _inputs = new ResourceRequest[Recipe.Inputs.Count];
+            for (int i = 0; i < Recipe.Inputs.Count; i++)
                 _inputs[i] = (Recipe.Inputs[i] * MachinesCount).ToRequest();
 
-            _outputs = new ResourceStream[Recipe.Outputs.Length];
+            _outputs = new ResourceStream[Recipe.Outputs.Count];
 
             Product = Recipe.Outputs[0] * MachinesCount;
 
-            if (HasByproduct) Byproduct = Recipe.Byproduct.Value * MachinesCount;
+            if (HasByproduct) Byproduct = Recipe.Byproduct * MachinesCount;
 
             ProductionRequest.RequestChanged += UpdateIO;
         }
@@ -131,7 +131,7 @@ namespace SatisfactoryProductionManager.Model
             Product = Recipe.Product * BaseMachinesCount;
 
             if (HasByproduct)
-                Byproduct = Recipe.Byproduct.Value * BaseMachinesCount;
+                Byproduct = Recipe.Byproduct * BaseMachinesCount;
         }
 
         protected override double GetMachinesCount()
