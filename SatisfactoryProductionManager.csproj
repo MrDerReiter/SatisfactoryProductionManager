@@ -151,12 +151,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Prism.Wpf" Version="8.1.97" />
+		<PackageReference Include="Prism.Wpf" Version="9.0.537" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Reference Include="FactoryManagementCore">
-	    <HintPath>..\MyCustomLibs\FactoryManagementCore\bin\Release\net8.0-windows\FactoryManagementCore.dll</HintPath>
+	    <HintPath>..\..\Libraries\FactoryManagementCore\bin\Release\net8.0-windows\FactoryManagementCore.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 
