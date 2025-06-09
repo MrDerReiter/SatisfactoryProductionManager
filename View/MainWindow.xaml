@@ -16,18 +16,15 @@
 		WindowStyle="None"
 		WindowStartupLocation="CenterScreen">
 
-	<WindowChrome.WindowChrome>
-		<WindowChrome CaptionHeight="5" />
-	</WindowChrome.WindowChrome>
-
-	<Window.DataContext>
-		<ViewModel:MainWindowVM />
-	</Window.DataContext>
-
-	<Window.Resources>
-		<ResourceDictionary>
-
-			<Service:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="5" />
+    </WindowChrome.WindowChrome>
+    <Window.DataContext>
+        <ViewModel:MainWindowVM />
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <Service:BoolToVisibilityConverter x:Key="VisibilityConverter" />
 		</ResourceDictionary>
 	</Window.Resources>
 

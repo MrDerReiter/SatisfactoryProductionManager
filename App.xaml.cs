@@ -14,7 +14,7 @@ namespace SatisfactoryProductionManager
             //Внедрение зависимостей для ProductionManager
             ProductionManager.Initialize
                 <SatisfactoryFileRecipeProvider,
-                 SatisfactoryFileSaveLoadManager>();
+                 SatisfactoryXMLSaveLoadManager>();
         }
     }
 

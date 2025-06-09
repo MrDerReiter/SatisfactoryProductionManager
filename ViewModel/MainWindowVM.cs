@@ -14,6 +14,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
+
 namespace SatisfactoryProductionManager.ViewModel
 {
     public class MainWindowVM : BindableBase
@@ -52,7 +53,7 @@ namespace SatisfactoryProductionManager.ViewModel
                 button.ObjectSelected += SetActiveLine;
             }
 
-            _productionLinesIOs = new();
+            _productionLinesIOs = [];
             foreach (var line in ProductionManager.ProductionLines)
             {
                 var lineIO = new ProductionLineIOVM(line);
@@ -60,7 +61,7 @@ namespace SatisfactoryProductionManager.ViewModel
                 lineIO.NeedToCreateProductionBlock += AddProductionBlock_CommandHandler;
             }
 
-            _productionBlockWorkspaces = new();
+            _productionBlockWorkspaces = [];
             ProductionManager.ProductionLines
                 .SelectMany(line => line.ProductionBlocks)
                 .ToList()
@@ -77,6 +78,14 @@ namespace SatisfactoryProductionManager.ViewModel
 
             if (ProductionManager.ProductionLines.Count > 0)
                 SetActiveLine(ProductionManager.ProductionLines[0]);
+
+            Action<Exception> exHandler = (ex) =>
+            {
+                MessageBox.Show(ex.Message, "Ошибка",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+            };
+            ProductionManager.ExceptionHasThrown += exHandler;
+            ProductionManager.InnerExceptions.ForEach(exHandler);
         }
 
 
