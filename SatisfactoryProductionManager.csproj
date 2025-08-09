@@ -3,10 +3,11 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>1.1.0</Version>
+		<Version>2.1.0</Version>
 		<Nullable>disable</Nullable>
-		<ImplicitUsings>disable</ImplicitUsings>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
+		<LangVersion>preview</LangVersion>
 		<ApplicationIcon>Assets\Icon.ico</ApplicationIcon>
 	</PropertyGroup>
 
@@ -151,10 +152,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Prism.Wpf" Version="9.0.537" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Reference Include="CustomToolkit">
+	    <HintPath>..\..\Libraries\CustomToolkit\bin\Release\net8.0\CustomToolkit.dll</HintPath>
+	  </Reference>
 	  <Reference Include="FactoryManagementCore">
 	    <HintPath>..\..\Libraries\FactoryManagementCore\bin\Release\net8.0-windows\FactoryManagementCore.dll</HintPath>
 	  </Reference>

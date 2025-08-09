@@ -1,8 +1,139 @@
 ﻿<Application x:Class="SatisfactoryProductionManager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SatisfactoryProductionManager"
              StartupUri="View/MainWindow.xaml">
+
     <Application.Resources>
-        
+        <ResourceDictionary>
+            <!-- Стили -->
+            <Style x:Key="WindowBorder"
+                   TargetType="Border">
+
+                <Setter Property="BorderBrush"
+                        Value="Chocolate" />
+                <Setter Property="Background"
+                        Value="Gray" />
+                <Setter Property="BorderThickness"
+                        Value="2" />
+                <Setter Property="CornerRadius"
+                        Value="10" />
+            </Style>
+            <Style x:Key="SubpanelBorder"
+                   TargetType="Border">
+
+                <Setter Property="BorderBrush"
+                        Value="Black" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="Margin"
+                        Value="3" />
+                <Setter Property="Padding"
+                        Value="3" />
+            </Style>
+
+            <Style x:Key="WindowHeaderText"
+                   TargetType="TextBlock">
+
+                <Setter Property="HorizontalAlignment"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0,10" />
+                <Setter Property="FontSize"
+                        Value="18" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+            </Style>
+            <Style x:Key="TooltipHeaderText"
+                   TargetType="TextBlock">
+
+                <Setter Property="HorizontalAlignment"
+                        Value="Center" />
+                <Setter Property="TextAlignment"
+                        Value="Center" />
+                <Setter Property="TextWrapping"
+                        Value="Wrap" />
+                <Setter Property="FontStyle"
+                        Value="Italic" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+                <Setter Property="FontSize"
+                        Value="15" />
+            </Style>
+            <Style x:Key="TooltipSubsetText"
+                   TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Margin"
+                        Value="0,5" />
+            </Style>
+
+            <Style TargetType="ToolTip">
+
+                <Setter Property="Background"
+                        Value="LightGray"/>
+                <Setter Property="MaxWidth"
+                        Value="250"/>
+                <Setter Property="Padding"
+                        Value="10"/>
+            </Style>
+            <Style x:Key="RecipeSelectButton"
+                   TargetType="Button">
+
+                <Setter Property="Background"
+                        Value="DarkGray" />
+                <Setter Property="Width"
+                        Value="50" />
+                <Setter Property="Height"
+                        Value="50" />
+            </Style>
+
+            <!-- Шаблоны -->
+            <DataTemplate x:Key="TooltipIOItemTemplate">
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="5,0,5,3"
+                            Height="30">
+
+                    <Image Source="{Binding Path=Image}"
+                           RenderOptions.BitmapScalingMode="HighQuality" />
+
+                    <TextBlock VerticalAlignment="Center"
+                               Margin="30,0,0,0"
+                               Text="{Binding Path=FormattedCount}" />
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:RecipeTooltipVM}">
+                
+                <StackPanel>
+                    <TextBlock Style="{StaticResource TooltipHeaderText}"
+                               Text="{Binding Title}" />
+
+                    <TextBlock Style="{StaticResource TooltipSubsetText}"
+                               Text="Продукция:" />
+
+                    <ListBox ItemsSource="{Binding Outputs}"
+                             ItemTemplate="{StaticResource TooltipIOItemTemplate}"
+                             Background="Transparent"/>
+
+                    <TextBlock Style="{StaticResource TooltipSubsetText}"
+                               Text="Ингредиенты:" />
+
+                    <ListBox ItemsSource="{Binding Inputs}"
+                             ItemTemplate="{StaticResource TooltipIOItemTemplate}"
+                             Background="Transparent"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="RecipeSelectButtonTemplate">
+                <Button Style="{StaticResource RecipeSelectButton}"
+                        ToolTip="{Binding Tooltip}"
+                        Command="{Binding SelectObjectCommand}">
+
+                    <Image Source="{Binding Image}"
+                           RenderOptions.BitmapScalingMode="HighQuality" />
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

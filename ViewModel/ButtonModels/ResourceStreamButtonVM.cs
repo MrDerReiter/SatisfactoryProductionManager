@@ -1,21 +1,34 @@
-﻿using FactoryManagementCore.Elements;
-using FactoryManagementCore.Extensions;
-using System;
+﻿using FactoryManagementCore;
+using SatisfactoryProductionManager.Extensions;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace SatisfactoryProductionManager.ViewModel.ButtonModels
+namespace SatisfactoryProductionManager;
+
+public partial class ResourceStreamButtonVM : ObjectButtonVM<ResourceStream>
 {
-    public class ResourceStreamButtonVM : ObjectButtonVM<ResourceStream>
+    public string Tooltip => InnerObject.Resource.Translate();
+    public string Count => InnerObject.CountPerMinute
+        .ToString("0.###", CultureInfo.InvariantCulture);
+
+
+    public ResourceStreamButtonVM(ResourceStream stream)
     {
-        public string Tooltip { get => InnerObject.Resource.Translate(); }
-        public string Count { get => InnerObject.CountPerMinute.ToString("0.###", CultureInfo.InvariantCulture); }
+        string imageFilePath = $"../Assets/Resources/{stream.Resource}.png";
+
+        InnerObject = stream;
+        Image = new BitmapImage(new Uri(imageFilePath, UriKind.Relative));
+    }
 
 
-        public ResourceStreamButtonVM(ResourceStream stream)
+    protected override void SelectObject()
+    {
+        try { base.SelectObject(); }
+        catch (Exception ex)
         {
-            InnerObject = stream;
-            ImageSource = new BitmapImage(new Uri($"../Assets/Resources/{stream.Resource}.png", UriKind.Relative));
+            MessageBox.Show(ex.Message, "Ошибка при обработке запроса",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

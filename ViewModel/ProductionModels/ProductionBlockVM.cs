@@ -1,223 +1,199 @@
-﻿using FactoryManagementCore.Production;
-using FactoryManagementCore.Elements;
-using Prism.Mvvm;
-using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.View;
-using SatisfactoryProductionManager.ViewModel.ButtonModels;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FactoryManagementCore;
+using FactoryManagementCore.Extensions;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
 
-namespace SatisfactoryProductionManager.ViewModel.ProductionModels
+
+namespace SatisfactoryProductionManager;
+
+public partial class ProductionBlockVM : ObservableObject
 {
-    public class ProductionBlockVM : BindableBase
+    private readonly ProductionBlock _sourceBlock;
+    private uint PowerShardCount => GetPowerShardCount();
+    private uint SomersloopCount => GetSomersloopCount();
+
+    public ProductionBlock SourceBlock => _sourceBlock;
+    public EditableRequestButtonVM ProductionRequestButton { get; }
+    public string PowerShardCountView => PowerShardCount.ToString();
+    public string SomersloopCountView => SomersloopCount.ToString();
+
+    [ObservableProperty]
+    public partial bool IsSomewhereOverclocked { get; private set; }
+    [ObservableProperty]
+    public partial bool IsSomewhereSomersloopUsed { get; private set; }
+    [ObservableProperty]
+    public partial ObservableCollection<ProductionUnitVM> UnitModels { get; private set; }
+    [ObservableProperty]
+    public partial List<ResourceStreamButtonVM> RequestButtons { get; private set; }
+    [ObservableProperty]
+    public partial List<ResourceStreamButtonVM> ByproductButtons { get; private set; }
+
+    public event Action ButtonPressed;
+    public event Action<ProductionUnit> ProductionUnitToBlock;
+
+
+    public ProductionBlockVM(ProductionBlock sourceBlock)
     {
-        private ProductionBlock _sourceBlock;
+        _sourceBlock = sourceBlock;
 
-        public ProductionBlock SourceBlock { get => _sourceBlock; }
-        public BindingList<ProductionUnitVM> UnitModels { get; }
-        public BindingList<RequestButtonVM> RequestButtons { get; }
-        public BindingList<ByproductButtonVM> ByproductButtons { get; }
-        public EditableRequestButtonVM ProductionRequestButton { get; }
-        public bool IsSomewhereOverclock
+        UpdateViewModels(true);
+
+        if (PowerShardCount > 0) IsSomewhereOverclocked = true;
+        if (SomersloopCount > 0) IsSomewhereSomersloopUsed = true;
+
+        ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
+        ProductionRequestButton.ObjectSelected += request => ButtonPressed();
+        ProductionRequestButton.RequestValueChanged += (value) =>
         {
-            get
+            var newRequest = _sourceBlock.ProductionRequest.Variate(value);
+            _sourceBlock.ProductionRequest = newRequest;
+
+            UpdateViewModels(false);
+            UnitModels.ForEach(unit => unit.UpdateView());
+        };
+    }
+
+
+    private uint GetPowerShardCount()
+    {
+        return (uint)UnitModels
+            .Where(model => model.IsOverclocked)
+            .Select(model => (int)model.PowerShardCount)
+            .Sum();
+    }
+
+    private uint GetSomersloopCount()
+    {
+        return (uint)UnitModels
+            .Where(model => model.IsSomersloopUsed)
+            .Select(model => (int)model.SomersloopCount)
+            .Sum();
+    }
+
+    private void CallRecipeSelector(ResourceStream request)
+    {
+        static bool OnlyOneStandartRecipeAvaliable(List<RecipeSelectButtonVM> buttons)
+        {
+            var recipies = buttons.Select(button => button.InnerObject).ToArray();
+
+            return recipies.Length == 1 &&
+                   recipies[0].Category != "Converting";
+        }
+
+
+        var selector = new RequestRecipeSelector(request);
+        var context = selector.DataContext as RequestRecipeSelectorVM;
+
+        if (OnlyOneStandartRecipeAvaliable(context.RecipeButtons))
+        {
+            var defaultRecipe = context.RecipeButtons[0].InnerObject;
+
+            AddProductionUnit(request, defaultRecipe);
+            selector.Close();
+        }
+        else
+        {
+            context.RecipeSelected += (request, recipe) =>
             {
-                foreach (var unit in UnitModels)
-                    if (unit.IsOverclocked) return true;
-
-                return false;
-            }
+                ButtonPressed();
+                AddProductionUnit(request, recipe);
+            };
+            selector.ShowDialog();
         }
-        public bool IsSomewhereSomersloopUsed
+    }
+
+
+    private void AddProductionUnit(ResourceStream request, Recipe recipe)
+    {
+        var unit = App.GetUnitInstance(request, recipe);
+        _sourceBlock.AddProductionUnit(unit);
+
+        var unitVM = new ProductionUnitVM(unit);
+        SubscribeToUnitModelEvents(unitVM);
+        UnitModels.Add(unitVM);
+
+        UpdateViewModels(false);
+    }
+
+    private void RemoveProductionUnit(ProductionUnit unit)
+    {
+        _sourceBlock.RemoveProductionUnit(unit);
+        UpdateViewModels(true);
+    }
+
+    private void SubscribeToUnitModelEvents(ProductionUnitVM unit)
+    {
+        unit.ButtonPressed += () => ButtonPressed();
+        unit.RemovingProductionUnit += RemoveProductionUnit;
+        unit.ConvertingUnitToBlock += (unit) =>
         {
-            get
+            RemoveProductionUnit(unit);
+            ProductionUnitToBlock(unit);
+        };
+
+        unit.IsOverclockedChanged += (overclocked) =>
+        {
+            if (overclocked || PowerShardCount > 0)
             {
-                foreach (var unit in UnitModels)
-                    if (unit.IsSomersloopUsed) return true;
-
-                return false;
+                IsSomewhereOverclocked = true;
+                OnPropertyChanged(nameof(PowerShardCountView));
             }
-        }
-        public string PowerShardCount
+            else IsSomewhereOverclocked = false;
+        };
+        unit.IsSomersloopUsedChanged += (somersloopUsed) =>
         {
-            get
+            _sourceBlock.UpdateIO();
+            UpdateViewModels(false);
+            UnitModels.ForEach(unit => unit.UpdateView());
+
+            if (somersloopUsed || SomersloopCount > 0)
             {
-                return UnitModels
-                      .Where(unit => unit.IsOverclocked)
-                      .Select(unit => int.Parse(unit.PowerShardCount))
-                      .Sum().ToString();
+                IsSomewhereSomersloopUsed = true;
+                OnPropertyChanged(nameof(SomersloopCountView));
             }
-        }
-        public string SomersloopsCount
+            else IsSomewhereSomersloopUsed = false;
+        };
+
+        unit.PowerShardCountChanged += () => OnPropertyChanged(nameof(PowerShardCountView));
+        unit.SomersloopCountChanged += () => OnPropertyChanged(nameof(SomersloopCountView));
+    }
+
+    private void UpdateViewModels(bool includeUnitModels)
+    {
+        RequestButtons =
+        [
+            .. _sourceBlock.Inputs
+            .Select(input => new ResourceStreamButtonVM(input))
+        ];
+        RequestButtons.ForEach((button) =>
         {
-            get
+            button.ObjectSelected += (stream) =>
             {
-                return UnitModels
-                      .Where(unit => unit.IsSomersloopUsed)
-                      .Select(unit => int.Parse(unit.SomersloopCount))
-                      .Sum().ToString();
-            }
-        }
+                ButtonPressed();
+                CallRecipeSelector(stream);
+            };
+        });
 
-        public event Action<object> ButtonPressed;
-        public event Action<ProductionUnit> RequestingAddBlock;
+        ByproductButtons =
+        [
+            .. _sourceBlock.Outputs.Skip(1)
+            .Select((byproduct) => new ResourceStreamButtonVM(byproduct))
+        ];
 
-
-        public ProductionBlockVM(ProductionBlock sourceBlock)
+        if (includeUnitModels)
         {
-            _sourceBlock = sourceBlock;
-            if (sourceBlock == null) return;
+            UnitModels =
+            [
+            .. _sourceBlock.ProductionUnits
+                .Select(unit => new ProductionUnitVM(unit))
+            ];
+            UnitModels.ForEach(SubscribeToUnitModelEvents);
 
-            var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit)).ToList();
-            UnitModels = new BindingList<ProductionUnitVM>(unitModels);
-            foreach (var unitModel in UnitModels)
-                SubscribeToUnitEvents(unitModel);
+            IsSomewhereOverclocked = PowerShardCount > 0;
+            if (IsSomewhereOverclocked) OnPropertyChanged(nameof(PowerShardCountView));
 
-            var requestButtons = _sourceBlock.Inputs
-                .Where(input => input.CountPerMinute > 0)
-                .Select((input) => new RequestButtonVM(input)).ToList();
-            RequestButtons = new BindingList<RequestButtonVM>(requestButtons);
-            foreach (var button in RequestButtons) button.ObjectSelected += RunSelector;
-
-            var byproductButtons = _sourceBlock.Outputs.Skip(1).Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
-            ByproductButtons = new BindingList<ByproductButtonVM>(byproductButtons);
-
-            ProductionRequestButton = new EditableRequestButtonVM(_sourceBlock.ProductionRequest);
-            ProductionRequestButton.ObjectSelected += ButtonPressed_EventStarter;
-            ProductionRequestButton.PropertyChanged += IncomePropertyChangedHandler;
-        }
-
-
-        private void IncomePropertyChangedHandler(object sender, PropertyChangedEventArgs args)
-        {
-            switch (args.PropertyName)
-            {
-                case "RequestValue":
-                    UpdateWorkspace(); break;
-
-                case "IsOverclocked":
-                    RaisePropertyChanged(nameof(IsSomewhereOverclock)); break;
-
-                case "PowerShardCount":
-                    RaisePropertyChanged(nameof(PowerShardCount)); break;
-
-                case "IsSomersloopUsed":
-                    UpdateWorkspace(); break;
-
-                case "SomersloopCount":
-                    RaisePropertyChanged(nameof(SomersloopsCount)); break;
-            }
-        }
-
-        private void SubscribeToUnitEvents(ProductionUnitVM unitModel)
-        {
-            unitModel.RequestingRemoveProdUnit += RemoveProdUnit;
-            unitModel.RequestingConvertUnitToBlock += ConvertUnitToBlock;
-            unitModel.ButtonPressed += ButtonPressed_EventStarter;
-            unitModel.PropertyChanged += IncomePropertyChangedHandler;
-        }
-
-        private void RaiseAllKeyPropertiesChanged()
-        {
-            RaisePropertyChanged(nameof(IsSomewhereOverclock));
-            if (IsSomewhereOverclock) RaisePropertyChanged(nameof(PowerShardCount));
-
-            RaisePropertyChanged(nameof(IsSomewhereSomersloopUsed));
-            if (IsSomewhereSomersloopUsed) RaisePropertyChanged(nameof(SomersloopsCount));
-
-            RaisePropertyChanged("ProductionBlockIO");
-        }
-
-
-        private void ButtonPressed_EventStarter(object obj)
-        {
-            ButtonPressed?.Invoke(null);
-        }
-
-        private void RemoveProdUnit(ProductionUnit unit)
-        {
-            try
-            {
-                _sourceBlock.RemoveProductionUnit(unit);
-                UpdateWorkspace();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Не удалось удалить цех", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-        }
-
-        private void ConvertUnitToBlock(ProductionUnit unit)
-        {
-            try
-            {
-                _sourceBlock.RemoveProductionUnit(unit);
-                RequestingAddBlock?.Invoke(unit);
-                UpdateWorkspace();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Не удалось преобразовать", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-        }
-
-        private void ExpandRequestToProductionUnit(ResourceRequest request, Recipe recipe)
-        {
-            ButtonPressed_EventStarter(null);
-
-            _sourceBlock.AddProductionUnit(request, recipe);
-            UpdateWorkspace();
-        }
-
-        private void UpdateWorkspace()
-        {
-            var unitModels = _sourceBlock.ProductionUnits.Select((unit) => new ProductionUnitVM(unit));
-            UnitModels.Clear();
-            UnitModels.AddRange(unitModels);
-            foreach (var unitModel in UnitModels)
-                SubscribeToUnitEvents(unitModel);
-
-            var requestButtons = _sourceBlock.Inputs
-                .Where(input => input.CountPerMinute > 0)
-                .Select(input => new RequestButtonVM(input));
-            RequestButtons.Clear();
-            RequestButtons.AddRange(requestButtons);
-            foreach (var button in RequestButtons) button.ObjectSelected += RunSelector;
-
-            var byproductButtons = _sourceBlock.Outputs.Skip(1).Select((byproduct) => new ByproductButtonVM(byproduct)).ToList();
-            ByproductButtons.Clear();
-            ByproductButtons.AddRange(byproductButtons);
-
-            RaiseAllKeyPropertiesChanged();
-        }
-
-        private void RunSelector(ResourceRequest request)
-        {
-            ButtonPressed_EventStarter(null);
-
-            try
-            {
-                var selector = new RequestRecipeSelector(request);
-                var context = selector.DataContext as RequestRecipeSelectorVM;
-
-                if (context.Buttons.Count == 1)
-                {
-                    ExpandRequestToProductionUnit(request, context.Buttons[0].InnerObject);
-                    selector.Close();
-                }
-                else
-                {
-                    context.RecipeSelected += ExpandRequestToProductionUnit;
-                    selector.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка при инициализации выбора рецепта", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            IsSomewhereSomersloopUsed = SomersloopCount > 0;
+            if (IsSomewhereSomersloopUsed) OnPropertyChanged(nameof(SomersloopCountView));
         }
     }
 }

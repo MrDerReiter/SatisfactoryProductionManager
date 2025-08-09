@@ -1,56 +1,49 @@
-﻿using FactoryManagementCore.Extensions;
-using SatisfactoryProductionManager.Model;
-using System;
+﻿using SatisfactoryProductionManager.Extensions;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace SatisfactoryProductionManager.ViewModel.ButtonModels
+
+namespace SatisfactoryProductionManager;
+
+public class RecipeTooltipVM
 {
-    public class RecipeTooltipVM
+    public readonly struct ImageTuple(string resource, double count, bool isOutputPower = false)
     {
-        public string Title { get; }
-        public ImageTuple[] Outputs { get; }
-        public ImageTuple[] Inputs { get; }
+        public ImageSource Image { get; } = new BitmapImage
+            (new Uri($"../Assets/Resources/{resource}.png", UriKind.Relative));
+
+        public string FormattedCount { get; } = 
+            count.ToString("0.###", CultureInfo.InvariantCulture) +
+            (isOutputPower ? " MW" : "/мин.");
+    }
 
 
-        public RecipeTooltipVM(SatisfactoryRecipe recipe)
+    public string Title { get; }
+    public ImageTuple[] Inputs { get; }
+    public ImageTuple[] Outputs { get; }
+
+
+    public RecipeTooltipVM(SatisfactoryRecipe recipe)
+    {
+        string product = recipe.Product.Resource;
+        double productCount = recipe.Product.CountPerMinute;
+        bool isOutputPower = recipe.Category == "PowerGenerating";
+
+        Title = recipe.Name.Translate();
+        Inputs = recipe.Inputs
+            .Select(stream => new ImageTuple(stream.Resource, stream.CountPerMinute))
+            .ToArray();
+
+        Outputs = new ImageTuple[recipe.Outputs.Length];
+        Outputs[0] = new ImageTuple(product, productCount, isOutputPower);
+
+        if (recipe.HasByproducts)
         {
-            Title = recipe.Name.Translate();
+            string byproduct = recipe.Byproduct.Resource;
+            double byproductCount = recipe.Byproduct.CountPerMinute;
 
-            if (recipe.HasByproduct)
-            {
-                if (recipe.Category == "PowerGenerating")
-                    Outputs = 
-                        [
-                            new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute, true),
-                            new ImageTuple(recipe.Byproduct.Resource, recipe.Byproduct.CountPerMinute)
-                        ];
-
-                else Outputs = 
-                        [
-                            new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute),
-                            new ImageTuple(recipe.Byproduct.Resource, recipe.Byproduct.CountPerMinute)
-                        ];
-            }
-
-            else if (recipe.Category == "PowerGenerating")
-                Outputs = [new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute, true)];
-
-            else Outputs = [new ImageTuple(recipe.Product.Resource, recipe.Product.CountPerMinute)];
-
-            Inputs = recipe.Inputs
-                .Select(stream => new ImageTuple(stream.Resource, stream.CountPerMinute)).ToArray();
-        }
-
-
-        public readonly struct ImageTuple(string resource, double count, bool isOutputPower = false)
-        {
-            public ImageSource Image { get; } = new BitmapImage(new Uri($"../Assets/Resources/{resource}.png", UriKind.Relative));
-            public string Count { get; } = isOutputPower ?
-                count.ToString("0.###", CultureInfo.InvariantCulture) + " MW" :
-                count.ToString("0.###", CultureInfo.InvariantCulture) + "/мин.";
+            Outputs[1] = new ImageTuple(byproduct, byproductCount, isOutputPower);
         }
     }
 }

@@ -1,27 +1,13 @@
-﻿using FactoryManagementCore.Elements;
-using System.Collections.Generic;
+﻿using FactoryManagementCore;
 
-namespace SatisfactoryProductionManager.Model;
+
+namespace SatisfactoryProductionManager;
 
 public class SatisfactoryRecipe : Recipe
 {
-    public string Category { get; }
-    public bool HasByproduct => Byproduct is not null;
+    public string Machine => AllowedMachines[0];
     public ResourceStream Product => Outputs[0];
-    public ResourceStream Byproduct => Outputs?.Count > 1 ? Outputs[1] : null;
-
-
-    public SatisfactoryRecipe
-        (string name, string machine, string category,
-        List<ResourceStream> inputs, List<ResourceStream> outputs)
-            : base(name, machine, inputs, outputs)
-    {
-        Category = category;
-    }
-
-    public SatisfactoryRecipe
-        (string name, string machine, string category) : base(name, machine)
-    {
-        Category = category;
-    }
+    public ResourceStream Byproduct => HasByproducts ? 
+        Outputs[1] : throw new InvalidOperationException
+            ("У данного рецепта не может быть побочного продукта.");
 }

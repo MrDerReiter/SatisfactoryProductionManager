@@ -1,28 +1,19 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Media;
 
-namespace SatisfactoryProductionManager.ViewModel.ButtonModels
+namespace SatisfactoryProductionManager;
+
+public abstract partial class ObjectButtonVM<T> : ObservableObject
 {
-    public abstract class ObjectButtonVM<T> : BindableBase
+    public T InnerObject { get; protected set; }
+    public ImageSource Image { get; protected set; }
+
+    public event Action<T> ObjectSelected;
+
+    [RelayCommand]
+    protected virtual void SelectObject()
     {
-        public T InnerObject { get; protected set; }
-        public ImageSource ImageSource { get; protected set; }
-
-        public event Action<T> ObjectSelected;
-
-        public DelegateCommand ReturnObject { get; }
-
-        
-        public ObjectButtonVM()
-        {
-            ReturnObject = new DelegateCommand(ReturnObject_CommandHandler);
-        }
-
-        protected void ReturnObject_CommandHandler()
-        {
-            ObjectSelected?.Invoke(InnerObject);
-        }
+        ObjectSelected(InnerObject);
     }
 }

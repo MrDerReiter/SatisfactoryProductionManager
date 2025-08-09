@@ -1,164 +1,122 @@
-﻿using FactoryManagementCore.Elements;
-using FactoryManagementCore.Production;
-using System;
-using System.Collections.Generic;
+﻿using FactoryManagementCore;
 
-namespace SatisfactoryProductionManager.Model
+
+namespace SatisfactoryProductionManager;
+
+public class SatisfactoryProductionUnit : ProductionUnit
 {
-    public class SatisfactoryProductionUnit : ProductionUnit
+    private bool _isSomersloopUsed;
+    private double _overclock = 100;
+    private double OverclockModifier => _overclock / 100;
+    private double BaseMachineCount {  get; set; }
+        
+
+    private static readonly int _somersloopModifier = 2;
+    private static readonly Dictionary<string, uint> _somersloopsPerMachine = new()
     {
-        private bool _isSomersloopUsed;
-        private double _overclock = 100;
-        private double OverclockModifier => _overclock / 100;
-        private double BaseMachinesCount => ProductionRequest.CountPerMinute / Recipe.Product.CountPerMinute;
+        { "Constructor", 1 },
+        { "Smelter", 1 },
+        { "Assembler", 2 },
+        { "Refinery", 2 },
+        { "Converter", 2 },
+        { "Foundry", 2 },
+        { "Manufacturer", 4 },
+        { "Blender", 4 },
+        { "Collider", 4 },
+        { "QuantumEncoder", 4 }
+    };
 
-        private static readonly int _somersloopModifier = 2;
-        private static readonly Dictionary<string, int> _howManySomersloopsNeed = new()
+    public override SatisfactoryRecipe Recipe { get; }
+    public override ResourceStream ProductionRequest 
+    { 
+        get => base.ProductionRequest;
+        set
         {
-            { "Constructor", 1 },
-            { "Smelter", 1 },
-            { "Assembler", 2 },
-            { "Refinery", 2 },
-            { "Converter", 2 },
-            { "Foundry", 2 },
-            { "Manufacturer", 4 },
-            { "Blender", 4 },
-            { "Collider", 4 },
-            { "QuantumEncoder", 4 }
-        };
+            BaseMachineCount = value.CountPerMinute /
+                               Recipe.Product.CountPerMinute;
 
-        public override SatisfactoryRecipe Recipe { get; }
-        public double Overclock
-        {
-            get => _overclock;
-            set
-            {
-                if (value != _overclock &&
-                    value > 0 && value <= 250)
-                {
-                    var wasOverclockedBefore = IsOverclocked;
-
-                    _overclock = value;
-                    OverclockChanged?.Invoke();
-
-                    if ((!wasOverclockedBefore && IsOverclocked) ||
-                       (wasOverclockedBefore && !IsOverclocked)) OverclockedStatusChanged?.Invoke();
-                }
-            }
+            base.ProductionRequest = value;
         }
-        public int PowerShardCount => GetPowerShardCount();
-        public int SomersloopCount => GetSomersloopCount();
-        public bool IsOverclocked => _overclock > 100 && MachinesCount >= 1;
-        public bool IsSomersloopUsed
+    }
+    public double Overclock
+    {
+        get => _overclock;
+        set
         {
-            get => _isSomersloopUsed;
-            set
-            {
-                _isSomersloopUsed = value;
-                UpdateIO();
-            }
+            if (value != _overclock &&
+                value > 0 && value <= 250) _overclock = value;
         }
-        public bool HasByproduct { get => Recipe.HasByproduct; }
-        public ResourceStream Product
+    }
+    public bool IsOverclocked => _overclock > 100 && MachineCount >= 1;
+    public bool IsSomersloopUsed
+    {
+        get => _isSomersloopUsed;
+        set
         {
-            get => _outputs[0];
-            private set => _outputs[0] = value;
+            _isSomersloopUsed = value;
+            UpdateIO();
         }
-        public ResourceStream Byproduct
-        {
-            get => HasByproduct ? _outputs[1] :
-                throw new InvalidOperationException
-                    ("Невозможно запросить данные о побочном продукте, " +
-                     "т.к. используемый в производственном цехе рецепт не подразумевает его наличие.");
-
-            private set
-            {
-                if (HasByproduct) _outputs[1] = value;
-                else throw new InvalidOperationException
-                    ("Невозможно задать значение для побочного продукта, " +
-                     "т.к. используемый в производственном цехе рецепт не подразумевает его наличие.");
-            }
-        }
-
-        public event Action OverclockChanged;
-        public event Action OverclockedStatusChanged;
+    }
+    public uint PowerShardCount => GetPowerShardCount();
+    public uint SomersloopCount => GetSomersloopCount();
+    public bool HasByproduct => Recipe.HasByproducts;
+    public ResourceStream Product
+    {
+        get => _outputs[0];
+        private set => _outputs[0] = value;
+    }
+    public ResourceStream Byproduct
+    {
+        get => _outputs[1];
+        private set => _outputs[1] = value;
+    }
 
 
-        public SatisfactoryProductionUnit(ResourceRequest productionRequest, SatisfactoryRecipe recipe)
-        {
-            if (recipe.Product.Resource != productionRequest.Resource)
-                throw new InvalidOperationException("Несовпадение выходного ресурса в рецепте и запросе на ресурс");
+    public SatisfactoryProductionUnit
+        (ResourceStream productionRequest, SatisfactoryRecipe recipe)
+    {
+        if (recipe.Product.Resource != productionRequest.Resource)
+            throw new InvalidOperationException
+                ("Несовпадение выходного ресурса в рецепте и запросе на ресурс");
 
-            Recipe = recipe;
-            ProductionRequest = productionRequest;
-            ProductionRequest.IsSatisfied = true;
+        Recipe = recipe;
+        Machine = recipe.Machine;
 
-            _inputs = new ResourceRequest[Recipe.Inputs.Count];
-            for (int i = 0; i < Recipe.Inputs.Count; i++)
-                _inputs[i] = (Recipe.Inputs[i] * MachinesCount).ToRequest();
+        _inputs = new ResourceStream[Recipe.Inputs.Length];
+        _outputs = new ResourceStream[Recipe.Outputs.Length];
 
-            _outputs = new ResourceStream[Recipe.Outputs.Count];
-
-            Product = Recipe.Outputs[0] * MachinesCount;
-
-            if (HasByproduct) Byproduct = Recipe.Byproduct * MachinesCount;
-
-            ProductionRequest.RequestChanged += UpdateIO;
-        }
+        ProductionRequest = productionRequest;
+    }
 
 
-        private int GetPowerShardCount()
-        {
-            if (!IsOverclocked) return 0;
+    private uint GetPowerShardCount()
+    {
+        return IsOverclocked ?
+               (uint)(Math.Floor(MachineCount) *
+               Math.Ceiling((_overclock - 100) / 50)) : 0;
+    }
 
-            return (int)(Math.Floor(MachinesCount) *
-                         Math.Ceiling((_overclock - 100) / 50));
-        }
+    private uint GetSomersloopCount()
+    {
+        return _isSomersloopUsed ?
+               (uint)Math.Ceiling(MachineCount) * _somersloopsPerMachine[Machine] : 0;
+    }
 
-        private int GetSomersloopCount()
-        {
-            if (!_isSomersloopUsed) return 0;
-            else return (int)Math.Ceiling(MachinesCount) * _howManySomersloopsNeed[Machine];
-        }
+    protected override void UpdateIO()
+    {
+        for (int i = 0; i < _inputs.Length; i++)
+            _inputs[i] = _isSomersloopUsed ?
+                Recipe.Inputs[i] * BaseMachineCount / 2 :
+                Recipe.Inputs[i] * BaseMachineCount;
 
-        protected override void UpdateIO()
-        {
-            for (int i = 0; i < _inputs.Length; i++)
-                _inputs[i].CountPerMinute = _isSomersloopUsed ?
-                    Recipe.Inputs[i].CountPerMinute * BaseMachinesCount / _somersloopModifier :
-                    Recipe.Inputs[i].CountPerMinute * BaseMachinesCount;
+        for (int i = 0; i < _outputs.Length; i++)
+            _outputs[i] = Recipe.Outputs[i] * BaseMachineCount;
+    }
 
-            Product = Recipe.Product * BaseMachinesCount;
-
-            if (HasByproduct)
-                Byproduct = Recipe.Byproduct * BaseMachinesCount;
-        }
-
-        protected override double GetMachinesCount()
-        {
-            if (_isSomersloopUsed)
-                return BaseMachinesCount / OverclockModifier / _somersloopModifier;
-
-            else return BaseMachinesCount / OverclockModifier;
-        }
-
-
-        public SatisfactoryProductionUnit CloneWithNewRequestInstance(ResourceRequest newRequestInstance)
-        {
-            if (newRequestInstance.Resource != ProductionRequest.Resource)
-                throw new ArgumentNullException
-                    (nameof(newRequestInstance),
-                    "Новый экземпляр производственного запроса для " +
-                    "клонированного цеха должен соответствовать сигнатуре исходного запроса.");
-
-            var cloneUnit = MemberwiseClone() as SatisfactoryProductionUnit;
-            cloneUnit.Dispose();
-
-            cloneUnit.ProductionRequest = newRequestInstance;
-            cloneUnit.ProductionRequest.RequestChanged += cloneUnit.UpdateIO;
-            cloneUnit.UpdateIO();
-
-            return cloneUnit;
-        }
+    protected override double GetMachineCount()
+    {
+        return _isSomersloopUsed ?
+               BaseMachineCount / OverclockModifier / _somersloopModifier :
+               BaseMachineCount / OverclockModifier;
     }
 }

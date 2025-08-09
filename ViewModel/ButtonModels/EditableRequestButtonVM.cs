@@ -1,52 +1,54 @@
-﻿using FactoryManagementCore.Elements;
-using FactoryManagementCore.Services;
-using System;
+﻿using CustomToolkit.Text;
+using FactoryManagementCore;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
-namespace SatisfactoryProductionManager.ViewModel.ButtonModels
+namespace SatisfactoryProductionManager;
+
+public class EditableRequestButtonVM : ResourceStreamButtonVM
 {
-    public class EditableRequestButtonVM : ObjectButtonVM<ResourceRequest>
-    {
-        public string RequestValue
-        {
-            get => InnerObject.CountPerMinute.ToString("0.###", CultureInfo.InvariantCulture);
-            set
-            {
-                try
-                {
-                    if(Regex.IsMatch(value, @"^\d+\.?\d*\s*[-+*/]\s*\d+\.?\d*$"))
-                    {
-                        var result = double.Parse(RegexCalculator.Calculate(value), CultureInfo.InvariantCulture);
+    private readonly Regex _mathExpressionPattern =
+        new Regex(@"^\d+\.?\d*\s*[-+*/]\s*\d+\.?\d*$");
 
-                        InnerObject.CountPerMinute = result;
-                        RaisePropertyChanged(nameof(RequestValue));
-                    }
-                    else
-                    {
-                        InnerObject.CountPerMinute = double.Parse(value, CultureInfo.InvariantCulture);
-                        RaisePropertyChanged(nameof(RequestValue));
-                    }
-                }
-                catch
-                {
-                    MessageBox.Show
-                        ("Введите корректное неотрицательное целое число, неотрицательное дробное число с плавающей точкой " +
-                        "или корректную математическую операцию с двумя соответствующими числами. " +
-                        "При использовании операции возвращаемое число также не должно быть отрицательным.",
-                        "Некорректное значение запроса",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+    public ResourceStream Request
+    {
+        get => InnerObject;
+        set => InnerObject = value;
+    }
+    public string RequestValue
+    {
+        get => Count;
+        set
+        {
+            try
+            {
+                double newRequestValue;
+                CultureInfo invariant = CultureInfo.InvariantCulture;
+
+                newRequestValue = _mathExpressionPattern.IsMatch(value) ?
+                        double.Parse(RegexCalculator.Calculate(value), invariant) :
+                        double.Parse(value, invariant);
+
+                Request = Request.Variate(newRequestValue);
+
+                RequestValueChanged(newRequestValue);
+                OnPropertyChanged(nameof(RequestValue));
+            }
+            catch
+            {
+                MessageBox.Show
+                    ("Введите корректное неотрицательное целое число, неотрицательное дробное число с плавающей точкой " +
+                     "или корректную математическую операцию с двумя соответствующими числами. " +
+                     "При использовании операции возвращаемое число также не должно быть отрицательным.",
+                     "Некорректное значение запроса",
+                      MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
-
-
-        public EditableRequestButtonVM(ResourceRequest request)
-        {
-            InnerObject = request;
-            ImageSource = new BitmapImage(new Uri($"../Assets/Resources/{request.Resource}.png", UriKind.Relative));
-        }
     }
+
+    public event Action<double> RequestValueChanged;
+
+
+    public EditableRequestButtonVM(ResourceStream request) : base(request) { }
 }

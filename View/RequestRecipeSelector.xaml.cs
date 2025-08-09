@@ -1,21 +1,23 @@
-﻿using FactoryManagementCore.Elements;
-using SatisfactoryProductionManager.ViewModel;
+﻿using FactoryManagementCore;
 using System.Windows;
 using System.Windows.Input;
 
-namespace SatisfactoryProductionManager.View
+namespace SatisfactoryProductionManager;
+
+public partial class RequestRecipeSelector : Window
 {
-    public partial class RequestRecipeSelector : Window
+    public RequestRecipeSelector(ResourceStream request)
     {
-        public RequestRecipeSelector(ResourceRequest request)
+        InitializeComponent();
+
+        var context = new RequestRecipeSelectorVM(request);
+        DataContext = context;
+
+        context.RecipeSelected += (request, recipe) => Close();
+
+        KeyDown += (sender, args) => 
         {
-            InitializeComponent();
-            var context = new RequestRecipeSelectorVM(request);
-            DataContext = context;
-
-            context.RecipeSelected += (request, recipe) => Close();
-
-            KeyDown += (sender, args) => { if (args.Key == Key.Escape) Close(); };
-        }
+            if (args.Key == Key.Escape) Close();
+        };
     }
 }

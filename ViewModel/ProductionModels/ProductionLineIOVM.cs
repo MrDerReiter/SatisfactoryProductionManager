@@ -1,54 +1,47 @@
-﻿using FactoryManagementCore.Production;
-using FactoryManagementCore.Elements;
-using SatisfactoryProductionManager.ViewModel.ButtonModels;
-using System;
-using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FactoryManagementCore;
 
-namespace SatisfactoryProductionManager.ViewModel.ProductionModels
+namespace SatisfactoryProductionManager;
+
+public partial class ProductionLineIOVM : ObservableObject
 {
-    public class ProductionLineIOVM
+    private readonly ProductionLine _sourceLine;
+
+    public ProductionLine SourceLine { get => _sourceLine; }
+
+    [ObservableProperty]
+    public partial List<ResourceStreamButtonVM> InputButtons { get; private set; }
+    [ObservableProperty]
+    public partial List<ResourceStreamButtonVM> OutputButtons { get; private set; }
+
+    public event Action<ResourceStream> ResourceStreamToBlock;
+
+
+    public ProductionLineIOVM(ProductionLine sourceLine)
     {
-        private ProductionLine _sourceLine;
-
-        public ProductionLine SourceLine { get => _sourceLine; }
-        public BindingList<ResourceStreamButtonVM> InputButtons { get; } = new();
-        public BindingList<ResourceStreamButtonVM> OutputButtons { get; } = new();
-
-        public event Action<ResourceStream> NeedToCreateProductionBlock;
+        _sourceLine = sourceLine;
+        _sourceLine.IOChanged += UpdateViewModel;
+        UpdateViewModel();
+    }
 
 
-        public ProductionLineIOVM(ProductionLine sourceLine)
+    private void UpdateViewModel()
+    {
+        InputButtons =
+        [
+            .. _sourceLine.Inputs
+            .Select(input => new ResourceStreamButtonVM(input))
+        ];
+        OutputButtons =
+        [
+            .. _sourceLine.Outputs
+            .Select(output => new ResourceStreamButtonVM(output))
+        ];
+
+        InputButtons.ForEach(button =>
         {
-            _sourceLine = sourceLine;
-            Update();
-        }
-
-
-        private void NeedToCreateProductionBlock_EventStarter(ResourceStream stream)
-        {
-            NeedToCreateProductionBlock?.Invoke(stream);
-        }
-
-
-        public void Update()
-        {
-            Clear();
-
-            foreach (var input in _sourceLine.Inputs)
-            {
-                var button = new ResourceStreamButtonVM(input);
-                InputButtons.Add(button);
-                button.ObjectSelected += NeedToCreateProductionBlock_EventStarter;
-            }
-
-            foreach (var output in _sourceLine.Outputs)
-                OutputButtons.Add(new ResourceStreamButtonVM(output));
-        }
-
-        public void Clear()
-        {
-            InputButtons.Clear();
-            OutputButtons.Clear();
-        }
+            button.ObjectSelected +=
+                stream => ResourceStreamToBlock(stream);
+        });
     }
 }

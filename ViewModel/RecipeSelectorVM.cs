@@ -1,65 +1,81 @@
-﻿using FactoryManagementCore.Elements;
-using FactoryManagementCore.Interfaces;
-using FactoryManagementCore.Production;
-using SatisfactoryProductionManager.Model;
-using SatisfactoryProductionManager.ViewModel.ButtonModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using FactoryManagementCore;
+using FactoryManagementCore.Extensions;
+using SatisfactoryProductionManager.Extensions;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
-namespace SatisfactoryProductionManager.ViewModel
+
+namespace SatisfactoryProductionManager;
+
+public class RecipeSelectorVM
 {
-    public class RecipeSelectorVM
+    public class CategoryVM
     {
-        public List<RecipeSelectButtonVM> IngotsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> MineralsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> StandartPartsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> IndustrialPartsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> ElectronicsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> CommunicationsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> QuantumTechButtons { get; private set; }
-        public List<RecipeSelectButtonVM> SpaceElevatorPartsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> ConvertingButtons { get; private set; }
-        public List<RecipeSelectButtonVM> SuppliesButtons { get; private set; }
-        public List<RecipeSelectButtonVM> LiquidsButtons { get; private set; }
-        public List<RecipeSelectButtonVM> PackagesButtons { get; private set; }
-        public List<RecipeSelectButtonVM> BurnableButtons { get; private set; }
-        public List<RecipeSelectButtonVM> NuclearButtons { get; private set; }
-        public List<RecipeSelectButtonVM> PowerGeneratingButtons { get; private set; }
-
-        public event Action<Recipe> RecipeSelected;
+        public required string Name { get; init; }
+        public required string ViewName { get; init; }
+        public required ImageSource Image { get; init; }
+        public required List<RecipeSelectButtonVM> RecipeButtons { get; init; }
+    }
 
 
-        public RecipeSelectorVM()
+    private readonly Dictionary<string, string> _categoryAssets = new()
+    {
+        { "Ingots", "../Assets/Resources/IronIngot.png"},
+        { "Minerals", "../Assets/Resources/Concrete.png" },
+        { "StandartParts", "../Assets/Resources/ModularFrame.png" },
+        { "IndustrialParts", "../Assets/Resources/Motor.png" },
+        { "Electronics", "../Assets/Resources/Cable.png" },
+        { "Communications", "../Assets/Resources/Computer.png" },
+        { "QuantumTech", "../Assets/Resources/SingularityCell.png" },
+        { "SpaceElevatorParts", "../Assets/Resources/AssemblyDirectorSystem.png" },
+        { "Converting", "../Assets/Resources/SAM.png" },
+        { "Supplies", "../Assets/Resources/RifleAmmo.png" },
+        { "Liquids", "../Assets/Resources/Fuel.png" },
+        { "Packages", "../Assets/Resources/EmptyCanister.png" },
+        { "Burnable", "../Assets/Resources/SolidBiofuel.png" },
+        { "Nuclear", "../Assets/Resources/UraniumFuelRod.png" },
+        { "PowerGenerating", "../Assets/Resources/Power.png" }
+    };
+
+    public List<CategoryVM> Categories { get; }
+
+    public event Action<Recipe> RecipeSelected;
+
+
+    public RecipeSelectorVM()
+    {
+        var list = new List<CategoryVM>(_categoryAssets.Count);
+
+        _categoryAssets.ForEach(pair =>
         {
-            var properties =
-                 GetType()
-                .GetProperties()
-                .Where(prop => prop.PropertyType == typeof(List<RecipeSelectButtonVM>));
+            var name = pair.Key;
+            var filePath = pair.Value;
 
-            foreach (var prop in properties)
+            list.Add(new CategoryVM
             {
-                var category = prop.Name.Replace("Buttons", string.Empty);
-                var buttonList = CreateButtonsCollection(category);
-                prop.SetValue(this, buttonList);
-            }
-        }
+                Name = name,
+                ViewName = name.Translate(),
+                Image = new BitmapImage(new Uri(filePath, UriKind.Relative)),
+                RecipeButtons = CreateButtonsCollection(name)
+            });
+        });
+
+        Categories = list;
+    }
 
 
-        private List<RecipeSelectButtonVM> CreateButtonsCollection(string category)
+    private List<RecipeSelectButtonVM> CreateButtonsCollection(string category)
+    {
+        var list = App.RecipeProvider
+            .GetSubset(recipe => recipe.Category == category)
+            .Select(recipe => new RecipeSelectButtonVM(recipe))
+            .ToList();
+
+        list.ForEach((button) =>
         {
-            var list = 
-                 (ProductionManager.RecipeProvider as IRecipeProvider<SatisfactoryRecipe>)
-                .GetAllRecipiesOfCategory(category)
-                .Select(rc => new RecipeSelectButtonVM(rc)).ToList();
-            foreach (var button in list) button.ObjectSelected += RecipeSelected_EventStarter;
-
-            return list;
-        }
-
-        private void RecipeSelected_EventStarter(SatisfactoryRecipe recipe)
-        {
-            RecipeSelected(recipe);
-        }
+            button.ObjectSelected +=
+                recipe => RecipeSelected(recipe);
+        });
+        return list;
     }
 }
