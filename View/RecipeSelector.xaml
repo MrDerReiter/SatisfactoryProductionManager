@@ -10,10 +10,8 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Title="RecipeSelector"
-        MinWidth="580"
-        MinHeight="350"
         Width="580"
-        Height="370">
+        Height="380">
 
     <Window.Resources>
         <ResourceDictionary>

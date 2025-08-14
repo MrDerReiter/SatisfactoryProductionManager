@@ -3,20 +3,13 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<Version>2.1.0</Version>
+		<Version>2.1.1</Version>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<DebugType>embedded</DebugType>
 		<UseWPF>true</UseWPF>
 		<LangVersion>preview</LangVersion>
 		<ApplicationIcon>Assets\Icon.ico</ApplicationIcon>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DebugType>embedded</DebugType>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <DebugType>embedded</DebugType>
 	</PropertyGroup>
 
 	<ItemGroup>
