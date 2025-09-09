@@ -114,73 +114,55 @@ public partial class MainWindowVM : ObservableObject
         UpdateProductionLineButtons();
     }
 
-    private void AddProductionBlock<T>(T parameter)
+    private void AddProductionBlock(Recipe recipe)
     {
-        #region Локальные функции
-        static ProductionBlock GetBlockFromRecipe(Recipe recipe)
-        {
-            var unit = App.GetUnitInstance(recipe);
-            return new ProductionBlock(unit);
-        }
-
-        static ProductionBlock GetBlockFromUnit(ProductionUnit unit)
-        {
-            return new ProductionBlock(unit);
-        }
-
-        static ProductionBlock GetBlockFromPair(ResourceStream request, Recipe recipe)
-        {
-            var unit = App.GetUnitInstance(request, recipe);
-            return new ProductionBlock(unit);
-        }
-
-        void CallSelector(ResourceStream request)
-        {
-            var selector = new RequestRecipeSelector(request);
-            var context = selector.DataContext as RequestRecipeSelectorVM;
-
-            if (context.RecipeButtons.Count == 1)
-            {
-                AddProductionBlock
-                    (ValueTuple.Create(request, context.RecipeButtons[0].InnerObject));
-
-                selector.Close();
-                return;
-            }
-
-            context.RecipeSelected += (request, recipe) =>
-            {
-                PlayPushButtonSound();
-                AddProductionBlock(ValueTuple.Create(request, recipe));
-            };
-            selector.ShowDialog();
-        }
-        #endregion
-
         if (!IsLineSelected) return;
-        ProductionBlock block = null;
 
-        switch (parameter)
+        var block = new ProductionBlock(App.GetUnitInstance(recipe));
+        SetupProductionBlock(block);
+    }
+
+    private void AddProductionBlock(ProductionUnit unit)
+    {
+        if (!IsLineSelected) return;
+
+        var block = new ProductionBlock(unit);
+        SetupProductionBlock(block);
+    }
+
+    private void AddProductionBlock(ResourceStream request, Recipe recipe)
+    {
+        if (!IsLineSelected) return;
+
+        var block = new ProductionBlock(App.GetUnitInstance(request, recipe));
+        SetupProductionBlock(block);
+    }
+
+    private void AddProductionBlock(ResourceStream request)
+    {
+        if (!IsLineSelected) return;
+
+        var selector = new RequestRecipeSelector(request);
+        var context = selector.DataContext as RequestRecipeSelectorVM;
+
+        if (context.RecipeButtons.Count == 1)
         {
-            case Recipe givenRecipe:
-                block = GetBlockFromRecipe(givenRecipe); break;
+            AddProductionBlock(request, context.RecipeButtons[0].InnerObject);
 
-            case ProductionUnit givenUnit:
-                block = GetBlockFromUnit(givenUnit); break;
-
-            case ValueTuple<ResourceStream, Recipe> givenTuple:
-                var (request, recipe) = givenTuple;
-                block = GetBlockFromPair(request, recipe); break;
-
-            case ResourceStream givenRequest:
-                CallSelector(givenRequest); return;
-
-            default:
-                throw new ArgumentException
-                    ($"Недопустимый тип аргумента {parameter.GetType().Name}",
-                      nameof(parameter));
+            selector.Close();
+            return;
         }
 
+        context.RecipeSelected += (request, recipe) =>
+        {
+            PlayPushButtonSound();
+            AddProductionBlock(request, recipe);
+        };
+        selector.ShowDialog();
+    }
+
+    private void SetupProductionBlock(ProductionBlock block)
+    {
         ActiveLine.AddProductionBlock(block);
         AddViewModel(block);
         ActiveBlock = block;
@@ -188,45 +170,34 @@ public partial class MainWindowVM : ObservableObject
         UpdateProductionBlockButtons();
     }
 
-    private void AddViewModel<T>(T parameter)
+    private void AddViewModel(ProductionLine line)
     {
-        switch (parameter)
+        var lineIO = new ProductionLineIOVM(line);
+        var lineButton = new ProductionLineButtonVM(line);
+
+        _productionLinesIOs[line] = lineIO;
+        lineIO.ResourceStreamToBlock += (stream) =>
         {
-            case ProductionLine line:
+            PlayPushButtonSound();
+            AddProductionBlock(stream);
+        };
 
-                var lineIO = new ProductionLineIOVM(line);
-                var lineButton = new ProductionLineButtonVM(line);
+        ProductionLineButtons.Add(lineButton);
+        lineButton.ObjectSelected += (line) =>
+        {
+            PlayPushButtonSound();
+            ActiveLine = line;
+        };
+    }
 
-                _productionLinesIOs[line] = lineIO;
-                lineIO.ResourceStreamToBlock += (stream) =>
-                {
-                    PlayPushButtonSound();
-                    AddProductionBlock(stream);
-                };
+    private void AddViewModel(ProductionBlock block)
+    {
+        var blockVM = new ProductionBlockVM(block);
 
-                ProductionLineButtons.Add(lineButton);
-                lineButton.ObjectSelected += (line) =>
-                {
-                    PlayPushButtonSound();
-                    ActiveLine = line;
-                }; break;
+        blockVM.ButtonPressed += PlayPushButtonSound;
+        blockVM.ProductionUnitToBlock += AddProductionBlock;
 
-
-            case ProductionBlock block:
-
-                var blockVM = new ProductionBlockVM(block);
-
-                blockVM.ButtonPressed += PlayPushButtonSound;
-                blockVM.ProductionUnitToBlock += AddProductionBlock;
-
-                _productionBlockWorkspaces[block] = blockVM; break;
-
-
-            default:
-                throw new ArgumentException
-                    ($"Недопустимый тип аргумента {parameter.GetType().Name}",
-                      nameof(parameter));
-        }
+        _productionBlockWorkspaces[block] = blockVM;
     }
 
     private void UpdateProductionLineButtons()
