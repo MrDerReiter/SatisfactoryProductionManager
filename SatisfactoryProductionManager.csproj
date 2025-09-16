@@ -150,12 +150,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="CustomToolkit">
-	    <HintPath>..\..\Libraries\CustomToolkit\bin\Release\net8.0\CustomToolkit.dll</HintPath>
-	  </Reference>
-	  <Reference Include="FactoryManagementCore">
-	    <HintPath>..\..\Libraries\FactoryManagementCore\bin\Release\net8.0-windows\FactoryManagementCore.dll</HintPath>
-	  </Reference>
+	  <ProjectReference Include="..\..\Libraries\CustomToolkit\CustomToolkit.csproj" />
+	  <ProjectReference Include="..\..\Libraries\FactoryManagementCore\FactoryManagementCore.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
