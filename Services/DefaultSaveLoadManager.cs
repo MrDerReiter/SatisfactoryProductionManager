@@ -12,71 +12,51 @@ public class DefaultSaveLoadManager(string filePath) : IFactoryKeeper
         if (!File.Exists(filePath)) return [];
         var linesArray = JArray.Parse(File.ReadAllText(filePath));
 
-        List<ProductionLine> lines =
-        [
-            ..linesArray.Select(lineJOblect =>
+        return [.. linesArray.Select(lineObject =>
+        {
+            return new ProductionLine(lineObject["ProductionBlocks"].Select(blockObject =>
             {
-                var blocks = lineJOblect["ProductionBlocks"]
-                .Select(blockJObject =>
+                return new ProductionBlock(blockObject["ProductionUnits"].Select(unitObject =>
                 {
-                    var units = blockJObject["ProductionUnits"]
-                    .Select(unitJObject =>
+                    var request = new ResourceStream((string)unitObject["ProductionRequest"]);
+                    var recipe = App.RecipeProvider.Get((string)unitObject["Recipe"]);
+
+                    return new SatisfactoryProductionUnit(request, recipe)
                     {
-                        var request = new ResourceStream((string)unitJObject["ProductionRequest"]);
-                        var recipe = App.RecipeProvider.Get((string)unitJObject["Recipe"]);
-
-                        var unit = new SatisfactoryProductionUnit(request, recipe)
-                        { 
-                            Overclock = (double)unitJObject["Overclock"],
-                            IsSomersloopUsed = (bool)unitJObject["IsSomersloopUsed"]
-                        };
-
-                        return unit;
-                    });
-
-                    return new ProductionBlock(units);
-                });
-
-                return new ProductionLine(blocks);
-            })
-        ];
-
-        return lines;
+                        Overclock = (double)unitObject["Overclock"],
+                        IsSomersloopUsed = (bool)unitObject["IsSomersloopUsed"]
+                    };
+                }));
+            }));
+        })];
     }
 
     public void SaveFactory(List<ProductionLine> lines)
     {
         static JObject ConvertToJObject(ProductionLine line)
         {
-            return new JObject
+            return JObject.FromObject(new
             {
+                ProductionBlocks = line.ProductionBlocks.Select(block =>
                 {
-                    "ProductionBlocks",
-                    new JArray(line.ProductionBlocks
-                    .Select(block =>
+                    return new
                     {
-                        return new JObject
+                        ProductionRequest = block.ProductionRequest.ToString(),
+                        ProductionUnits = block.ProductionUnits
+                        .Cast<SatisfactoryProductionUnit>()
+                        .Select(unit =>
                         {
-                            { "ProductionRequest", block.ProductionRequest.ToString() },
+                            return new
                             {
-                                "ProductionUnits",
-                                new JArray(block.ProductionUnits
-                                .Cast<SatisfactoryProductionUnit>()
-                                .Select(unit =>
-                                {
-                                    return new JObject
-                                    {
-                                        { "ProductionRequest", unit.ProductionRequest.ToString() },
-                                        { "Recipe", unit.Recipe.ToString() },
-                                        { "Overclock", unit.Overclock },
-                                        { "IsSomersloopUsed", unit.IsSomersloopUsed }
-                                    };
-                                }).ToArray())
-                            }
-                        };
-                    }).ToArray())
-                }
-            };
+                                ProductionRequest = unit.ProductionRequest.ToString(),
+                                Recipe = unit.Recipe.ToString(),
+                                unit.Overclock,
+                                unit.IsSomersloopUsed
+                            };
+                        })
+                    };
+                })
+            });
         }
 
 
