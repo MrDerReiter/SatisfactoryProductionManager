@@ -12,69 +12,67 @@
                    TargetType="Border">
 
                 <Setter Property="BorderBrush"
-                        Value="Chocolate" />
+                        Value="Chocolate"/>
                 <Setter Property="Background"
-                        Value="Gray" />
+                        Value="Gray"/>
                 <Setter Property="BorderThickness"
-                        Value="2" />
+                        Value="2"/>
                 <Setter Property="CornerRadius"
-                        Value="10" />
+                        Value="10"/>
             </Style>
             <Style x:Key="SubpanelBorder"
                    TargetType="Border">
 
                 <Setter Property="BorderBrush"
-                        Value="Black" />
+                        Value="Black"/>
                 <Setter Property="BorderThickness"
-                        Value="1" />
+                        Value="1"/>
                 <Setter Property="Margin"
-                        Value="3" />
+                        Value="3"/>
                 <Setter Property="Padding"
-                        Value="3" />
+                        Value="3"/>
             </Style>
 
             <Style x:Key="WindowHeaderText"
                    TargetType="TextBlock">
 
                 <Setter Property="HorizontalAlignment"
-                        Value="Center" />
+                        Value="Center"/>
                 <Setter Property="Margin"
-                        Value="0,10" />
+                        Value="0,10"/>
                 <Setter Property="FontSize"
-                        Value="18" />
+                        Value="18"/>
                 <Setter Property="FontWeight"
-                        Value="Bold" />
+                        Value="Bold"/>
             </Style>
             <Style x:Key="TooltipHeaderText"
                    TargetType="TextBlock">
 
                 <Setter Property="HorizontalAlignment"
-                        Value="Center" />
+                        Value="Center"/>
                 <Setter Property="TextAlignment"
-                        Value="Center" />
+                        Value="Center"/>
                 <Setter Property="TextWrapping"
-                        Value="Wrap" />
+                        Value="Wrap"/>
                 <Setter Property="FontStyle"
-                        Value="Italic" />
+                        Value="Italic"/>
                 <Setter Property="FontWeight"
-                        Value="Bold" />
+                        Value="Bold"/>
                 <Setter Property="FontSize"
-                        Value="15" />
+                        Value="15"/>
             </Style>
             <Style x:Key="TooltipSubsetText"
                    TargetType="TextBlock">
                 <Setter Property="HorizontalAlignment"
-                        Value="Left" />
+                        Value="Left"/>
                 <Setter Property="Margin"
-                        Value="0,5" />
+                        Value="0,5"/>
             </Style>
 
             <Style TargetType="ToolTip">
 
                 <Setter Property="Background"
                         Value="LightGray"/>
-                <Setter Property="MaxWidth"
-                        Value="250"/>
                 <Setter Property="Padding"
                         Value="10"/>
             </Style>
@@ -82,11 +80,11 @@
                    TargetType="Button">
 
                 <Setter Property="Background"
-                        Value="DarkGray" />
+                        Value="DarkGray"/>
                 <Setter Property="Width"
-                        Value="50" />
+                        Value="50"/>
                 <Setter Property="Height"
-                        Value="50" />
+                        Value="50"/>
             </Style>
 
             <!-- Шаблоны -->
@@ -97,28 +95,28 @@
                             Height="30">
 
                     <Image Source="{Binding Path=Image}"
-                           RenderOptions.BitmapScalingMode="HighQuality" />
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
 
                     <TextBlock VerticalAlignment="Center"
                                Margin="30,0,0,0"
-                               Text="{Binding Path=FormattedCount}" />
+                               Text="{Binding Path=FormattedCount}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate DataType="{x:Type local:RecipeTooltipVM}">
-                
+
                 <StackPanel>
                     <TextBlock Style="{StaticResource TooltipHeaderText}"
-                               Text="{Binding Title}" />
+                               Text="{Binding Title}"/>
 
                     <TextBlock Style="{StaticResource TooltipSubsetText}"
-                               Text="Продукция:" />
+                               Text="Продукция:"/>
 
                     <ListBox ItemsSource="{Binding Outputs}"
                              ItemTemplate="{StaticResource TooltipIOItemTemplate}"
                              Background="Transparent"/>
 
                     <TextBlock Style="{StaticResource TooltipSubsetText}"
-                               Text="Ингредиенты:" />
+                               Text="Ингредиенты:"/>
 
                     <ListBox ItemsSource="{Binding Inputs}"
                              ItemTemplate="{StaticResource TooltipIOItemTemplate}"
@@ -131,7 +129,7 @@
                         Command="{Binding SelectObjectCommand}">
 
                     <Image Source="{Binding Image}"
-                           RenderOptions.BitmapScalingMode="HighQuality" />
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
             </DataTemplate>
         </ResourceDictionary>
