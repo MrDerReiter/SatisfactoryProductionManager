@@ -1,8 +1,6 @@
 SatisfactoryProductionManager.csproj.user
-.editorconfig
-.gitignire
-.gitattributes
-/.git
-/.vs
 /bin
 /obj
+/.vs
+/.git
+.gitignore
