@@ -1,3 +1,6 @@
+//For some reasons this file need to be also copied to /dist directory
+//of production build, in order to dynamic import could work correctly
+
 export default {
   //GUI
   "AddProductionLine": "Append new production line",
@@ -365,4 +368,4 @@ export default {
   "Water": "Water",
   "Wire": "Wire",
   "Wood": "Wood"
-} as Record<string, string>;
+};

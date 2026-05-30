@@ -18,7 +18,7 @@ class LocaleProvider {
     this._id = id;
     localStorage.setItem("localeID", id);
 
-    this._current = await import(`./dict${id}`).then(module => module.default);
+    this._current = await import(/* @vite-ignore */`./dict${id}.js`).then(module => module.default);
     this._listeners.forEach(callback => callback(this._current));
   }
 
@@ -28,6 +28,6 @@ class LocaleProvider {
 }
 
 const id = localStorage.getItem("localeID") ?? "ENG";
-const locale = await import(`./dict${id}`).then(module => module.default);
+const locale = await import(/* @vite-ignore */`./dict${id}.js`).then(module => module.default);
 
 export default new LocaleProvider(id, locale);
