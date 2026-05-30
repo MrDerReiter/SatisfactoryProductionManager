@@ -1,0 +1,44 @@
+/* Global variables */
+:root {
+  /* Colors */
+  --background-color: gray;
+  --main-text-color: ghostwhite;
+
+  /* Borders */
+  --top-level-thick-border: 3px solid chocolate;
+  --double-medium-border: 3px double black;
+  --double-thin-border: 3px double #666;
+  --medium-border: 2px solid black;
+  --thin-border: 1px solid black;
+  --ghost-border: 1px solid #666;
+}
+
+/* Global rules */
+:not(dialog) {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--main-text-color);
+  max-width: 100vw;
+  font-size: 14px;
+  font-family: Helvetica;
+  text-align: center;
+  user-select: none;
+}
+
+#root {
+  display: grid;
+  padding: 3px;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 100vh;
+  gap: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}

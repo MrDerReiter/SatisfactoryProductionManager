@@ -1,0 +1,50 @@
+/* Base rules */
+img {
+  display: block;
+  margin: 4px;
+}
+
+p {
+  text-align: center;
+  padding-top: 2px;
+}
+
+input[type="text"] {
+  padding-top: 2px;
+  border-style: none;
+  text-align: center;
+}
+
+input[type="text"]:focus {
+  outline-style: none;
+}
+
+/* Common using */
+.small-bordered {
+  border: var(--ghost-border);
+}
+
+.double-bordered {
+  border: var(--double-thin-border);
+}
+
+.input-error {
+  outline: 2px solid red;
+}
+
+/* Specific */
+.label {
+  width: 100%;
+
+  img {
+    align-self: center;
+  }
+}
+
+.overclock-text-box {
+  border-style: inset;
+  border-color: darkgrey;
+  font-family: Consolas;
+  font-size: 14px;
+  width: 50px;
+}

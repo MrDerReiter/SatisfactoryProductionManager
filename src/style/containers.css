@@ -1,0 +1,83 @@
+/* Common using */
+.stack-panel-h {
+  display: flex;
+  flex-direction: row;
+}
+
+.stack-panel-v {
+  display: flex;
+  flex-direction: column;
+}
+
+.width-scrollable {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: darkgray transparent;
+}
+
+.height-scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: darkgray transparent;
+}
+
+.bordered-wrapper {
+  >* {
+    border: var(--ghost-border);
+  }
+}
+
+.small-gap {
+  gap: 3px;
+}
+
+.middle-gap {
+  gap: 5px;
+}
+
+.huge-gap {
+  gap: 20px;
+}
+
+/* Specific */
+.toolbar {
+  align-self: stretch;
+  align-items: stretch;
+  justify-content: space-between;
+  border: var(--double-thin-border);
+
+  img {
+    margin: 4px auto;
+  }
+}
+
+.header-group {
+  border: var(--ghost-border);
+  align-items: stretch;
+
+  >p {
+    min-width: max-content;
+    margin-bottom: 2px;
+    margin-inline: 5px;
+  }
+
+  >div {
+    justify-content: stretch;
+    width: 100%;
+  }
+}
+
+.stack-group {
+  align-items: start;
+  gap: 10px;
+
+  >div {
+    align-items: center;
+
+    >:not(.double-bordered) {
+      border: var(--ghost-border);
+    }
+  }
+}

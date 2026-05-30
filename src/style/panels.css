@@ -1,0 +1,58 @@
+/* Top-level panels */
+.main-panel {
+  border: var(--top-level-thick-border);
+  border-radius: 10px;
+}
+
+.header-panel {
+  min-height: 70px;
+  padding: 5px 10px;
+  grid-column: span 2;
+  align-items: center;
+  gap: 20px;
+}
+
+.left-panel {
+  min-width: 70px;
+  padding: 10px 5px;
+  align-items: center;
+  gap: 3px;
+}
+
+.workspace {
+  padding: 10px;
+  gap: 10px;
+}
+
+/* In-between panels */
+.line-workspace {
+  border: var(--medium-border);
+  justify-content: start;
+  align-items: start;
+  padding: 5px;
+  gap: 20px;
+
+  >div {
+    border: var(--thin-border);
+    padding: 4px;
+  }
+}
+
+.block-workspace {
+  padding: 5px;
+  gap: 20px;
+  border: var(--medium-border);
+
+  >div {
+    justify-content: space-between;
+    padding-inline: 5%;
+    padding-top: 5px;
+    gap: 20px;
+  }
+}
+
+.unit-list {
+  padding: 5px;
+  gap: 10px;
+  border: var(--thin-border);
+}

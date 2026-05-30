@@ -1,0 +1,71 @@
+/* Base rules */
+button {
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  user-select: none;
+  background-color: inherit;
+}
+
+button:hover {
+  outline: var(--ghost-border);
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+
+/* Specific */
+.production-button {
+  background-color: darkgray;
+  margin: 1px;
+}
+
+.request-button {
+  background-color: lightgreen;
+
+  p {
+    background-color: forestgreen;
+  }
+}
+
+.command-button,
+.request-button {
+  border: var(--ghost-border);
+}
+
+.lang-selector {
+  background-color: var(--background-color);
+  margin-left: auto;
+  font-size: 24px;
+  font-weight: bold;
+  border: 3px inset #666;
+  border-radius: 5px;
+  justify-self: end;
+}
+
+
+/* Hover-sensitive */
+.highlight {
+  border: var(--top-level-thick-border);
+}
+
+.highlight:hover {
+  outline: 1px solid gold;
+}
+
+.selector-button {
+  margin-right: 10px;
+  padding: 4px 10px 2px 10px;
+}
+
+.selector-button:hover {
+  background-color: darkgray;
+  outline: var(--thin-border);
+}
+
+/* States */
+.somersloop-used {
+  background-image: radial-gradient(darkviolet 0 40%, violet);
+}

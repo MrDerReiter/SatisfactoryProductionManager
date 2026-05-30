@@ -1,0 +1,92 @@
+/* Base rules */
+dialog {
+  background-color: var(--background-color);
+  user-select: none;
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(5px);
+  background-color: rgb(0 0 0 / 0.5);
+}
+
+
+/* Specific */
+.tooltip {
+  animation: fade-in 0.5s ease-in;
+}
+
+.recipe-header {
+  padding: 5px;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: bold;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.recipe-tooltip {
+  background-color: rgb(150, 150, 150);
+  border: var(--medium-border);
+  max-width: 220px;
+  padding: 10px;
+  gap: 5px;
+
+  >p:not(.recipe-header) {
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  >div {
+    padding: 3px;
+    border: var(--ghost-border)
+  }
+}
+
+.recipe-selector {
+  max-height: 335px;
+  padding: 10px;
+}
+
+.error-message {
+  color: var(--main-text-color);
+  font-size: large;
+  max-width: 300px;
+
+  p {
+    text-align: start;
+  }
+
+  button {
+    font-size: larger;
+    margin-top: 20px;
+    padding: 5px;
+  }
+}
+
+.cat-overview {
+  display: grid;
+  padding: 5px;
+  gap: 1px;
+  align-content: start;
+  max-height: minmax(0, 100%);
+  grid-template-columns: repeat(5, auto);
+  border: var(--double-medium-border);
+}
+
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .recipe-selector {
+    flex-direction: column;
+    max-height: 620px;
+    gap: 20px;
+  }
+}
