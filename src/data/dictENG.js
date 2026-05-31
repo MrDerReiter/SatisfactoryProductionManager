@@ -3,16 +3,16 @@
 
 export default {
   //GUI
-  "AddProductionLine": "Append new production line",
-  "MoveLineLeft": "Move current production line left",
-  "MoveLineRight": "Move current production line right",
-  "AddProductionBlock": "Append new production block in current line",
-  "RemoveProductionBlock": "Remove current production block (if this is main block, all production line will be removed)",
-  "DeployRequestToBlock": "Deploy request as new production block",
-  "DeployRequestToUnit": "Deploy request as new production unit",
-  "DeployUnitToBlock": "Deploy unit as dedicated production block",
-  "RemoveUnit": "Remove production unit",
-  "UseSomersloop": "Use somersloop",
+  "AddProductionLine": "Append a new production line",
+  "MoveLineLeft": "Move the current production line left",
+  "MoveLineRight": "Move the current production line right",
+  "AddProductionBlock": "Append a new production block in the current line",
+  "RemoveProductionBlock": "Remove the current production block (if this is the main block, whole production line will be removed)",
+  "DeployRequestToBlock": "Deploy the request as a new production block",
+  "DeployRequestToUnit": "Deploy the request as a new production unit",
+  "DeployUnitToBlock": "Deploy the unit as a separate production block",
+  "RemoveUnit": "Remove the production unit",
+  "UseSomersloop": "Use a somersloop",
   "ProperRecipes": "Proper recipes",
   "SetCount": "Set count",
   "Overclock": "Overclock",
@@ -25,12 +25,12 @@ export default {
   "Output": "Output",
 
   //Error messages
-  "RecipeNotFound": "Not found any proper recipe for resource",
-  "RecipeDoesNotExist": "Recipe not found in internal database:",
-  "SubZeroRequestValue": "Request value isn't supposed to be negative.",
-  "NotEnoughMachines": "Request cannot be satisfied with this machines count.",
-  "CannotRemoveMainUnit": "Main unit of production block cannot be removed or deployed. If supposed block removing, remove block itself.",
-  "InvalidOverclockValue": "Invalid overclock value. Value must be in range from 0 (but not 0) and 250%.",
+  "RecipeNotFound": "Not found any proper recipe for such resource",
+  "RecipeDoesNotExist": "The recipe not found within the internal database:",
+  "SubZeroRequestValue": "The request value isn't supposed to be negative.",
+  "NotEnoughMachines": "The request cannot be satisfied with this machines count.",
+  "CannotRemoveMainUnit": "The main unit of the production block cannot be removed or deployed, it's essential. If supposed block removing, remove the block itself.",
+  "InvalidOverclockValue": "Invalid overclock value. The value must be in range from 0 (but not 0) to 250%.",
 
   // Categories
   "Ingots": "Ingots",
