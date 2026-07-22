@@ -11,10 +11,6 @@ dialog::backdrop {
 
 
 /* Specific */
-.tooltip {
-  animation: fade-in 0.5s ease-in;
-}
-
 .recipe-header {
   padding: 5px;
   font-size: 20px;
@@ -24,6 +20,7 @@ dialog::backdrop {
 }
 
 .recipe-tooltip {
+  animation: fade-in 0.5s ease-in;
   background-color: rgb(150, 150, 150);
   border: var(--medium-border);
   max-width: 220px;
@@ -67,7 +64,6 @@ dialog::backdrop {
   padding: 5px;
   gap: 1px;
   align-content: start;
-  max-height: minmax(0, 100%);
   grid-template-columns: repeat(5, auto);
   border: var(--double-medium-border);
 }

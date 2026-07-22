@@ -24,8 +24,7 @@ function IOGroup(props: { header: string, group: [string, number][] }) {
 }
 
 
-export default function RecipeTooltip(props: { recipe: Recipe }) {
-  const { recipe } = props;
+export default function RecipeTooltip({ recipe }: { recipe: Recipe }) {
   return (
     <div className="recipe-tooltip stack-panel-v">
       <p className="recipe-header">{locale.current[recipe.name]}</p>

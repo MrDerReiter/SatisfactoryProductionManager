@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import locale from "../../data/locale";
 import Modal, { type DialogCaller } from "./Modal";
 import TooltipProvider, { type TooltipDispatcher } from "./TooltipProvider";
@@ -15,8 +15,6 @@ export const externals: ExternalFunctions = {};
 
 let dialogResolver: (recipe: Recipe) => void;
 const userSelectsRecipe = (recipe: Recipe) => dialogResolver(recipe);
-const dialog: DialogCaller<Recipe> = {};
-const tooltip: TooltipDispatcher<RecipeProps> = {};
 const buttonsSize = 35;
 const catNames = [
   "Ingots",
@@ -51,12 +49,14 @@ export default function RecipeSelector() {
     } else setCategory(categories["Ingots"]);
 
     setRequest(request);
-    return dialog.open!(resolve => dialogResolver = resolve);
+    return dialog.current?.open(resolve => dialogResolver = resolve);
   }
 
   const [dict, setDict] = useState(locale.current);
   const [request, setRequest] = useState<[string, number]>();
   const [category, setCategory] = useState<Recipe[]>();
+  const tooltip = useRef<TooltipDispatcher<RecipeProps>>(null);
+  const dialog = useRef<DialogCaller<Recipe>>(null);
 
   useEffect(() => {
     locale.onChange(setDict);
@@ -64,7 +64,7 @@ export default function RecipeSelector() {
   }, []);
 
   return (
-    <Modal<Recipe> className="main-panel" caller={dialog}>
+    <Modal<Recipe> className="main-panel" callerRef={dialog}>
       <div className="stack-panel-h recipe-selector">
         <div className="stack-panel-v">
           {request ? <p className="selector-button"> {dict["ProperRecipes"]}</p> :
@@ -76,16 +76,15 @@ export default function RecipeSelector() {
               </p>)}
         </div>
         <TooltipProvider
-          containerClass="height-scrollable cat-overview"
-          tooltipClass="tooltip"
+          className="height-scrollable cat-overview"
           tooltipContent={RecipeTooltip}
-          dispatcher={tooltip}>
+          dispatcherRef={tooltip}>
           {(category?.map(recipe =>
             <RecipeButton
               recipe={recipe}
               callback={userSelectsRecipe}
-              onHover={(event, recipe) => tooltip.show(event, { recipe })}
-              onLeave={() => tooltip.hide()}
+              onHover={(event, recipe) => tooltip.current?.show(event, { recipe })}
+              onLeave={() => tooltip.current?.hide()}
               size={buttonsSize}
               key={recipe.name} />))}
         </TooltipProvider>

@@ -1,21 +1,12 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import {
+  useImperativeHandle,
+  useRef,
+  type Ref,
+  type ReactNode
+} from "react";
+
 
 type Executor<T> = ConstructorParameters<typeof Promise<T>>[0];
-interface ModalProps<T> {
-  children: ReactNode;
-  /**
-   * Объект (как правило, изначально пустой), передаваемый в пропс клиентским кодом;
-   * после инициализации компонента Modal в этот объект будут записаны методы open() и cancel(),
-   * позволяющие управлять диалоговым окном.
-   */
-  caller: DialogCaller<T>;
-  /**
-   * CSS-классы, которые будут применены к элементу диалога.
-   * В большинстве случаев в этом нет необходимости, т.к. проще стилизовать
-   * непосредственно содержимое модального окна, а не само окно.
-   */
-  className?: string;
-}
 export interface DialogCaller<T> {
   /**
    * Открывает диалоговое окно. Сигнатура метода идентична сигнатуре
@@ -32,51 +23,52 @@ export interface DialogCaller<T> {
    * либо со значением, переданным в вызов resolve(), либо с пустым значением,
    * если диалог был закрыт принудительно.
    */
-  open?: (executor: Executor<T>) => Promise<T | void>;
+  open(executor: Executor<T>): Promise<T | void>;
   /**
    * Немедленно закрывает диалоговое окно и разрешает промис,
    * возвращённый методом caller.open() с пустым значением.
    * Идентично нажатию пользователем клавиши Esc (можно использовать для
    * реализации кнопки закрытия внутри диалогового окна);
    */
-  cancel?: () => void;
+  cancel(): void;
 }
-
+interface ModalProps<T> {
+  children: ReactNode;
+  className?: string;
+  callerRef: Ref<DialogCaller<T>>
+}
 let forceClosing: VoidFunction;
-const onCancel = () => forceClosing();
-
 
 /**
- * Универсальное диалоговое окно. Отображает любое вложенное в него содержимое в
- * отдельном модальном окне, которое изначально скрыто. Отображение и сокрытие
- * окна осуществляется с помощью объекта-"пульта", который передаётся из вызывающего
- * кода пропсом, и в него записываются соответствующие методы.
- * Диалог может возращать результат с помощью промиса, который в свою очередь
- * возвращается методом открытия окна
- * (тип этого значения определяется generic-параметром модального окна).
+ * Универсальное диалоговое окно. Отображает любое помещённое в него содержимое
+ * в отдельном окне поверх остального интерфейса и в отдельном визуальном дереве.
+ * Управление скрытием и показом диалога происходит посредством ref-объекта,
+ * который передаётся через ссылку в родительский компонент (пропс callerRef).
+ * Диалог так-же может возвращать значение при штатном закрытии
+ * через интерфейс промиса.
  */
-export default function Modal<TResult = void>(props: ModalProps<TResult>) {
-  function dialogHandler(executor: Executor<TResult>): Promise<TResult | void> {
+export default function Modal<T = void>(props: ModalProps<T>) {
+  function dialogHandler(executor: Executor<T>): Promise<T | void> {
     const canceled = new Promise<void>(resolve => forceClosing = resolve);
-    const isDone = new Promise<TResult>(executor)
-      .finally(() => dialog.current.close());
+    const isDone = new Promise<T>(executor).finally(() => dialog.current.close());
 
     dialog.current.showModal();
     return Promise.race([isDone, canceled]);
   }
 
-  const { children, caller, className } = props;
+  const { children, className, callerRef } = props;
   const dialog = useRef<HTMLDialogElement>(null);
 
-  useEffect(() => {
-    caller.open = dialogHandler;
-    caller.cancel = () => dialog.current.requestClose();
-  }, []);
+  useImperativeHandle(callerRef, () => ({
+    open: dialogHandler,
+    cancel: () => dialog.current.requestClose()
+  }), []);
 
   return (
-    <dialog {...{ onCancel, className }}
-      ref={dialog}>
+    <dialog ref={dialog}
+      className={className}
+      onCancel={() => forceClosing()}>
       {children}
     </dialog>
   );
-}
+};

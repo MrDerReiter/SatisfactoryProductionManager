@@ -1,6 +1,6 @@
 import { flushSync } from "react-dom";
 import {
-  useEffect,
+  useImperativeHandle,
   useRef,
   useState,
   type CSSProperties,
@@ -18,36 +18,27 @@ export interface TooltipDispatcher<T> {
    * @param event Событие мыши (требуется, чтобы вычислить координаты для отображения подсказки).
    * @param tooltipProps Пропсы для компонента содержимого подсказки.
    */
-  show?: (event: MouseEvent, tooltipProps: T) => void;
+  show(event: MouseEvent, tooltipProps: T): void;
   /**
    * Скрывает подсказку, с небольшой задержкой (чтобы избежать "мерцания" при
    * быстрых переходах между элементами).
    * Как правило, нужно вызвать при уходе мыши с активного компонента.
    */
-  hide?: VoidFunction;
+  hide(): void;
   /** Служебная переменная, во внешнем коде не используется. */
-  hidingTimeout?: number;
+  hidingTimeout?: ReturnType<typeof setTimeout>;
 }
 interface TooltipProviderProps<T> {
-  /** CSS-класс для контейнера. */
-  containerClass?: string;
-  /** CSS-класс для всплывающей подсказки. */
-  tooltipClass?: string;
+  className?: string;
   children: ReactNode;
-  /**
-   * Объект (как правило, изначально пустой), который должен предоставить внешний код.
-   * В него будут записаны методы show() и hide(),
-   * позволяющие управлять появлением и исчезновением подсказки.
-   */
-  dispatcher: TooltipDispatcher<T>
+  dispatcherRef: Ref<TooltipDispatcher<T>>
   /**
    * Функциональный компонент, который будет использован
    * для отрисовки содержимого контекстной подсказки.
    */
   tooltipContent: (props: T) => ReactNode;
 }
-interface TooltipProps {
-  className?: string;
+interface TooltipWrapperProps {
   children: ReactNode;
   visible: boolean;
   position: Position;
@@ -56,16 +47,27 @@ interface TooltipProps {
 interface Position { left: number; top: number; }
 
 
-const tooltipStyle = (visible: boolean, position: Position): CSSProperties => ({
+const wrapperStyle = (visible: boolean, position: Position): CSSProperties => ({
   display: visible ? "block" : "none",
   position: "fixed", ...position
 });
 
-function Tooltip(props: TooltipProps) {
-  const { className, children, visible, position, elementRef } = props;
+function calcPosition(targetRect: DOMRect, tooltipRect: DOMRect): Position {
+  const thresholdX = document.documentElement.clientWidth - tooltipRect.width;
+  const thresholdY = document.documentElement.clientHeight - tooltipRect.height;
+  const desiredX = targetRect.right + targetRect.width / 2;
+  const fallbackX = targetRect.left - tooltipRect.width - targetRect.width / 2;
+
+  return {
+    left: desiredX < thresholdX ? desiredX : fallbackX,
+    top: Math.min(targetRect.top, thresholdY)
+  }
+}
+
+function Tooltip(props: TooltipWrapperProps) {
+  const { children, visible, position, elementRef } = props;
   return (
-    <div style={tooltipStyle(visible, position)}
-      className={className}
+    <div style={wrapperStyle(visible, position)}
       ref={elementRef}>
       {children}
     </div>
@@ -74,64 +76,43 @@ function Tooltip(props: TooltipProps) {
 
 
 /**
- * Специальный контейнер, упрощающий отображение универсальных однотипных
- * всплывающих подсказок для каждого вложенного элемента. Управление отображением
- * подсказки происходит с помощью объекта-"пульта", который передаётся
- * вызывающим кодом (в этот обьект будут записаны соответствующие методы).
- * Затем можно привязать методы "пульта" к событиям mouseenter и mouseleave
- * вложенных элементов контейнера (их сигнатуры адаптированы для этого), так что при
- * каждом наведении/уходе курсора мыши будет отображаться в качестве 
- * всплывающей подсказки переданный с пропсами функциональный компонент
- * (в него далее можно пробросить пропcы через метод "пульта" show())
+ * Предоставляет обобщённую всплывающую подсказку для вложенных элементов.
+ * Подсказка представляет собой единый элемент, который разделяют все дочерние
+ * элементы контейнера; меняется лишь её содержимое и позиция на экране,
+ * в зависимости от конкретного элемента на котором сработало событие наведения).
+ * Управление показом и скрытием подсказки осуществляется через ref-объект,
+ * который передаётся через ссылку в родительский компонент (пропс dispatcherRef).
  */
-export default function TooltipProvider<T = void>(props: TooltipProviderProps<T>) {
-  function assignDispatcher() {
-    dispatcher.hide = () =>
-      dispatcher.hidingTimeout = setTimeout(() => setVisible(false), 200);
-
-    dispatcher.show = (event, props) => {
-      clearTimeout(dispatcher.hidingTimeout);
-      flushSync(() => {
-        setTooltipProps(props);
-        setVisible(true);
-      });
-
-      const targetRect = (event.target as Element).getBoundingClientRect();
-      const tooltipRect = tooltipElement.current.getBoundingClientRect();
-      setPosition(calcPosition(targetRect, tooltipRect));
-    };
-  }
-
-  function calcPosition(targetRect: DOMRect, tooltipRect: DOMRect): Position {
-    const thresholdX = document.documentElement.clientWidth - tooltipRect.width;
-    const thresholdY = document.documentElement.clientHeight - tooltipRect.height;
-    const desiredX = targetRect.right + targetRect.width / 2;
-    const fallbackX = targetRect.left - tooltipRect.width - targetRect.width / 2;
-
-    return {
-      left: desiredX < thresholdX ? desiredX : fallbackX,
-      top: Math.min(targetRect.top, thresholdY)
-    }
-  }
-
-
-  const { children, containerClass, tooltipClass, dispatcher, tooltipContent } = props;
+export default function TooltipProvider<T>(props: TooltipProviderProps<T>) {
+  const { className, children, dispatcherRef, tooltipContent } = props;
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState<Position>({ left: 0, top: 0 });
   const [tooltipProps, setTooltipProps] = useState<T>();
   const tooltipElement = useRef<HTMLDivElement>(null);
 
-  useEffect(assignDispatcher, []);
+  useImperativeHandle(dispatcherRef, () => ({
+    hide() { this.hidingTimeout = setTimeout(() => setVisible(false), 200); },
+    show(event, props) {
+      clearTimeout(this.hidingTimeout);
+      flushSync(() => {
+        setTooltipProps(props);
+        setVisible(true);
+      });
+
+      const targetRect = (event.target as HTMLElement).getBoundingClientRect();
+      const tooltipRect = tooltipElement.current.getBoundingClientRect();
+      setPosition(calcPosition(targetRect, tooltipRect));
+    }
+  }), []);
 
   return (
-    <div className={containerClass}>
+    <div className={className}>
       {children}
       {tooltipProps &&
         <Tooltip {...{ visible, position }}
-          className={tooltipClass}
           elementRef={tooltipElement}>
           {tooltipContent(tooltipProps)}
         </Tooltip>}
     </div>
   );
-}
+};
