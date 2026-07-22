@@ -18,7 +18,7 @@ export default function MachineEntry(props: { unit: ProductionUnit, size: number
   return (
     <HeaderGroup headerTitle={locale.current["Machines"]}>
       <ImageEntry
-        content={[`assets/Machines/${machine}.png`, machineCount]}
+        content={[`images/Machines/${machine}.png`, machineCount]}
         colors={["khaki", "darkkhaki"]}
         callback={onMachineCountChanged}
         tooltip={locale.current[machine]}

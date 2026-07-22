@@ -12,7 +12,7 @@ export default function ProductionButton(props: ProductionButtonProps) {
   const { product, size, isActive, callback } = props;
   return (
     <ImageButton {...{ size, callback }}
-      image={`assets/Resources/${product}.png`}
+      image={`images/Resources/${product}.png`}
       className={"production-button" + (isActive ? " highlight" : "")} />
   );
 }

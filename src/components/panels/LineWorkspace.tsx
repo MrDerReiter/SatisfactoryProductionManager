@@ -25,13 +25,13 @@ export default function LineWorkspace() {
     <div className="stack-panel-h width-scrollable line-workspace">
       <div className="stack-panel-h">
         <ImageButton
-          image="assets/AddItem.png"
+          image="images/AddItem.png"
           size={commandButtonSize}
           className="command-button"
           tooltip={dict["AddProductionBlock"]}
           callback={addProductionBlock} />
         <ImageButton
-          image="assets/DeleteItem.png"
+          image="images/DeleteItem.png"
           size={commandButtonSize}
           className="command-button"
           tooltip={dict["RemoveProductionBlock"]}
@@ -39,13 +39,13 @@ export default function LineWorkspace() {
       </div>
       <div className="stack-panel-h">
         <ImageButton
-          image="assets/MoveLineLeft.png"
+          image="images/MoveLineLeft.png"
           size={commandButtonSize}
           className="command-button"
           tooltip={dict["MoveLineLeft"]}
           callback={moveLeft} />
         <ImageButton
-          image="assets/MoveLineRight.png"
+          image="images/MoveLineRight.png"
           size={commandButtonSize}
           className="command-button"
           tooltip={dict["MoveLineRight"]}

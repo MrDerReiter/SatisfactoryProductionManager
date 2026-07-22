@@ -1,15 +1,16 @@
-import type { PropsWithChildren } from "react";
 import type ProductionUnit from "../../models/ProductionUnit";
 import locale from "../../data/locale";
 import UnitToolbar from "../controls/UnitToolbar";
 import LabelGroup from "../controls/LabelGroup";
 import MachineEntry from "../controls/MachineEntry";
 import OSGroup from "../controls/OSGroup";
+import Show from "../containers/Show";
 
 
+type UnitListItem = ReturnType<typeof UnitList.Item>;
 const commonImageSize = 65;
 
-export default function UnitList(props: PropsWithChildren) {
+export default function UnitList(props: { children: UnitListItem[] }) {
   return <ul className="stack-panel-v unit-list">{props.children}</ul>;
 }
 
@@ -29,12 +30,13 @@ UnitList.Item = (props: { unit: ProductionUnit }) => {
         size={commonImageSize}
         colors={["lightblue", "cadetblue"]}
         values={outputs} />
-      {inputs.length > 0 ?
+      <Show when={inputs.length > 0}>
         <LabelGroup
           title={locale.current["Input"]}
           size={commonImageSize}
           colors={["lightgreen", "forestgreen"]}
-          values={inputs} /> : null}
+          values={inputs} />
+      </Show>
       <OSGroup unit={unit} size={commonImageSize} />
     </li>
   );

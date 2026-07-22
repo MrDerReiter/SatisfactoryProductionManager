@@ -11,5 +11,5 @@ interface ShowProps { when: Condition, children: ReactNode }
  */
 export default function Show(props: ShowProps) {
   const { when, children } = props;
-  return <div hidden={!when}>{children}</div>;
+  return when && children;
 }

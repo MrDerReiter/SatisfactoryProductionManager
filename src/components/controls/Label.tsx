@@ -12,7 +12,7 @@ export default function Label(props: LabelProps) {
   const { content, colors, size, tooltip } = props;
   return (
     <div className="stack-panel-v label" style={{ backgroundColor: colors[0] }}>
-      <img src={`assets/Resources/${content[0]}.png`}
+      <img src={`images/Resources/${content[0]}.png`}
         title={tooltip}
         width={size}
         height={size}

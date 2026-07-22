@@ -15,8 +15,8 @@ export default function RecipeButton(props: RecipeButtonProps) {
   return (
     <ImageButton
       image={recipe.category == "PowerGenerating" ?
-        `assets/Resources/${recipe.inputs[0][0]}.png` :
-        `assets/Resources/${recipe.product[0]}.png`}
+        `images/Resources/${recipe.inputs[0][0]}.png` :
+        `images/Resources/${recipe.product[0]}.png`}
       className="production-button"
       callback={() => callback(recipe)}
       onHover={(event) => onHover(event, recipe)}

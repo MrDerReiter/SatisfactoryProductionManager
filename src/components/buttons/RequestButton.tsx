@@ -15,7 +15,7 @@ export default function RequestButton(props: RequestButtonProps) {
 
   return (
     <button className="request-button" title={tooltip} onClick={onClick}>
-      <img src={`assets/Resources/${request[0]}.png`}
+      <img src={`images/Resources/${request[0]}.png`}
         width={size}
         height={size}
         draggable={false} />

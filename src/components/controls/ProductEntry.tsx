@@ -12,7 +12,7 @@ export default function ProductEntry(props: ProductEntryProps) {
   return (
     <div className="double-bordered" style={{ marginRight: 5 }}>
       <ImageEntry {...{ size, callback }}
-        content={[`assets/Resources/${product[0]}.png`, product[1]]}
+        content={[`images/Resources/${product[0]}.png`, product[1]]}
         colors={["lightblue", "cadetblue"]}
         key={product.join(" ")} />
     </div>

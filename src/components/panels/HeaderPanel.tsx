@@ -23,7 +23,7 @@ export default function HeaderPanel() {
   return (
     <header className="stack-panel-h main-panel header-panel">
       <ImageButton
-        image="assets/AddLine.png"
+        image="images/AddLine.png"
         tooltip={dict["AddProductionLine"]}
         callback={addProductionLine}
         size={buttonSize} />

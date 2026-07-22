@@ -8,17 +8,17 @@ import ValueEntry from "./ValueEntry";
 function getSchemas(unit: ProductionUnit): ButtonSchema[] {
   return [
     {
-      image: "assets/AddItem.png",
+      image: "images/AddItem.png",
       tooltip: locale.current["DeployUnitToBlock"],
       callback: () => unit.deploy()
     },
     {
-      image: "assets/DeleteItem.png",
+      image: "images/DeleteItem.png",
       tooltip: locale.current["RemoveUnit"],
       callback: () => unit.remove()
     },
     {
-      image: "assets/Resources/Somersloop.png",
+      image: "images/Resources/Somersloop.png",
       tooltip: locale.current["UseSomersloop"],
       specialClass: unit.isSomersloopUsed ? "somersloop-used" : undefined,
       callback: () => unit.update(["isSomersloopUsed", !unit.isSomersloopUsed])
